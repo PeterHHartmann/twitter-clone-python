@@ -231,10 +231,6 @@ def _():
         }
 
         print(validation['code'])
-
-        # TODO prettier with something like:
-        #   test_user = dict(**data)
-        #   print(test_user)
         user = dict(
             user_name=user_name,
             user_email=user_email,
@@ -324,7 +320,6 @@ def _(user_name):
     try:
         user = db.user_get_by_username(user_name)
         details = db.details_get(user_name)
-        print(details.get('bio'))
         body = dict(
             profile_user_name       =   user['user_name'], 
             profile_display_name    =   details['display_name'], 
