@@ -35,7 +35,7 @@ CREATE TABLE joined_dates (
     detail_id               INTEGER NOT NULL,
     joined_year             INTEGER NOT NULL,
     joined_month            TEXT NOT NULL,
-    CONSTRAINT fk_detail_id FOREIGN KEY (detail_id) REFERENCES details(detail_id)
+    CONSTRAINT fk_detail_id FOREIGN KEY (detail_id) REFERENCES user_details(detail_id)
     PRIMARY KEY (joined_id AUTOINCREMENT)
 );
 

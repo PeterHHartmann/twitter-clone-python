@@ -199,21 +199,27 @@ def _():
 
     #TODO no white spaces in username
     user_name = data.get('user_name').strip()
-    if len(user_name) < 1:
+    if len(user_name) < 3:
         response.status = 400
-        return dict(msg='Please enter a username')
+        return dict(msg='Username must be longer than 3 characters long')
     if len(user_name) > 50:
         response.status = 400
         return dict(msg='Username is too long (Maximum 50 characters)')
+    if not re.match(g.REGEX_USER_NAME, user_name):
+        response.status = 400
+        return dict(msg='Please enter a valid username')
 
     user_email = data.get('user_email')
     if not re.match(g.REGEX_EMAIL, user_email):
         response.status = 400
         return dict(msg='Please enter a valid email')
-    user_pwd = data.get('user_pwd').strip()
+    user_pwd = data.get('user_pwd')
     if len(user_pwd) < 6 or len(user_pwd) > 20:
         response.status = 400
         return dict(msg='Password must be longer than 6 or shorter than 20 characters')
+    if not re.match(g.REGEX_PASSWORD, user_pwd):
+        response.status = 400
+        return dict(msg='Please enter a valid password')
 
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(bytes(user_pwd, 'utf_8'), salt).decode('utf-8')
