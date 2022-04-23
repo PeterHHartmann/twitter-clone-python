@@ -11,15 +11,23 @@ import json
 import traceback
 
 def set_jwt(payload):
-    encoded_jwt = jwt.encode(payload, "secret_jwt", algorithm="HS256")
+    encoded_jwt = jwt.encode(payload=payload, key="secret_jwt", algorithm="HS256")
     cookie_opts = {'max_age': 3600 * 24 * 3}
-    response.set_cookie("JWT", json.dumps(encoded_jwt), "secret_info", **cookie_opts)
+    try:
+        import production
+        cookie_value = encoded_jwt.decode('utf-8')
+    except:
+        traceback.print_exc()
+        cookie_value = encoded_jwt
+    response.set_cookie(name="JWT", value=json.dumps(cookie_value), secret="secret_info", **cookie_opts)
 
 def get_jwt():
     try:
         cookie = request.get_cookie("JWT", secret="secret_info")
+        print(cookie)
         parsed = json.loads(cookie)
         data = jwt.decode(parsed, key="secret_jwt", algorithms=["HS256"])
+        print(data)
         return data
     except:
         return None
@@ -37,7 +45,11 @@ def send_validation_email(url, code, user_name):
     message["To"] = receiver_email
 
     #TODO change url to work with pythonanywhere
-    full_url = f'http://localhost:3334/auth/{url}'
+    try:
+        import production
+        full_url = f'https://peterhartmann.eu.pythonanywhere.com/auth/{url}'
+    except:
+        full_url = f'http://localhost:3334/auth/{url}'
 
     # Create the plain-text and HTML version of your message
     text = f"""\

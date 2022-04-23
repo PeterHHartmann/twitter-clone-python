@@ -15,6 +15,7 @@ from utility.regex_str import REGEX_EMAIL, REGEX_USER_NAME, REGEX_PASSWORD
 @view('login')
 def _():
     session = get_jwt()
+    print(session)
     if session:
         if session.get('status'):
             return redirect(f'/auth/{session["status"]["url_snippet"]}')
@@ -131,7 +132,7 @@ def _():
             user_email=user_email,
             user_pwd=hashed)
 
-        details = dict(display_name=display_name, joined_date=time.now())
+        details = dict(display_name=display_name, joined_date=time.time())
 
         db.user_post(user, validation, details)
         send_validation_email(validation['url_snippet'], validation['code'], user_name)

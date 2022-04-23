@@ -5,15 +5,15 @@ import db.database as db
 
 @get('/style/<stylesheet_name>')
 def _(stylesheet_name):
-    return static_file(stylesheet_name, root='public/style')
+    return static_file(stylesheet_name, root='public/style', mimetype='text/css')
 
 @get('/js/<script_name>')
 def _(script_name):
-    return static_file(script_name, root='public/javascript')
+    return static_file(script_name, root='public/javascript', mimetype='application/x-javascript')
 
 @get('/image/<image_name>')
 def _(image_name):
-    return static_file(image_name, root='public/image')
+    return static_file(image_name, root='public/image', mimetype='image/*')
 
 @get('/image/<user_name>/<identifier>.jpg')
 def _(user_name, identifier):
@@ -21,7 +21,7 @@ def _(user_name, identifier):
         user_images = db.details_get_images(user_name)
         stream = BytesIO(user_images[str(identifier)])
         bytes = stream.read()
-        response.set_header('Content-Type', 'image/jpeg')
+        response.set_header('Content-Type', 'image/*')
         return bytes
     except:
         traceback.print_exc()

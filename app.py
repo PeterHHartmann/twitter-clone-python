@@ -1,4 +1,5 @@
-from bottle import run, TEMPLATE_PATH, default_app
+import bottle
+from bottle import run, TEMPLATE_PATH, default_app, request
 
 TEMPLATE_PATH.insert(0, 'public/views')
 
