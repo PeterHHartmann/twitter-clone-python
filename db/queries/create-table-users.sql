@@ -25,18 +25,9 @@ CREATE TABLE user_details (
     bio                     TEXT,
     pfp                     BLOB,
     banner                  BLOB,
+    joined_date             REAL NOT NULL,
     CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES users(user_name),
     PRIMARY KEY (detail_id AUTOINCREMENT)
-);
-
-DROP TABLE IF EXISTS joined_dates;
-CREATE TABLE joined_dates (
-    joined_id               INTEGER NOT NULL,
-    detail_id               INTEGER NOT NULL,
-    joined_year             INTEGER NOT NULL,
-    joined_month            TEXT NOT NULL,
-    CONSTRAINT fk_detail_id FOREIGN KEY (detail_id) REFERENCES user_details(detail_id)
-    PRIMARY KEY (joined_id AUTOINCREMENT)
 );
 
 -- ALTER TABLE users
@@ -45,11 +36,8 @@ CREATE TABLE joined_dates (
 INSERT INTO users(user_name, user_email, user_pwd) 
 VALUES('Tom', 'test@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 
-INSERT INTO user_details(user_name, display_name, bio) 
-VALUES('Tom', 'TomFromMyspace', 'yo');
-
-INSERT INTO joined_dates (detail_id, joined_year, joined_month) 
-VALUES (1, 2016, 'February');
+INSERT INTO user_details(user_name, display_name, bio, joined_date) 
+VALUES('Tom', 'TomFromMyspace', 'yo', 1650719171.8843205);
 
 SELECT * FROM users;
 SELECT * FROM email_validations;
