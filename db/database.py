@@ -31,10 +31,24 @@ def user_post(user, validation, details):
         cursor = db.cursor()
         cursor.execute('INSERT INTO users(user_name, user_email, user_pwd) VALUES(:user_name, :user_email, :user_pwd)', user)
         cursor.execute('INSERT INTO email_validations(user_email, validation_url, validation_code) VALUES(:user_email, :validation_url, :validation_code)', dict(user_email=user['user_email'], validation_url=validation['url_snippet'], validation_code=validation['code']))
-        cursor.execute('INSERT INTO user_details(user_name, display_name, joined_date) VALUES(:user_name, :display_name, :joined_date)', dict(user_name=user['user_name'], **details))
+        cursor.execute('INSERT INTO user_details(user_name, display_name, joined_date) VALUES(:user_name, :display_name, :joined_date)', dict(user_name=user['user_name'], display_name=user['user_name'], **details))
         db.commit()
     finally:
         db.close()
+
+#TODO get users with the most followers once implemented
+def user_get_many():
+    try:
+        db = sqlite3.connect('db/database.sqlite')
+        db.row_factory = dict_factory
+        user = db.execute(
+        '''
+        SELECT user_name, display_name FROM user_details ORDER BY rowid DESC LIMIT 5;
+        ''').fetchall()
+        return user
+    finally:
+        db.close()
+
 
 def details_get(user_name):
     try:

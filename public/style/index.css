@@ -693,6 +693,7 @@ a {
 }
 .right-side .right-nav .follows-nav > div img {
   width: 3rem;
+  height: 3rem;
   border-radius: 100%;
 }
 .right-side .right-nav .follows-nav > div .user-info {

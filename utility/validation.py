@@ -24,19 +24,20 @@ def set_jwt(payload):
 def get_jwt():
     try:
         cookie = request.get_cookie("JWT", secret="secret_info")
-        print(cookie)
         parsed = json.loads(cookie)
         data = jwt.decode(parsed, key="secret_jwt", algorithms=["HS256"])
-        print(data)
         return data
     except:
         return None
 
-def send_validation_email(url, code, user_name):
+def send_validation_email(url, code, user_name, user_email):
     sender_email = os.getenv('EMAIL')
 
-    #TODO change receiver_email to the email that signed up
-    receiver_email = os.getenv('EMAIL')
+    try:
+        import production
+        receiver_email = user_email
+    except:
+        receiver_email = os.getenv('EMAIL')
     password = os.getenv('EMAIL_PW')
 
     message = MIMEMultipart("alternative")
@@ -44,7 +45,6 @@ def send_validation_email(url, code, user_name):
     message["From"] = sender_email
     message["To"] = receiver_email
 
-    #TODO change url to work with pythonanywhere
     try:
         import production
         full_url = f'https://peterhartmann.eu.pythonanywhere.com/auth/{url}'

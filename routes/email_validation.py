@@ -22,7 +22,7 @@ def _(url_code):
     try:
         new_code = randint(100000, 999999)
         db.validation_update_code(data['user_email'], new_code)
-        send_validation_email(url_code, new_code, data['user_name'])
+        send_validation_email(url_code, new_code, data['user_name'], data['user_email'])
         return
     except:
         traceback.print_exc()

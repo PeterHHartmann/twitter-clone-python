@@ -15,7 +15,6 @@ from utility.regex_str import REGEX_EMAIL, REGEX_USER_NAME, REGEX_PASSWORD
 @view('login')
 def _():
     session = get_jwt()
-    print(session)
     if session:
         if session.get('status'):
             return redirect(f'/auth/{session["status"]["url_snippet"]}')
@@ -85,14 +84,6 @@ def _():
 def _():
     data = json.load(request.body)
 
-    display_name = data.get('display_name').strip()
-    if len(display_name) < 1:
-        response.status = 400
-        return dict(msg='Please enter a display name')
-    if len(display_name) > 50:
-        response.status = 400
-        return dict(msg='Display name is too long (Maximum 50 characters')
-
     #TODO no white spaces in username
     user_name = data.get('user_name').strip()
     if len(user_name) < 3:
@@ -132,10 +123,10 @@ def _():
             user_email=user_email,
             user_pwd=hashed)
 
-        details = dict(display_name=display_name, joined_date=time.time())
+        details = dict(joined_date=time.time())
 
         db.user_post(user, validation, details)
-        send_validation_email(validation['url_snippet'], validation['code'], user_name)
+        send_validation_email(validation['url_snippet'], validation['code'], user_name, user_email)
         return dict(url_snippet=validation['url_snippet'])
         
     except Exception as e:

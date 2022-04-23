@@ -38,7 +38,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
         location = `auth/${body.url_snippet}`
     } else {
         const body = await response.json()
-        console.log(body);
         const error_prompt = document.createElement('span');
         error_prompt.id = 'login_error_prompt';
         error_prompt.classList.add('error_prompt');
