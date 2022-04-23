@@ -263,8 +263,9 @@ a {
   border-bottom: 1px solid #e6e6e6;
   padding: 0.5rem 1rem 1rem 1rem;
 }
-.tweet-deck .new-tweet img {
+.tweet-deck .new-tweet > img {
   width: 3rem;
+  height: 3rem;
   border-radius: 100%;
 }
 .tweet-deck .new-tweet form {
@@ -283,7 +284,73 @@ a {
   resize: none;
   overflow: hidden;
   min-height: 2rem;
-  border-bottom: 1px solid #e6e6e6;
+}
+.tweet-deck .new-tweet form #media-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.tweet-deck .new-tweet form #media-container > img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 5%;
+}
+.tweet-deck .new-tweet form #media-container > button {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(calc(2.2rem + 1rem));
+  margin-left: 1rem;
+}
+.tweet-deck .new-tweet form #media-container > button svg {
+  width: 1.2rem;
+  fill: white;
+}
+.tweet-deck .new-tweet form .bottom-deck {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.tweet-deck .new-tweet form .bottom-deck .media-upload {
+  transform: translateX(-0.5rem);
+  padding: 0.5rem 0;
+}
+.tweet-deck .new-tweet form .bottom-deck .media-upload .image-upload {
+  border-radius: 100%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.tweet-deck .new-tweet form .bottom-deck .media-upload .image-upload:hover {
+  background: rgba(29, 155, 240, 0.1);
+}
+.tweet-deck .new-tweet form .bottom-deck .media-upload .image-upload svg {
+  width: 1.3rem;
+  fill: #1d9bf0;
+}
+.tweet-deck .new-tweet form .bottom-deck .tweet-btn {
+  padding: 0.7rem 1.2rem;
+  color: white;
+  border: none;
+  border-radius: 3rem;
+  cursor: pointer;
+  background: rgba(29, 155, 240, 0.6);
+}
+.tweet-deck .new-tweet form .bottom-deck .tweet-btn[active] {
+  background: #1d9bf0;
+}
+.tweet-deck .new-tweet form .bottom-deck .tweet-btn:hover {
+  background: #1391e6;
 }
 
 .profile-deck {
