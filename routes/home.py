@@ -1,13 +1,14 @@
 from bottle import get, view, redirect, request
 from utility.validation import get_jwt
+import db.database as db
 
 @get('/')
 @view('index')
 def _():
-    payload = get_jwt()
-    if not payload:
+    session = get_jwt()
+    if not session:
         return redirect('/login')
 
-    if request.query.get('signedin'):
-        return dict(toast_msg='You have successfully logged in', **payload)
-    return payload
+    tweets_from_follows = db.tweets_get(session['user_name'])
+
+    return dict(**session, tweets_from_follows=tweets_from_follows)

@@ -6,12 +6,14 @@ document.getElementById('modal-bg').addEventListener('click', (e) => {
     toggle_modal('modal-mount');
 });
 
-document.getElementById('edit-profile').addEventListener('click', (e) => {
-    e.preventDefault();
-    console.log('edit-profile clicked');
-    toggle_modal('modal-mount')
-});
-
+try {
+    document.getElementById('edit-profile').addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('edit-profile clicked');
+        toggle_modal('modal-mount')
+    });
+} catch {}
+    
 document.getElementById('close-btn').addEventListener('click', (e) => {
     e.preventDefault()
     console.log('close btn clicked');
@@ -58,3 +60,14 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
     }
 
 });
+
+document.getElementById('follow-user').addEventListener('click', async (e) => {
+    console.log(e.target);
+    const user_name = e.target.dataset.user
+    const response = await fetch(`/follow/${user_name}`, {
+        method: 'POST',
+        body: JSON.stringify({'user_name': user_name})
+    })
+
+    console.log(response);
+})

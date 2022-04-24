@@ -29,57 +29,46 @@
                             <span>Tweet</span>
                         </button>
                     </div>
+                    <input type="hidden" id="tweet_user_name" name="user_name" value="{{ user_name }}">
                 </form>
             </section>
-            <div class="tweet-deck" id="tweets">
-                <div class="tweet">
-                    <div class="tweet-container">
-                        <div class="pfp-container">
-                            <img src="/image/default-pfp.jpg">
-                        </div>
-                        <div class="content-container">
-                            <div class="tweet-header">
-                                <div class="user-text">
-                                    <a>
-                                        <span>poster of shits 9000</span>
-                                        <span>@shitposter9000</span>
-                                    </a>
+            <div class="tweet-deck" id="tweet-deck">
+                % if get('tweets_from_follows'):
+                    % for tweet in get('tweets_from_follows'):
+                        <div class="tweet" id="tweetid-{{tweet['tweet_id']}}" data-timestamp="{{ tweet['tweet_timestamp'] }}">
+                            <div class="tweet-container">
+                                <div class="pfp-container">
+                                    <img src="/image/{{ tweet['user_name'] }}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
                                 </div>
-                                <div class="tweeted-date">· 5h</div>
-                                <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
-                            </div>
-                            <div class="tweet-content">
-                                <div class="tweet-text">
-                                    lmao look at this baby stealing pizza LMAOOOOOO
-                                </div>
-                                <div class="tweet-img">
-                                    <img src="/image/shitposter9000/pfp.jpg">
-                                </div>
-                            </div>
-                            <div class="tweet-footer">
-                                <div class="likes">
-                                    <div class="icon-container">
-                                        <svg viewBox="0 0 24 24"><g><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path></g></svg>
+                                <div class="content-container">
+                                    <div class="tweet-header">
+                                        <div class="user-text">
+                                            <a>
+                                                <span>{{ tweet['display_name'] }}</span>
+                                                <span>@{{ tweet['user_name'] }}</span>
+                                            </a>
+                                        </div>
+                                        <div class="tweeted-date">
+                                        
+                                        </div>
+                                        <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
                                     </div>
-                                    <div class="like-count">3057</div>
+                                    <div class="tweet-content">
+                                        <div class="tweet-text">
+                                            {{ tweet['tweet_text'] }}
+                                        </div>
+                                        <div class="tweet-img">
+                                            <img src="/tweet/{{ tweet['tweet_id'] }}/twimg.jpg" onerror="this.parentNode.remove(this)">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                </div>
+                    % end
+                % end
             </div>
         </div>
         % include('fragments/right-side')
     </main>
-    <div aria-hidden="true" class="toast-mount" id="toast-mount">
-        % try:
-            % if get('toast_msg'):
-                <toast class="hidden">{{ get('toast_msg') }}</toast>
-            % end
-        % except:
-
-        % end
-    </div>
 </body>
 </html>

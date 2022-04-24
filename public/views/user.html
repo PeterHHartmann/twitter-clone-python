@@ -74,7 +74,7 @@
                     % if get('profile_user_name') == get('user_name'):
                         <button id="edit-profile">Edit profile</button>
                     % else:
-                        <button id="follow-user">Follow</button>
+                        <button id="follow-user" data-user="{{ profile_user_name }}">Follow</button>
                     % end
                 </div>
                 <div class="profile-names">

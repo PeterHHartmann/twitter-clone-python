@@ -35,32 +35,73 @@ document.getElementById('image-input').addEventListener('change', (e) => {
     media_container.appendChild(img);
 });
 
+
+
+const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
+    const tweet = document.createElement('div');
+    tweet.className = 'tweet';
+    const current_time = Date.now()
+    let time_since_tweeted = Math.round((current_time - tweet_timestamp) / 1000 / 60 / 60)
+    if (time_since_tweeted < 1){
+        time_since_tweeted = 'right now'
+    } else {
+        time_since_tweeted += 'h'
+    }
+    tweet.innerHTML =
+    `<div class="tweet-container">
+        <div class="pfp-container">
+            <img src="/image/${user_name}" onerror="this.src='/image/default-pfp.jpg'">
+        </div>
+        <div class="content-container">
+            <div class="tweet-header">
+                <div class="user-text">
+                    <a>
+                        <span>poster of shits 9000</span>
+                        <span>@${user_name}</span>
+                    </a>
+                </div>
+                <div class="tweeted-date">· ${time_since_tweeted}</div>
+                <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
+            </div>
+            <div class="tweet-content">
+                <div class="tweet-text">
+                    ${tweet_text}
+                </div>
+                <div class="tweet-img">
+                    <img src="/tweet/${tweet_id}/twimg.jpg">
+                </div>
+            </div>
+        </div>
+    </div>`
+    return tweet
+}
+
 document.getElementById('new-tweet-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     data = new FormData();
-    data.append('tweet_text', document.getElementById('tweet-text').value)
-    data.append('tweet-img', document.getElementById('file-input').files[0], 'tweet-img.jpg')
-
-    const response = await fetch('/user/tweet', {
+    const tweet_textarea = document.getElementById('tweet-text')
+    const tweet_text = tweet_textarea.value
+    data.append('tweet_text', tweet_text)
+    tweet_textarea.value = ''
+    try {
+        data.append('tweet_img', document.getElementById('image-input').files[0], 'tweet-img.jpg')
+    } catch {
+        console.log('no image attached image to tweet');
+    };
+    const user_name = document.getElementById('tweet_user_name').value
+    const response = await fetch(`/tweet/${user_name}`, {
         method: "POST",
         body: data
     });
+    console.log(response);
 
-});
+    if (response.ok){
+        body = await response.json();
+        tweet_textarea.value = ''
+        document.getElementById('image-input').value = '';
+        document.getElementById('media-container').innerHTML = '';
 
-window.addEventListener('load', () => {
-    const toast = document.querySelector('toast');
-    if (toast){
-        toast.classList.remove('hidden')
-        requestAnimationFrame(() => {
-            toast.classList.add('showing')
-        });
-        setTimeout(() => {
-            requestAnimationFrame(() => {
-                toast.classList.remove('showing')
-                toast.classList.remove('hidden')
-            })
-        }, 2500);
+        const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp)
+        document.getElementById('tweet-deck').prepend(tweet)
     }
 });
-

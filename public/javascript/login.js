@@ -32,7 +32,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     });
 
     if ( response.ok ){
-        location = '/?signedin=true'
+        location = '/'
     } else if (response.status === 403){
         const body = await response.json()
         location = `auth/${body.url_snippet}`

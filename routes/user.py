@@ -61,15 +61,3 @@ def _(user_name):
         response.status = 403
         return
 
-@get('/whotofollow')
-def _():
-    payload = get_jwt()
-    if not payload:
-        return redirect('/login')
-    try:
-        users = db.user_get_many()
-        return dict(users=users)
-    except:
-        traceback.print_exc()
-        response.status = 500
-        return

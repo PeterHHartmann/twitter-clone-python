@@ -170,6 +170,7 @@
 
                 .content-container {
                     margin-left: 1rem;
+                    width: 100%;
 
                     .tweet-header {
                         display: flex;
@@ -220,61 +221,8 @@
                             }
                         }
                     }
-        
-                    .tweet-footer {
-                        display: flex;
-                        align-items: center;
-                        justify-content: end;
-        
-                        .likes {
-                            display: flex;
-                            align-items: center;
-                            gap: .3rem;
-        
-                            &:hover {
-                                cursor: pointer;
-        
-                                .icon-container {
-                                    border-radius: 100%;
-                                    background: rgba(255, 0, 119, 0.1);
-        
-                                    svg {
-                                        fill: rgba(255, 0, 119, 0.6);
-                                    }
-                                }
-        
-                                .like-count {
-                                    color: rgba(255, 0, 119, 0.6);
-                                }
-                            }
-                            
-                            .icon-container {
-                                width: 2rem;
-                                height: 2rem;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-        
-                                svg {
-                                    // width: 1.2rem;
-                                    // height: 1.2rem;
-                                    width: 60%;
-                                    fill: rgba(0, 0, 0, 0.6);
-                                }
-                            }
-                            
-                            .like-count {
-                                font-size: 1rem;
-                                font-weight: 500;
-                                color: rgba(0, 0, 0, 0.6);
-                            }
-                        }
-                    }
                 }
-
             }
-
         }
     }
-
 }

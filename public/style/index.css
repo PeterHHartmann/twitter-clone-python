@@ -37,34 +37,6 @@ a {
   fill: rgba(0, 0, 0, 0.7);
 }
 
-.toast-mount {
-  z-index: 50;
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.toast-mount toast {
-  height: 0px;
-  background: rgba(29, 155, 240, 0.75);
-  color: white;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  overflow: hidden;
-  opacity: 0;
-  transition: all ease-in-out 0.25s;
-}
-.toast-mount toast.showing {
-  opacity: 1;
-  height: 3rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-radius: 0 0 2rem 2rem;
-  transition: all ease-in-out 0.25s;
-}
-
 .left-side {
   display: flex;
   justify-content: flex-end;
@@ -371,6 +343,7 @@ a {
 }
 .tweet-deck-container .tweet-deck .tweet .tweet-container .content-container {
   margin-left: 1rem;
+  width: 100%;
 }
 .tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header {
   display: flex;
@@ -410,45 +383,6 @@ a {
   max-width: calc(600px - 2rem);
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 1rem;
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover {
-  cursor: pointer;
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover .icon-container {
-  border-radius: 100%;
-  background: rgba(255, 0, 119, 0.1);
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover .icon-container svg {
-  fill: rgba(255, 0, 119, 0.6);
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover .like-count {
-  color: rgba(255, 0, 119, 0.6);
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes .icon-container {
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes .icon-container svg {
-  width: 60%;
-  fill: rgba(0, 0, 0, 0.6);
-}
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes .like-count {
-  font-size: 1rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.6);
 }
 
 .profile-deck {

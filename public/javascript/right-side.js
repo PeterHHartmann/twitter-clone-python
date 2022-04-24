@@ -1,5 +1,17 @@
+const follow_user = async (user_name) => {
+    console.log('following:', user_name);
+
+    const response = await fetch(`/follow/${user_name}`, {
+        method: 'POST',
+        body: JSON.stringify({'user_name': user_name})
+    })
+
+    console.log(response);
+
+}
+
 window.addEventListener('load', async () => {
-    const response = await fetch('/whotofollow', {
+    const response = await fetch('/follow/whotofollow', {
         method: 'GET'
     });
 
@@ -31,6 +43,9 @@ window.addEventListener('load', async () => {
         
         const follow_btn = document.createElement('button')
         follow_btn.innerText = 'Follow'
+        follow_btn.dataset.user = user.user_name
+
+        follow_btn.addEventListener('click', async () => { await follow_user(user.user_name)})
 
         user_info_div.appendChild(pfp)
         user_info_div.appendChild(user_text_div)

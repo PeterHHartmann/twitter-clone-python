@@ -1,4 +1,4 @@
-from bottle import get, response, abort, static_file
+from bottle import get, response, static_file
 from io import BytesIO
 import traceback
 import db.database as db
@@ -19,10 +19,32 @@ def _(image_name):
 def _(user_name, identifier):
     try:
         user_images = db.details_get_images(user_name)
-        stream = BytesIO(user_images[str(identifier)])
-        bytes = stream.read()
-        response.set_header('Content-Type', 'image/*')
-        return bytes
+        if user_images:
+            stream = BytesIO(user_images[str(identifier)])
+            bytes = stream.read()
+            response.set_header('Content-Type', 'image/*')
+            return bytes
+        else:
+            response.status = 404
+            return
+    except:
+        response.status = 404
+        return
+
+@get('/tweet/<tweet_id>/twimg.jpg')
+def _(tweet_id):
+    try:
+        content = db.tweet_get_image(tweet_id)
+        if content:
+            stream = BytesIO(content['tweet_img'])
+            bytes = stream.read()
+            response.set_header('Content-Type', 'image/*')
+            return bytes
+            return
+        else:
+            response.status = 404
+            return
     except:
         traceback.print_exc()
-        abort(404)
+        response.status = 404
+        return

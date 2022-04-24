@@ -39,14 +39,14 @@ def user_post(user, validation, details):
         db.close()
 
 #TODO get users with the most followers once implemented
-def user_get_many():
+def user_get_many(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         user = db.execute(
         '''
-        SELECT user_name, display_name FROM user_details ORDER BY rowid DESC LIMIT 5;
-        ''').fetchall()
+        SELECT user_name, display_name FROM user_details WHERE NOT user_name=:user_name ORDER BY rowid DESC LIMIT 5;
+        ''', dict(user_name = user_name)).fetchall()
         return user
     finally:
         db.close()
@@ -90,6 +90,72 @@ def details_update(user_name, details):
             banner=:banner
             WHERE user_name=:user_name;
             ''', dict(user_name=user_name, **details))
+        db.commit()
+    finally:
+        db.close()
+
+def tweet_post(user_name, tweet):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        cursor = db.cursor()
+        cursor.execute('''
+            INSERT INTO tweets(tweet_text, tweet_img, tweet_timestamp)
+            VALUES(:tweet_text, :tweet_img, :tweet_timestamp)
+            ''', tweet)
+        tweet_id = cursor.lastrowid
+        cursor.execute('''
+            INSERT INTO users_tweets(tweet_id, user_name)
+            VALUES(:tweet_id, :user_name)
+            ''', dict(tweet_id=tweet_id, user_name=user_name))
+        db.commit()
+        return tweet_id
+    finally:
+        db.close()
+
+def tweet_get_image(tweet_id):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        content = db.execute('''
+            SELECT tweet_img
+            FROM tweets
+            WHERE tweet_id=:tweet_id
+            ''', dict(tweet_id=tweet_id)).fetchone()
+        return content
+    finally:
+        db.close()
+
+def tweets_get(user_name):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        tweets = db.execute(
+            '''
+            SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            FROM users_tweets
+            JOIN user_details ON users_tweets.user_name = user_details.user_name
+            JOIN tweets ON tweets.tweet_id = users_tweets.tweet_id
+            JOIN users ON users.user_name = user_details.user_name
+            WHERE user_details.user_name IN (
+                SELECT f.follows_user
+                FROM follows f
+                JOIN users u
+                ON (f.user_name = u.user_name)
+                WHERE u.user_name = :user_name
+            ) OR users_tweets.user_name=:user_name
+            ORDER BY tweets.tweet_timestamp DESC;
+            ''', dict(user_name=user_name)).fetchall()
+        return tweets
+    finally:
+        db.close()
+
+def follow_post(user_name, follows_user):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.execute('''
+            INSERT INTO follows(user_name, follows_user)
+            VALUES(:user_name, :follows_user)
+        ''', dict(user_name=user_name, follows_user=follows_user))
         db.commit()
     finally:
         db.close()
