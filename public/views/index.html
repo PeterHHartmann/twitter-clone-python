@@ -7,7 +7,7 @@
     </section>
     <main class="home-main">
         % include('fragments/left-side', activate_link='home')
-        <div class="tweet-deck">
+        <div class="tweet-deck-container">
             <div class="deck-header">
                 <a href="/">Home</a>
                 <svg viewBox="0 0 24 24"><g><path d="M22.772 10.506l-5.618-2.192-2.16-6.5c-.102-.307-.39-.514-.712-.514s-.61.207-.712.513l-2.16 6.5-5.62 2.192c-.287.112-.477.39-.477.7s.19.585.478.698l5.62 2.192 2.16 6.5c.102.306.39.513.712.513s.61-.207.712-.513l2.16-6.5 5.62-2.192c.287-.112.477-.39.477-.7s-.19-.585-.478-.697zm-6.49 2.32c-.208.08-.37.25-.44.46l-1.56 4.695-1.56-4.693c-.07-.21-.23-.38-.438-.462l-4.155-1.62 4.154-1.622c.208-.08.37-.25.44-.462l1.56-4.693 1.56 4.694c.07.212.23.382.438.463l4.155 1.62-4.155 1.622zM6.663 3.812h-1.88V2.05c0-.414-.337-.75-.75-.75s-.75.336-.75.75v1.762H1.5c-.414 0-.75.336-.75.75s.336.75.75.75h1.782v1.762c0 .414.336.75.75.75s.75-.336.75-.75V5.312h1.88c.415 0 .75-.336.75-.75s-.335-.75-.75-.75zm2.535 15.622h-1.1v-1.016c0-.414-.335-.75-.75-.75s-.75.336-.75.75v1.016H5.57c-.414 0-.75.336-.75.75s.336.75.75.75H6.6v1.016c0 .414.335.75.75.75s.75-.336.75-.75v-1.016h1.098c.414 0 .75-.336.75-.75s-.336-.75-.75-.75z"></path></g></svg>
@@ -31,7 +31,44 @@
                     </div>
                 </form>
             </section>
-            <div>tweet deck</div>
+            <div class="tweet-deck" id="tweets">
+                <div class="tweet">
+                    <div class="tweet-container">
+                        <div class="pfp-container">
+                            <img src="/image/default-pfp.jpg">
+                        </div>
+                        <div class="content-container">
+                            <div class="tweet-header">
+                                <div class="user-text">
+                                    <a>
+                                        <span>poster of shits 9000</span>
+                                        <span>@shitposter9000</span>
+                                    </a>
+                                </div>
+                                <div class="tweeted-date">· 5h</div>
+                                <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
+                            </div>
+                            <div class="tweet-content">
+                                <div class="tweet-text">
+                                    lmao look at this baby stealing pizza LMAOOOOOO
+                                </div>
+                                <div class="tweet-img">
+                                    <img src="/image/shitposter9000/pfp.jpg">
+                                </div>
+                            </div>
+                            <div class="tweet-footer">
+                                <div class="likes">
+                                    <div class="icon-container">
+                                        <svg viewBox="0 0 24 24"><g><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path></g></svg>
+                                    </div>
+                                    <div class="like-count">3057</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
         % include('fragments/right-side')
     </main>

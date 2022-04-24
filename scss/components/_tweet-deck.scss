@@ -1,6 +1,6 @@
 @use '../abstracts/media-query';
 
-.tweet-deck {
+.tweet-deck-container {
     grid-column: 2;
     border-left: 1px solid rgb(230, 230, 230);
     border-right: 1px solid rgb(230, 230, 230);
@@ -76,7 +76,7 @@
                 > img {
                     width: 100%;
                     max-width: 500px;
-                    border-radius: 5%;
+                    border-radius: 1rem;
                 }
 
                 > button {
@@ -145,6 +145,135 @@
                     }
                 }
             }
+        }
+    }
+
+    .tweet-deck {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        
+        .tweet {
+            padding: 1rem;
+            border-bottom: 1px solid rgb(230, 230, 230);
+
+            .tweet-container {
+                display: flex;
+
+                .pfp-container {
+                    img {
+                        width: 3rem;
+                        height: 3rem;
+                        border-radius: 100%;
+                    }
+                }
+
+                .content-container {
+                    margin-left: 1rem;
+
+                    .tweet-header {
+                        display: flex;
+                        flex-direction: row;
+                        gap: .5rem;
+        
+                        .user-text {
+                            a {
+                                display: flex;
+                                gap: .2rem;
+                                span {
+                                    font-size: 1rem;
+                                    font-weight: 500;
+                                    color: rgba(0, 0, 0, 0.6);
+        
+                                    &:first-child {
+                                        color: black;
+                                    }
+                                }
+                            }
+                        }
+                        .tweeted-date {
+                            font-size: 1rem;
+                            font-weight: 500;
+                            color: rgba(0, 0, 0, 0.6);
+                        }
+
+                        .more-svg {
+                            margin-left: auto;
+                        }
+                    }
+        
+                    .tweet-content {
+                        margin: .5rem 0;
+        
+                        .tweet-text {
+                            margin-bottom: 1rem;
+                            font-size: 1;
+                            font-weight: 300;
+                        }
+        
+                        .tweet-img {
+                            img {
+                                width: 100%;
+                                max-width: calc(600px - 2rem);
+                                border: 1px solid rgba(0, 0, 0, 0.2);
+                                border-radius: 1rem;
+                            }
+                        }
+                    }
+        
+                    .tweet-footer {
+                        display: flex;
+                        align-items: center;
+                        justify-content: end;
+        
+                        .likes {
+                            display: flex;
+                            align-items: center;
+                            gap: .3rem;
+        
+                            &:hover {
+                                cursor: pointer;
+        
+                                .icon-container {
+                                    border-radius: 100%;
+                                    background: rgba(255, 0, 119, 0.1);
+        
+                                    svg {
+                                        fill: rgba(255, 0, 119, 0.6);
+                                    }
+                                }
+        
+                                .like-count {
+                                    color: rgba(255, 0, 119, 0.6);
+                                }
+                            }
+                            
+                            .icon-container {
+                                width: 2rem;
+                                height: 2rem;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+        
+                                svg {
+                                    // width: 1.2rem;
+                                    // height: 1.2rem;
+                                    width: 60%;
+                                    fill: rgba(0, 0, 0, 0.6);
+                                }
+                            }
+                            
+                            .like-count {
+                                font-size: 1rem;
+                                font-weight: 500;
+                                color: rgba(0, 0, 0, 0.6);
+                            }
+                        }
+                    }
+                }
+
+            }
+
         }
     }
 

@@ -221,7 +221,7 @@ a {
   border-radius: 100%;
 }
 
-.tweet-deck {
+.tweet-deck-container {
   grid-column: 2;
   border-left: 1px solid #e6e6e6;
   border-right: 1px solid #e6e6e6;
@@ -232,11 +232,11 @@ a {
   align-items: center;
 }
 @media (max-width: 1021px) {
-  .tweet-deck {
+  .tweet-deck-container {
     width: clamp(320px, 100vw, calc(100% - 1rem));
   }
 }
-.tweet-deck .deck-header {
+.tweet-deck-container .deck-header {
   position: sticky;
   inset: 0;
   display: flex;
@@ -247,15 +247,15 @@ a {
   width: calc(100% - 2px);
   padding: 0 1rem;
 }
-.tweet-deck .deck-header a {
+.tweet-deck-container .deck-header a {
   font-size: 1.275rem;
   font-weight: 700;
   color: black;
 }
-.tweet-deck .deck-header svg {
+.tweet-deck-container .deck-header svg {
   width: 1.2rem;
 }
-.tweet-deck .new-tweet {
+.tweet-deck-container .new-tweet {
   width: 100%;
   display: flex;
   align-items: flex-start;
@@ -263,15 +263,15 @@ a {
   border-bottom: 1px solid #e6e6e6;
   padding: 0.5rem 1rem 1rem 1rem;
 }
-.tweet-deck .new-tweet > img {
+.tweet-deck-container .new-tweet > img {
   width: 3rem;
   height: 3rem;
   border-radius: 100%;
 }
-.tweet-deck .new-tweet form {
+.tweet-deck-container .new-tweet form {
   width: calc(100% - 3rem - 1rem);
 }
-.tweet-deck .new-tweet form textarea {
+.tweet-deck-container .new-tweet form textarea {
   display: flex;
   justify-content: center;
   border: none;
@@ -285,17 +285,17 @@ a {
   overflow: hidden;
   min-height: 2rem;
 }
-.tweet-deck .new-tweet form #media-container {
+.tweet-deck-container .new-tweet form #media-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
-.tweet-deck .new-tweet form #media-container > img {
+.tweet-deck-container .new-tweet form #media-container > img {
   width: 100%;
   max-width: 500px;
-  border-radius: 5%;
+  border-radius: 1rem;
 }
-.tweet-deck .new-tweet form #media-container > button {
+.tweet-deck-container .new-tweet form #media-container > button {
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 100%;
@@ -307,22 +307,22 @@ a {
   transform: translateY(calc(2.2rem + 1rem));
   margin-left: 1rem;
 }
-.tweet-deck .new-tweet form #media-container > button svg {
+.tweet-deck-container .new-tweet form #media-container > button svg {
   width: 1.2rem;
   fill: white;
 }
-.tweet-deck .new-tweet form .bottom-deck {
+.tweet-deck-container .new-tweet form .bottom-deck {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
-.tweet-deck .new-tweet form .bottom-deck .media-upload {
+.tweet-deck-container .new-tweet form .bottom-deck .media-upload {
   transform: translateX(-0.5rem);
   padding: 0.5rem 0;
 }
-.tweet-deck .new-tweet form .bottom-deck .media-upload .image-upload {
+.tweet-deck-container .new-tweet form .bottom-deck .media-upload .image-upload {
   border-radius: 100%;
   width: 2.5rem;
   height: 2.5rem;
@@ -331,14 +331,14 @@ a {
   align-items: center;
   cursor: pointer;
 }
-.tweet-deck .new-tweet form .bottom-deck .media-upload .image-upload:hover {
+.tweet-deck-container .new-tweet form .bottom-deck .media-upload .image-upload:hover {
   background: rgba(29, 155, 240, 0.1);
 }
-.tweet-deck .new-tweet form .bottom-deck .media-upload .image-upload svg {
+.tweet-deck-container .new-tweet form .bottom-deck .media-upload .image-upload svg {
   width: 1.3rem;
   fill: #1d9bf0;
 }
-.tweet-deck .new-tweet form .bottom-deck .tweet-btn {
+.tweet-deck-container .new-tweet form .bottom-deck .tweet-btn {
   padding: 0.7rem 1.2rem;
   color: white;
   border: none;
@@ -346,11 +346,109 @@ a {
   cursor: pointer;
   background: rgba(29, 155, 240, 0.6);
 }
-.tweet-deck .new-tweet form .bottom-deck .tweet-btn[active] {
+.tweet-deck-container .new-tweet form .bottom-deck .tweet-btn[active] {
   background: #1d9bf0;
 }
-.tweet-deck .new-tweet form .bottom-deck .tweet-btn:hover {
+.tweet-deck-container .new-tweet form .bottom-deck .tweet-btn:hover {
   background: #1391e6;
+}
+.tweet-deck-container .tweet-deck {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.tweet-deck-container .tweet-deck .tweet {
+  padding: 1rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container {
+  display: flex;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .pfp-container img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 100%;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container {
+  margin-left: 1rem;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a {
+  display: flex;
+  gap: 0.2rem;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span:first-child {
+  color: black;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweeted-date {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .more-svg {
+  margin-left: auto;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content {
+  margin: 0.5rem 0;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-text {
+  margin-bottom: 1rem;
+  font-size: 1;
+  font-weight: 300;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-img img {
+  width: 100%;
+  max-width: calc(600px - 2rem);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover {
+  cursor: pointer;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover .icon-container {
+  border-radius: 100%;
+  background: rgba(255, 0, 119, 0.1);
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover .icon-container svg {
+  fill: rgba(255, 0, 119, 0.6);
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes:hover .like-count {
+  color: rgba(255, 0, 119, 0.6);
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes .icon-container {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes .icon-container svg {
+  width: 60%;
+  fill: rgba(0, 0, 0, 0.6);
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-footer .likes .like-count {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .profile-deck {
@@ -699,11 +797,6 @@ a {
   width: 3rem;
   height: 3rem;
   border-radius: 100%;
-}
-.right-side .right-nav .follows-nav > div .user-info .user-text {
-  font-size: 1rem;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.8);
 }
 .right-side .right-nav .follows-nav > div .user-info .user-text p {
   font-size: 1rem;
