@@ -68,7 +68,6 @@ def _():
         return redirect('/login')
     try:
         users = db.user_get_many()
-        print(users)
         return dict(users=users)
     except:
         traceback.print_exc()

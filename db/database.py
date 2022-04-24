@@ -1,6 +1,8 @@
 import sqlite3
 import json
 
+DB_PATH = 'db/database.sqlite'
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -9,7 +11,7 @@ def dict_factory(cursor, row):
 
 def user_get_by_email(user_email):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         user = json.dumps(db.execute('SELECT * FROM users WHERE user_email=:user_email', dict(user_email=user_email)).fetchone())
         return json.loads(user)
@@ -18,7 +20,7 @@ def user_get_by_email(user_email):
 
 def user_get_by_username(user_name):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         user = json.dumps(db.execute('SELECT * FROM users WHERE user_name=:user_name', dict(user_name=user_name)).fetchone())
         return json.loads(user)
@@ -27,7 +29,7 @@ def user_get_by_username(user_name):
 
 def user_post(user, validation, details):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         cursor = db.cursor()
         cursor.execute('INSERT INTO users(user_name, user_email, user_pwd) VALUES(:user_name, :user_email, :user_pwd)', user)
         cursor.execute('INSERT INTO email_validations(user_email, validation_url, validation_code) VALUES(:user_email, :validation_url, :validation_code)', dict(user_email=user['user_email'], validation_url=validation['url_snippet'], validation_code=validation['code']))
@@ -39,7 +41,7 @@ def user_post(user, validation, details):
 #TODO get users with the most followers once implemented
 def user_get_many():
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         user = db.execute(
         '''
@@ -52,7 +54,7 @@ def user_get_many():
 
 def details_get(user_name):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         details = json.dumps(db.execute('''
             SELECT user_name, display_name, bio, joined_date
@@ -65,7 +67,7 @@ def details_get(user_name):
 
 def details_get_images(user_name):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         details = db.execute('''
             SELECT pfp, banner
@@ -78,7 +80,7 @@ def details_get_images(user_name):
 
 def details_update(user_name, details):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.execute('''
             UPDATE user_details
             SET 
@@ -94,7 +96,7 @@ def details_update(user_name, details):
 
 def validation_get_by_url(url):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         validation = json.dumps(db.execute(
             '''
@@ -115,7 +117,7 @@ def validation_get_by_url(url):
 
 def validation_get_by_email(email):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         validation = json.dumps(db.execute(
             '''
@@ -137,7 +139,7 @@ def validation_get_by_email(email):
 # TODO less complex SQL query without including the user might be better
 def validation_update_code(email, new_code):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.execute(
             '''
             UPDATE email_validations
@@ -156,7 +158,7 @@ def validation_update_code(email, new_code):
 
 def validation_delete(user):
     try:
-        db = sqlite3.connect('db/database.sqlite')
+        db = sqlite3.connect(DB_PATH)
         db.execute(
             '''
             DELETE FROM email_validations
