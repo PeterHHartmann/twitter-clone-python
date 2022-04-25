@@ -3,8 +3,6 @@ from bottle import get, view, abort, redirect, post, response, request
 from utility.validation import get_jwt
 import db.database as db
 import traceback
-import os
-import imghdr
 
 @get('/user/<user_name>')
 @view('user')
@@ -35,32 +33,13 @@ def view_user(user_name):
         traceback.print_exc()
         abort(404)
 
-def upload_image(type, image, user_name):
-    file_name, file_extension = os.path.splitext(image.filename)
-    if file_extension not in ('.png', '.jpeg', '.jpg'):
-        raise Exception('image not allowed')
-    image_name = f"{user_name}{file_extension}"
-    full_path = f"public/image/user/{type}/{image_name}"
-    print(dir(image))
-    try:
-        image.save(full_path)
-    except:
-        os.remove(full_path)
-        image.save(full_path)
-    # imghdr_extension = imghdr.what(f"public/image/users/{image_name}")
-    # if file_extension != f".{imghdr_extension}":
-    #     print('mmm... suspicious ... it is not really an image')
-    #     os.remove(f'public/image/user/{image_name}')
-    #     return 'mmm... got you! It was not an image'
-    return
-
-
 @post('/user/edit/<user_name>')
 def _(user_name):
     payload = get_jwt()
     if not payload:
         return redirect('/login')
     if payload['user_name'] == user_name:
+        current_imgs = db.details_get_images(user_name)
         pfp = request.files.get('pfp')
         banner = request.files.get('banner')
         details = {
@@ -68,19 +47,13 @@ def _(user_name):
             'bio': request.forms.get('bio')
         }
         if pfp:
-            try:
-                upload_image('pfp', pfp, user_name)
-            except:
-                traceback.print_exc()
-                response.status = 500
-                return
+            details['pfp'] = pfp.file.read()
+        else:
+            details['pfp'] = current_imgs['pfp']
         if banner:
-            try:
-                upload_image('banner', banner, user_name)
-            except:
-                traceback.print_exc()
-                response.status = 500
-                return
+            details['banner'] = banner.file.read()
+        else:
+            details['banner'] = current_imgs['banner']
         try:
             db.details_update(user_name, details)
             return

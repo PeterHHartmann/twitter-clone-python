@@ -39,7 +39,7 @@
                         <div class="tweet" id="tweetid-{{tweet['tweet_id']}}" data-tweet_id="{{ tweet['tweet_id'] }}" data-timestamp="{{ tweet['tweet_timestamp'] }}">
                             <div class="tweet-container">
                                 <div class="pfp-container">
-                                    <img src="/image/user/pfp/{{ tweet['user_name'] }}.jpg" onerror="this.src='/image/default-pfp.jpg'">
+                                    <img src="/image/{{ tweet['user_name'] }}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
                                 </div>
                                 <div class="content-container">
                                     <div class="tweet-header">

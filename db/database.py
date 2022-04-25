@@ -85,7 +85,9 @@ def details_update(user_name, details):
             UPDATE user_details
             SET 
             display_name=:display_name, 
-            bio=:bio,
+            bio=:bio, 
+            pfp=:pfp,
+            banner=:banner
             WHERE user_name=:user_name;
             ''', dict(user_name=user_name, **details))
         db.commit()
