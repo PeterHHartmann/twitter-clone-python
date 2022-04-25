@@ -1,9 +1,9 @@
 @use 'global';
+@use 'components/modals';
 @use 'components/sidebar-left';
 @use 'components/tweet-deck';
 @use 'components/profile-deck';
 @use 'components/sidebar-right';
-@use 'components/modals';
 @use 'abstracts/media-query';
 
 .home-main {

@@ -7,14 +7,68 @@ const toggle_modal = (modal_id) => {
     document.getElementById(modal_id).classList.toggle('hidden');
 };
 
+const prepare_tweet_edit = (edit_btn) => {
+    edit_btn.addEventListener('click', () => {
+        const tweet = document.querySelector(`#tweetid-${edit_btn.dataset.tweet_id}`).cloneNode(true); 
+        const textarea = document.createElement('textarea')
+        textarea.maxLength = 280;
+        textarea.rows = 1;
+        textarea.value = tweet.querySelector('.tweet-text').innerHTML.trim()
+        textarea.addEventListener('input', (e) => auto_grow(e.target))
+        tweet.querySelector('.tweet-text').innerHTML = '';
+        tweet.querySelector('.tweet-text').appendChild(textarea)
+        tweet.querySelector('#tweet-settings').remove();
+        const save_btn = document.createElement('button');
+        save_btn.innerText = 'Save';
+        const modal = document.getElementById('modal-mount')
+        modal.classList.remove('hidden')
+        const modal_content = document.getElementById('edit-tweet-modal');
+        modal_content.append(tweet)
+        const tweet_id = tweet.dataset.tweet_id
+        save_btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            data = {
+                tweet_text: textarea.value
+            }
+            const response = await fetch(`/tweet/edit/${tweet_id}`, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            console.log(response);
+
+            if (response.ok){
+                tweet.id = '';
+                const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
+                actual_tweet.querySelector('.tweet-text').innerHTML = data.tweet_text
+            }
+            modal_content.innerHTML = '';
+            modal.classList.add('hidden')
+        });
+        tweet.querySelector('.tweet-header').appendChild(save_btn)
+        const delete_btn = document.createElement('button');
+        delete_btn.innerText = 'Delete tweet';
+        delete_btn.addEventListener('click', async () => {
+            const response = await fetch(`/tweet/delete/${tweet_id}`, {
+                method: 'DELETE',
+            })
+            if (response.ok){
+                tweet.id = '';
+                const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
+                console.log(tweet_id);
+                actual_tweet.remove()
+            }
+            modal_content.innerHTML = '';
+            modal.classList.add('hidden')
+        });
+        tweet.appendChild(delete_btn);
+    });
+}
+
 document.getElementById('modal-bg').addEventListener('click', (e) => {
     toggle_modal('modal-mount');
-    const modals = document.getElementsByClassName('modal-content')
-    for ( let modal of modals){
-        if(!modal.classList.contains('hidden')){
-            modal.classList.add('hidden')
-        }
-    }
+    const modal_content = document.getElementById('edit-tweet-modal');
+    modal_content.innerHTML = '';
+    modal_content.parentNode.classList.add('hidden');
 });
 
 document.getElementById('image-input').addEventListener('change', (e) => {
@@ -40,6 +94,7 @@ document.getElementById('image-input').addEventListener('change', (e) => {
 const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
     const tweet = document.createElement('div');
     tweet.className = 'tweet';
+    tweet.id = `tweetid-${tweet_id}`
     const current_time = Date.now()
     let time_since_tweeted = Math.round((current_time - tweet_timestamp) / 1000 / 60 / 60)
     if (time_since_tweeted < 1){
@@ -50,7 +105,7 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
     tweet.innerHTML =
     `<div class="tweet-container">
         <div class="pfp-container">
-            <img src="/image/${user_name}" onerror="this.src='/image/default-pfp.jpg'">
+            <img src="/image/${user_name}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
         </div>
         <div class="content-container">
             <div class="tweet-header">
@@ -61,18 +116,21 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
                     </a>
                 </div>
                 <div class="tweeted-date">· ${time_since_tweeted}</div>
-                <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
+                <div class="tweet-settings" id="tweet-settings" data-tweet_id="${tweet_id}">
+                    edit
+                </div>
             </div>
             <div class="tweet-content">
                 <div class="tweet-text">
                     ${tweet_text}
                 </div>
                 <div class="tweet-img">
-                    <img src="/tweet/${tweet_id}/twimg.jpg">
+                    <img src="/tweet/${tweet_id}/twimg.jpg" onerror="this.parentNode.remove(this)">
                 </div>
             </div>
         </div>
     </div>`
+    tweet.dataset.tweet_id = tweet_id
     return tweet
 }
 
@@ -103,5 +161,13 @@ document.getElementById('new-tweet-form').addEventListener('submit', async (e) =
 
         const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp)
         document.getElementById('tweet-deck').prepend(tweet)
+        prepare_tweet_edit(tweet.querySelector('#tweet-settings'));
     }
 });
+
+window.addEventListener('load', (e) => {
+    for ( let edit_btn of document.querySelectorAll('#tweet-settings')){
+        prepare_tweet_edit(edit_btn)
+    };
+});
+

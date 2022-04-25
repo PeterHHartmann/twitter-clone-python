@@ -198,8 +198,23 @@
                             color: rgba(0, 0, 0, 0.6);
                         }
 
-                        .more-svg {
+                        .tweet-settings {
+                            padding: .5rem .5rem;
                             margin-left: auto;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: rgba(0, 0, 0, 0.7);
+                            font-weight: 400;
+                            font-size: 1rem;
+                            cursor: pointer;
+                            user-select: none;
+
+                            &:hover {
+                                border-radius: 2rem;
+                                background: rgba(0, 0, 0, 0.2);
+                            }
+
                         }
                     }
         
@@ -225,4 +240,118 @@
             }
         }
     }
+}
+
+.modal{
+    .modal-content {
+        margin: 1% auto;
+
+        .tweet {
+            padding: 1rem;
+            border-bottom: 1px solid rgb(230, 230, 230);
+            display: flex;
+            flex-direction: column;
+
+            > button {
+                border: none;
+                background: rgb(194, 0, 0);
+                color: white;
+                border-radius: 2rem;
+                padding: .7rem 1rem ;
+                margin-top: 1rem;
+                margin-left: auto;
+                margin-right: auto;
+            } 
+
+            .tweet-container {
+                display: flex;
+
+                .pfp-container {
+                    img {
+                        width: 3rem;
+                        height: 3rem;
+                        border-radius: 100%;
+                    }
+                }
+
+                .content-container {
+                    margin-left: 1rem;
+                    width: 100%;
+
+                    .tweet-header {
+                        display: flex;
+                        flex-direction: row;
+                        gap: .5rem;
+        
+                        .user-text {
+                            a {
+                                display: flex;
+                                gap: .2rem;
+                                span {
+                                    font-size: 1rem;
+                                    font-weight: 500;
+                                    color: rgba(0, 0, 0, 0.6);
+        
+                                    &:first-child {
+                                        color: black;
+                                    }
+                                }
+                            }
+                        }
+                        .tweeted-date {
+                            font-size: 1rem;
+                            font-weight: 500;
+                            color: rgba(0, 0, 0, 0.6);
+                        }
+
+                        button {
+                            border: none;
+                            color: white;
+                            background: black;
+                            font-size: .825rem;
+                            border-radius: 2rem;
+                            padding: .5rem 1rem;
+                            margin-left: auto;
+
+                            &:hover {
+                                background: rgba(0, 0, 0, 0.8);
+                            }
+                        }
+                    }
+        
+                    .tweet-content {
+                        margin: .5rem 0;
+        
+                        .tweet-text {
+                            textarea {
+                                display: flex;
+                                justify-content: center;
+                                border: 1px solid rgba(0, 0, 0, 0.1);
+                                outline: none;
+                                padding: 1rem 1rem 1rem 1rem;
+                                border-radius: .5rem;
+                                font-size: 1.2rem;
+                                width: 100%;
+                                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                resize: none;
+                                overflow: hidden;
+                                min-height: 2rem;
+                                margin-bottom: 1rem;
+                            }
+                        }
+        
+                        .tweet-img {
+                            img {
+                                width: 100%;
+                                max-width: calc(600px - 2rem);
+                                border: 1px solid rgba(0, 0, 0, 0.2);
+                                border-radius: 1rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }

@@ -37,6 +37,33 @@ a {
   fill: rgba(0, 0, 0, 0.7);
 }
 
+.modal {
+  z-index: 10;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.modal .modal-bg {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100vw;
+  height: 100vh;
+}
+.modal .modal-content {
+  z-index: 11;
+  position: relative;
+  background-color: white;
+  max-width: 600px;
+  margin: 7% auto;
+  display: flex;
+  flex-direction: column;
+}
+.modal .modal-content h1 {
+  color: black;
+}
+
 .left-side {
   display: flex;
   justify-content: flex-end;
@@ -367,8 +394,21 @@ a {
   font-weight: 500;
   color: rgba(0, 0, 0, 0.6);
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .more-svg {
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings {
+  padding: 0.5rem 0.5rem;
   margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 400;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings:hover {
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.2);
 }
 .tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content {
   margin: 0.5rem 0;
@@ -379,6 +419,96 @@ a {
   font-weight: 300;
 }
 .tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-img img {
+  width: 100%;
+  max-width: calc(600px - 2rem);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+}
+
+.modal .modal-content {
+  margin: 1% auto;
+}
+.modal .modal-content .tweet {
+  padding: 1rem;
+  border-bottom: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+.modal .modal-content .tweet > button {
+  border: none;
+  background: #c20000;
+  color: white;
+  border-radius: 2rem;
+  padding: 0.7rem 1rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modal .modal-content .tweet .tweet-container {
+  display: flex;
+}
+.modal .modal-content .tweet .tweet-container .pfp-container img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 100%;
+}
+.modal .modal-content .tweet .tweet-container .content-container {
+  margin-left: 1rem;
+  width: 100%;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header .user-text a {
+  display: flex;
+  gap: 0.2rem;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header .user-text a span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header .user-text a span:first-child {
+  color: black;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header .tweeted-date {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header button {
+  border: none;
+  color: white;
+  background: black;
+  font-size: 0.825rem;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  margin-left: auto;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-header button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-content {
+  margin: 0.5rem 0;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-content .tweet-text textarea {
+  display: flex;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+  padding: 1rem 1rem 1rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  width: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  resize: none;
+  overflow: hidden;
+  min-height: 2rem;
+  margin-bottom: 1rem;
+}
+.modal .modal-content .tweet .tweet-container .content-container .tweet-content .tweet-img img {
   width: 100%;
   max-width: calc(600px - 2rem);
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -748,33 +878,6 @@ a {
   border-radius: 3rem;
   padding: 0.5rem 1rem;
   height: min-content;
-}
-
-.modal {
-  z-index: 10;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-}
-.modal .modal-bg {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100vw;
-  height: 100vh;
-}
-.modal .modal-content {
-  z-index: 11;
-  position: relative;
-  background-color: white;
-  max-width: 600px;
-  margin: 7% auto;
-  display: flex;
-  flex-direction: column;
-}
-.modal .modal-content h1 {
-  color: black;
 }
 
 .home-main {

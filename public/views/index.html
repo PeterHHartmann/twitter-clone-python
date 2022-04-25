@@ -1,9 +1,9 @@
 % include('fragments/head', title='Home / Not Twitter', stylesheet='style/index.css', script='js/index.js')
 <body>
     <section class="modal hidden" id="modal-mount">
-        <div class="modal-content hidden" id="signup-modal">
+        <div class="modal-content" id="edit-tweet-modal">
         </div>
-        <div class="modal-background" id="modal-bg"></div>
+        <div class="modal-bg" id="modal-bg"></div>
     </section>
     <main class="home-main">
         % include('fragments/left-side', activate_link='home')
@@ -35,7 +35,7 @@
             <div class="tweet-deck" id="tweet-deck">
                 % if get('tweets_from_follows'):
                     % for tweet in get('tweets_from_follows'):
-                        <div class="tweet" id="tweetid-{{tweet['tweet_id']}}" data-timestamp="{{ tweet['tweet_timestamp'] }}">
+                        <div class="tweet" id="tweetid-{{tweet['tweet_id']}}" data-tweet_id="{{ tweet['tweet_id'] }}" data-timestamp="{{ tweet['tweet_timestamp'] }}">
                             <div class="tweet-container">
                                 <div class="pfp-container">
                                     <img src="/image/{{ tweet['user_name'] }}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
@@ -51,7 +51,11 @@
                                         <div class="tweeted-date">
                                         
                                         </div>
-                                        <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
+                                        % if get('user_name') == tweet['user_name']:
+                                            <div class="tweet-settings" id="tweet-settings" data-tweet_id="{{ tweet['tweet_id'] }}">
+                                                edit
+                                            </div>
+                                        % end
                                     </div>
                                     <div class="tweet-content">
                                         <div class="tweet-text">
@@ -70,5 +74,6 @@
         </div>
         % include('fragments/right-side')
     </main>
+
 </body>
 </html>

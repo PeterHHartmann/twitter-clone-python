@@ -51,7 +51,8 @@ DROP TABLE IF EXISTS follows;
 CREATE TABLE follows (
     user_name               TEXT NOT NULL,
     follows_user            TEXT NOT NULL,
-    CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES users(user_name)
+    CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES users(user_name),
+    PRIMARY KEY (user_name, follows_user)
 );
 
 
@@ -90,7 +91,6 @@ VALUES('Tom2', last_insert_rowid());
 
 -- INSERT INTO follows(user_name, follows_user)
 -- VALUES('Tom', 'Tom2');
-
 
 -- SELECT users.user_id, users.user_name, users.user_email, users.user_pwd, email_validations.validation_url, email_validations.validation_code
 -- FROM users

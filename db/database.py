@@ -125,6 +125,32 @@ def tweet_get_image(tweet_id):
     finally:
         db.close()
 
+def tweet_update(tweet_id, tweet_text):
+    print('we got here')
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.execute(
+            '''
+            UPDATE tweets
+            SET tweet_text=:tweet_text
+            WHERE tweet_id=:tweet_id;
+            ''', dict(tweet_text=tweet_text, tweet_id=tweet_id))
+        db.commit()
+    finally:
+        db.close()
+
+def tweet_delete(tweet_id):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.execute(
+            '''
+            DELETE FROM tweets
+            WHERE tweet_id=:tweet_id;
+            ''', dict(tweet_id=tweet_id))
+        db.commit()
+    finally:
+        db.close()
+
 def tweets_get(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
