@@ -34,7 +34,7 @@ try {
     });
 } catch {}
 
-const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
+const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp, display_name) => {
     const tweet = document.createElement('div');
     tweet.className = 'tweet';
     tweet.id = `tweetid-${tweet_id}`
@@ -54,7 +54,7 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
             <div class="tweet-header">
                 <div class="user-text">
                     <a>
-                        <span>poster of shits 9000</span>
+                        <span>${display_name}</span>
                         <span>@${user_name}</span>
                     </a>
                 </div>
@@ -102,7 +102,7 @@ try {
             document.getElementById('image-input').value = '';
             document.getElementById('media-container').innerHTML = '';
 
-            const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp)
+            const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp, document.querySelector('#tweet_display_name').value)
             document.getElementById('tweet-deck').prepend(tweet)
             prepare_tweet_edit(tweet.querySelector('#tweet-settings'));
         }
