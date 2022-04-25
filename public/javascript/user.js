@@ -4,6 +4,11 @@ const toggle_modal = (modal_id) => {
 
 document.getElementById('modal-bg').addEventListener('click', (e) => {
     toggle_modal('modal-mount');
+    document.getElementById('edit-profile-modal').classList.add('hidden');
+    const modal_content = document.getElementById('edit-tweet-modal');
+    modal_content.classList.add('hidden')
+    modal_content.innerHTML = '';
+    modal_content.parentNode.classList.add('hidden');
 });
 
 try {
@@ -11,6 +16,7 @@ try {
         e.preventDefault();
         console.log('edit-profile clicked');
         toggle_modal('modal-mount')
+        toggle_modal('edit-profile-modal')
     });
 } catch {}
     
@@ -36,7 +42,7 @@ document.getElementById('pfp-input').addEventListener('change', (e) => {
 
 document.getElementById('edit-profile-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-
+    
     const data = new FormData()
     const banner_img = document.getElementById('banner-input').files[0]
     if (banner_img){data.append('banner', banner_img, 'banner.jpg')}
@@ -50,24 +56,26 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
         method: 'POST',
         body: data
     })
-
+    
     console.log(response);
-
+    
     if (response.ok) {
         location.reload()
     } else {
         console.log('not ok');
     }
-
+    
 });
-
-document.getElementById('follow-user').addEventListener('click', async (e) => {
-    console.log(e.target);
-    const user_name = e.target.dataset.user
-    const response = await fetch(`/follow/${user_name}`, {
-        method: 'POST',
-        body: JSON.stringify({'user_name': user_name})
+    
+try {
+    document.getElementById('follow-user').addEventListener('click', async (e) => {
+        console.log(e.target);
+        const user_name = e.target.dataset.user
+        const response = await fetch(`/follow/${user_name}`, {
+            method: 'POST',
+            body: JSON.stringify({'user_name': user_name})
+        })
+        
+        console.log(response);
     })
-
-    console.log(response);
-})
+} catch {}

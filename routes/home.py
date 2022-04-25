@@ -9,6 +9,6 @@ def _():
     if not session:
         return redirect('/login')
 
-    tweets_from_follows = db.tweets_get(session['user_name'])
+    tweets_from_follows = db.tweets_get_following(session['user_name'])
 
     return dict(**session, tweets_from_follows=tweets_from_follows)

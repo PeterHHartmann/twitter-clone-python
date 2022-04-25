@@ -1,7 +1,9 @@
 % include('fragments/head', title='Home / Not Twitter', stylesheet='../style/index.css', script='../js/user.js')
 <body>
     <section class="modal hidden" id="modal-mount">
-        <div class="modal-content" id="signup-modal">
+        <div class="modal-content hidden" id="edit-tweet-modal">
+        </div>
+        <div class="modal-content hidden" id="edit-profile-modal">
             <form id="edit-profile-form">
                 <div class="modal-header">
                     <div >
@@ -93,7 +95,45 @@
                     </div>
                 </div>
             </div>
-            <div>tweet deck</div>
+            <div class="tweet-deck" id="tweet-deck">
+                % if get('user_tweets'):
+                    % for tweet in get('user_tweets'):
+                        <div class="tweet" id="tweetid-{{tweet['tweet_id']}}" data-tweet_id="{{ tweet['tweet_id'] }}" data-timestamp="{{ tweet['tweet_timestamp'] }}">
+                            <div class="tweet-container">
+                                <div class="pfp-container">
+                                    <img src="/image/{{ tweet['user_name'] }}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
+                                </div>
+                                <div class="content-container">
+                                    <div class="tweet-header">
+                                        <div class="user-text">
+                                            <a>
+                                                <span>{{ tweet['display_name'] }}</span>
+                                                <span>@{{ tweet['user_name'] }}</span>
+                                            </a>
+                                        </div>
+                                        <div class="tweeted-date">
+                                        
+                                        </div>
+                                        % if get('user_name') == tweet['user_name']:
+                                            <div class="tweet-settings" id="tweet-settings" data-tweet_id="{{ tweet['tweet_id'] }}">
+                                                edit
+                                            </div>
+                                        % end
+                                    </div>
+                                    <div class="tweet-content">
+                                        <div class="tweet-text">
+                                            {{ tweet['tweet_text'] }}
+                                        </div>
+                                        <div class="tweet-img">
+                                            <img src="/tweet/{{ tweet['tweet_id'] }}/twimg.jpg" onerror="this.parentNode.remove(this)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    % end
+                % end
+            </div>
         </div>
 
         % include('fragments/right-side')

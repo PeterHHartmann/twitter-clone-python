@@ -225,7 +225,6 @@ a {
   border-left: 1px solid #e6e6e6;
   border-right: 1px solid #e6e6e6;
   width: clamp(400px, 100vw, 600px);
-  height: 200vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -351,51 +350,52 @@ a {
 .tweet-deck-container .new-tweet form .bottom-deck .tweet-btn:hover {
   background: #1391e6;
 }
-.tweet-deck-container .tweet-deck {
+
+.tweet-deck {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-.tweet-deck-container .tweet-deck .tweet {
+.tweet-deck .tweet {
   padding: 1rem;
   border-bottom: 1px solid #e6e6e6;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container {
+.tweet-deck .tweet .tweet-container {
   display: flex;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .pfp-container img {
+.tweet-deck .tweet .tweet-container .pfp-container img {
   width: 3rem;
   height: 3rem;
   border-radius: 100%;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container {
+.tweet-deck .tweet .tweet-container .content-container {
   margin-left: 1rem;
   width: 100%;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header {
+.tweet-deck .tweet .tweet-container .content-container .tweet-header {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a {
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a {
   display: flex;
   gap: 0.2rem;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span {
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span {
   font-size: 1rem;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.6);
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span:first-child {
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span:first-child {
   color: black;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweeted-date {
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .tweeted-date {
   font-size: 1rem;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.6);
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings {
-  padding: 0.5rem 0.5rem;
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings {
+  padding: 0.2rem 0.5rem;
   margin-left: auto;
   display: flex;
   justify-content: center;
@@ -406,19 +406,19 @@ a {
   cursor: pointer;
   user-select: none;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings:hover {
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings:hover {
   border-radius: 2rem;
   background: rgba(0, 0, 0, 0.2);
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content {
-  margin: 0.5rem 0;
+.tweet-deck .tweet .tweet-container .content-container .tweet-content {
+  padding: 0.5rem 0;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-text {
+.tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-text {
   margin-bottom: 1rem;
   font-size: 1;
-  font-weight: 300;
+  font-weight: 400;
 }
-.tweet-deck-container .tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-img img {
+.tweet-deck .tweet .tweet-container .content-container .tweet-content .tweet-img img {
   width: 100%;
   max-width: calc(600px - 2rem);
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -426,11 +426,10 @@ a {
 }
 
 .modal .modal-content {
-  margin: 1% auto;
+  margin: 3% auto;
 }
 .modal .modal-content .tweet {
   padding: 1rem;
-  border-bottom: 1px solid #e6e6e6;
   display: flex;
   flex-direction: column;
 }
@@ -520,7 +519,6 @@ a {
   border-left: 1px solid #e6e6e6;
   border-right: 1px solid #e6e6e6;
   width: clamp(400px, 100vw, 600px);
-  height: 200vh;
   display: flex;
   flex-direction: column;
   align-items: center;

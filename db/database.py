@@ -151,7 +151,25 @@ def tweet_delete(tweet_id):
     finally:
         db.close()
 
-def tweets_get(user_name):
+def tweets_get_by_user(user_name):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        tweets = db.execute(
+            '''
+            SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            FROM users_tweets
+            JOIN user_details ON users_tweets.user_name = user_details.user_name
+            JOIN tweets ON tweets.tweet_id = users_tweets.tweet_id
+            JOIN users ON users.user_name = user_details.user_name
+            WHERE users_tweets.user_name=:user_name
+            ORDER BY tweets.tweet_timestamp DESC;
+            ''', dict(user_name=user_name)).fetchall()
+        return tweets
+    finally:
+        db.close()
+
+def tweets_get_following(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
@@ -171,6 +189,23 @@ def tweets_get(user_name):
             ) OR users_tweets.user_name=:user_name
             ORDER BY tweets.tweet_timestamp DESC;
             ''', dict(user_name=user_name)).fetchall()
+        return tweets
+    finally:
+        db.close()
+
+def tweets_get_all():
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        tweets = db.execute(
+            '''
+            SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            FROM users_tweets
+            JOIN user_details ON users_tweets.user_name = user_details.user_name
+            JOIN tweets ON tweets.tweet_id = users_tweets.tweet_id
+            JOIN users ON users.user_name = user_details.user_name
+            ORDER BY tweets.tweet_timestamp DESC;
+            ''').fetchall()
         return tweets
     finally:
         db.close()

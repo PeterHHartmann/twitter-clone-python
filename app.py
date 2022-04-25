@@ -5,6 +5,7 @@ TEMPLATE_PATH.insert(0, 'public/views')
 ### routing
 import routes.files
 import routes.home
+import routes.admin
 import routes.auth
 import routes.email_validation
 import routes.user

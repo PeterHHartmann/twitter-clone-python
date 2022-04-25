@@ -6,90 +6,33 @@ const auto_grow = (element) => {
 const toggle_modal = (modal_id) => {
     document.getElementById(modal_id).classList.toggle('hidden');
 };
-
-const prepare_tweet_edit = (edit_btn) => {
-    edit_btn.addEventListener('click', () => {
-        const tweet = document.querySelector(`#tweetid-${edit_btn.dataset.tweet_id}`).cloneNode(true); 
-        const textarea = document.createElement('textarea')
-        textarea.maxLength = 280;
-        textarea.rows = 1;
-        textarea.value = tweet.querySelector('.tweet-text').innerHTML.trim()
-        textarea.addEventListener('input', (e) => auto_grow(e.target))
-        tweet.querySelector('.tweet-text').innerHTML = '';
-        tweet.querySelector('.tweet-text').appendChild(textarea)
-        tweet.querySelector('#tweet-settings').remove();
-        const save_btn = document.createElement('button');
-        save_btn.innerText = 'Save';
-        const modal = document.getElementById('modal-mount')
-        modal.classList.remove('hidden')
+try {
+    document.getElementById('modal-bg').addEventListener('click', (e) => {
+        toggle_modal('modal-mount');
         const modal_content = document.getElementById('edit-tweet-modal');
-        modal_content.append(tweet)
-        const tweet_id = tweet.dataset.tweet_id
-        save_btn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            data = {
-                tweet_text: textarea.value
-            }
-            const response = await fetch(`/tweet/edit/${tweet_id}`, {
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            console.log(response);
-
-            if (response.ok){
-                tweet.id = '';
-                const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
-                actual_tweet.querySelector('.tweet-text').innerHTML = data.tweet_text
-            }
-            modal_content.innerHTML = '';
-            modal.classList.add('hidden')
-        });
-        tweet.querySelector('.tweet-header').appendChild(save_btn)
-        const delete_btn = document.createElement('button');
-        delete_btn.innerText = 'Delete tweet';
-        delete_btn.addEventListener('click', async () => {
-            const response = await fetch(`/tweet/delete/${tweet_id}`, {
-                method: 'DELETE',
-            })
-            if (response.ok){
-                tweet.id = '';
-                const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
-                console.log(tweet_id);
-                actual_tweet.remove()
-            }
-            modal_content.innerHTML = '';
-            modal.classList.add('hidden')
-        });
-        tweet.appendChild(delete_btn);
+        modal_content.innerHTML = '';
+        modal_content.parentNode.classList.add('hidden');
     });
-}
-
-document.getElementById('modal-bg').addEventListener('click', (e) => {
-    toggle_modal('modal-mount');
-    const modal_content = document.getElementById('edit-tweet-modal');
-    modal_content.innerHTML = '';
-    modal_content.parentNode.classList.add('hidden');
-});
-
-document.getElementById('image-input').addEventListener('change', (e) => {
-    e.preventDefault();
-    const media_container = document.getElementById('media-container');
-    media_container.innerHTML = '';
-    const img = document.createElement('img');
-    const button = document.createElement('button');
-    button.className = 'remove-btn';
-    button.innerHTML = '<svg viewBox="0 0 24 24"><g><path d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z"></path></g></svg>'
-    button.addEventListener('click', () => {
+} catch {}
+try {
+    document.getElementById('image-input').addEventListener('change', (e) => {
         e.preventDefault();
+        const media_container = document.getElementById('media-container');
         media_container.innerHTML = '';
-        document.getElementById('image-input').value = '';
+        const img = document.createElement('img');
+        const button = document.createElement('button');
+        button.className = 'remove-btn';
+        button.innerHTML = '<svg viewBox="0 0 24 24"><g><path d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z"></path></g></svg>'
+        button.addEventListener('click', () => {
+            e.preventDefault();
+            media_container.innerHTML = '';
+            document.getElementById('image-input').value = '';
+        });
+        img.src = URL.createObjectURL(e.target.files[0]);
+        media_container.appendChild(button);
+        media_container.appendChild(img);
     });
-    img.src = URL.createObjectURL(e.target.files[0]);
-    media_container.appendChild(button);
-    media_container.appendChild(img);
-});
-
-
+} catch {}
 
 const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
     const tweet = document.createElement('div');
@@ -133,41 +76,35 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp) => {
     tweet.dataset.tweet_id = tweet_id
     return tweet
 }
-
-document.getElementById('new-tweet-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    data = new FormData();
-    const tweet_textarea = document.getElementById('tweet-text')
-    const tweet_text = tweet_textarea.value
-    data.append('tweet_text', tweet_text)
-    tweet_textarea.value = ''
-    try {
-        data.append('tweet_img', document.getElementById('image-input').files[0], 'tweet-img.jpg')
-    } catch {
-        console.log('no image attached image to tweet');
-    };
-    const user_name = document.getElementById('tweet_user_name').value
-    const response = await fetch(`/tweet/${user_name}`, {
-        method: "POST",
-        body: data
-    });
-    console.log(response);
-
-    if (response.ok){
-        body = await response.json();
+try {
+    document.getElementById('new-tweet-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        data = new FormData();
+        const tweet_textarea = document.getElementById('tweet-text')
+        const tweet_text = tweet_textarea.value
+        data.append('tweet_text', tweet_text)
         tweet_textarea.value = ''
-        document.getElementById('image-input').value = '';
-        document.getElementById('media-container').innerHTML = '';
+        try {
+            data.append('tweet_img', document.getElementById('image-input').files[0], 'tweet-img.jpg')
+        } catch {
+            console.log('no image attached image to tweet');
+        };
+        const user_name = document.getElementById('tweet_user_name').value
+        const response = await fetch(`/tweet/${user_name}`, {
+            method: "POST",
+            body: data
+        });
+        console.log(response);
 
-        const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp)
-        document.getElementById('tweet-deck').prepend(tweet)
-        prepare_tweet_edit(tweet.querySelector('#tweet-settings'));
-    }
-});
+        if (response.ok){
+            body = await response.json();
+            tweet_textarea.value = ''
+            document.getElementById('image-input').value = '';
+            document.getElementById('media-container').innerHTML = '';
 
-window.addEventListener('load', (e) => {
-    for ( let edit_btn of document.querySelectorAll('#tweet-settings')){
-        prepare_tweet_edit(edit_btn)
-    };
-});
-
+            const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp)
+            document.getElementById('tweet-deck').prepend(tweet)
+            prepare_tweet_edit(tweet.querySelector('#tweet-settings'));
+        }
+    });
+} catch {}

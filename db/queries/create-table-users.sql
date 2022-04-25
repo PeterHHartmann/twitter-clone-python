@@ -62,32 +62,26 @@ CREATE TABLE follows (
 INSERT INTO users(user_name, user_email, user_pwd) 
 VALUES('Tom', 'test@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 
-INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('Tom2', 'test2@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
-
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
-VALUES('Tom', 'TomFromMyspace', 'yo', 1650719171.8843205);
+VALUES('Tom', 'Tom From Myspace', "hi it's me Tom!", 1650719171.8843205);
 
-INSERT INTO user_details(user_name, display_name, bio, joined_date) 
-VALUES('Tom2', 'Tom2FromMyspace', 'yo', 1650719171.8843205);
+-- INSERT INTO tweets(tweet_text, tweet_timestamp)
+-- VALUES('This is a test tweet', 1650719171.8843205);
 
-INSERT INTO tweets(tweet_text, tweet_timestamp)
-VALUES('This is a test tweet', 1650719171.8843205);
+-- INSERT INTO users_tweets(user_name, tweet_id)
+-- VALUES('Tom', last_insert_rowid());
 
-INSERT INTO users_tweets(user_name, tweet_id)
-VALUES('Tom', last_insert_rowid());
+-- INSERT INTO tweets(tweet_text, tweet_timestamp)
+-- VALUES('This is a 2nd test tweet', 1650719171.8843205);
 
-INSERT INTO tweets(tweet_text, tweet_timestamp)
-VALUES('This is a 2nd test tweet', 1650719171.8843205);
+-- INSERT INTO users_tweets(user_name, tweet_id)
+-- VALUES('Tom2', last_insert_rowid());
 
-INSERT INTO users_tweets(user_name, tweet_id)
-VALUES('Tom2', last_insert_rowid());
+-- INSERT INTO tweets(tweet_text, tweet_timestamp)
+-- VALUES('This is a 3rd test tweet', 1650719171.8843205);
 
-INSERT INTO tweets(tweet_text, tweet_timestamp)
-VALUES('This is a 3rd test tweet', 1650719171.8843205);
-
-INSERT INTO users_tweets(user_name, tweet_id)
-VALUES('Tom2', last_insert_rowid());
+-- INSERT INTO users_tweets(user_name, tweet_id)
+-- VALUES('Tom2', last_insert_rowid());
 
 -- INSERT INTO follows(user_name, follows_user)
 -- VALUES('Tom', 'Tom2');

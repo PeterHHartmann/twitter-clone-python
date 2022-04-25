@@ -16,13 +16,17 @@ def view_user(user_name):
         joined_month = datetime.fromtimestamp(details['joined_date']).strftime('%B')
         joined_year = datetime.fromtimestamp(details['joined_date']).strftime('%Y')
 
+        user_tweets = db.tweets_get_by_user(user_name)
+
         body = dict(
             profile_user_name       =   user['user_name'], 
             profile_display_name    =   details['display_name'], 
             profile_bio             =   details['bio'],
             profile_joined_month    =   joined_month, 
             profile_joined_year     =   joined_year,
-            **payload
+            **payload,
+            user_tweets = user_tweets
+
         )
         return body
     except:
