@@ -865,15 +865,15 @@ a {
   border-radius: 100%;
 }
 .right-side .right-nav .follows-nav > div .user-info .user-text p {
-  font-size: 1rem;
-  font-weight: 500;
-  color: black;
-}
-.right-side .right-nav .follows-nav > div .user-info .user-text a {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.8);
+}
+.right-side .right-nav .follows-nav > div .user-info .user-text a {
+  font-size: 1rem;
+  font-weight: 500;
+  color: black;
 }
 .right-side .right-nav .follows-nav > div .user-info .user-text a:hover {
   text-decoration: underline;
@@ -900,5 +900,3 @@ a {
     grid-template-columns: 1fr 19fr;
   }
 }
-
-/*# sourceMappingURL=index.css.map */

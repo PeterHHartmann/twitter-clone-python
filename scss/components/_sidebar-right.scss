@@ -103,20 +103,16 @@
                     
                     .user-text {
                         p {
-                            font-size: 1rem;
-                            font-weight: 500;
-                            color: black;
-    
-                            // &:first-child {
-
-                            // }
-                        }
-
-                        a {
                             text-decoration: none;
                             font-size: 1rem;
                             font-weight: 400;
                             color: rgba(0, 0, 0, 0.8);
+                        }
+
+                        a {
+                            font-size: 1rem;
+                            font-weight: 500;
+                            color: black;
 
                             &:hover {
                                 text-decoration: underline;
