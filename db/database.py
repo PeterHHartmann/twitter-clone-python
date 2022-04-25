@@ -45,7 +45,7 @@ def user_get_many(user_name):
         db.row_factory = dict_factory
         user = db.execute(
         '''
-        SELECT user_name, display_name FROM user_details WHERE NOT user_name=:user_name ORDER BY rowid DESC LIMIT 5;
+        SELECT user_name, display_name FROM user_details WHERE NOT user_name=:user_name AND NOT user_name="admin" ORDER BY rowid DESC LIMIT 5;
         ''', dict(user_name = user_name)).fetchall()
         return user
     finally:
