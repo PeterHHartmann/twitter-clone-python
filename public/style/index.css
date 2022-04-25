@@ -380,6 +380,7 @@ a {
 .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a {
   display: flex;
   gap: 0.2rem;
+  color: black;
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span {
   font-size: 1rem;
@@ -388,6 +389,9 @@ a {
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a span:first-child {
   color: black;
+}
+.tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a:hover {
+  text-decoration: underline;
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweeted-date {
   font-size: 1rem;
@@ -862,12 +866,17 @@ a {
 }
 .right-side .right-nav .follows-nav > div .user-info .user-text p {
   font-size: 1rem;
+  font-weight: 500;
+  color: black;
+}
+.right-side .right-nav .follows-nav > div .user-info .user-text a {
+  text-decoration: none;
+  font-size: 1rem;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.8);
 }
-.right-side .right-nav .follows-nav > div .user-info .user-text p:first-child {
-  font-weight: 500;
-  color: black;
+.right-side .right-nav .follows-nav > div .user-info .user-text a:hover {
+  text-decoration: underline;
 }
 .right-side .right-nav .follows-nav > div button {
   border: none;

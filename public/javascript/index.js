@@ -53,7 +53,7 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp, display_
         <div class="content-container">
             <div class="tweet-header">
                 <div class="user-text">
-                    <a>
+                    <a href="/user/${user_name}">
                         <span>${display_name}</span>
                         <span>@${user_name}</span>
                     </a>
