@@ -47,7 +47,11 @@
                 % for user in get('who_to_follow'):
                     <div>
                         <div class="user-info">
-                            <img src="/image/{{ user['user_name'] }}/pfp.jpg" class="person-pfp">
+                            % if user['pfp_image_name']:
+                                <img src="/image/profile_picture/{{ user['user_name'] }}/{{ user['pfp_image_name'] }}" class="person-pfp">
+                            % else:
+                                <img src="/image/default-pfp.jpg" class="person-pfp">
+                            % end
                             <div class="user-text">
                                 <a class="person-handle" href="/user/{{ user['user_name'] }}">{{ user['display_name'] }}</a>
                                 <p class="person-username">@{{ user['user_name'] }}</p>

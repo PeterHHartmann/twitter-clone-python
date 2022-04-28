@@ -53,7 +53,7 @@
                     <a href="/logout" id="logout-btn">Logout</a>
                 </div>
                 <div class="user-nav">
-                    <img src="{{f'/image/{user_name}/pfp.jpg'}}" onerror="this.src='/image/default-pfp.jpg'">
+                    <img src="/image/profile_picture/{{ user_name }}/{{ profile_picture }}" onerror="this.src='/image/default-pfp.jpg'">
                     <div class="user-info">
                         <div>{{ display_name }}</div>
                         <div>@{{ user_name }}</div>

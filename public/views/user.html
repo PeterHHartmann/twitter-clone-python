@@ -16,7 +16,11 @@
                 </div>
                 <div class="profile-images">
                     <div class="profile-banner">
-                        <img id="current-banner" class="" src="/image/{{profile['user_name']}}/banner.jpg" width="100%" height="200px" onerror="this.src = '/image/default-banner.jpg'">
+                        % if profile['banner']:
+                            <img id="current-banner" src="/image/banner/{{ profile['user_name'] }}/{{ profile['banner'] }}">
+                        % else:
+                            <img id="current-banner" src="/image/default-pfp.jpg">
+                        % end 
                         <div class="edit-img-container" id="edit-banner">
                             <div class="edit-img">
                                 <label for="banner-input">
@@ -27,7 +31,11 @@
                         </div>
                     </div>
                     <div class="profile-picture">
-                        <img id="current-pfp" src="/image/{{profile['user_name']}}/pfp.jpg" alt="" onerror="this.src='/image/default-pfp.jpg'">
+                        % if profile['picture']:
+                            <img id="current-pfp" src="/image/profile_picture/{{ profile['user_name'] }}/{{ profile['picture'] }}">
+                        % else:
+                            <img id="current-pfp" src="/image/default-pfp.jpg">
+                        % end 
                         <div class="edit-img-container" id="edit-pfp">
                             <div class="edit-img">
                                 <label for="pfp-input">
@@ -69,10 +77,18 @@
             </div>
             <div class="profile-info">
                 <div class="profile-banner">
-                    <img id="current-banner" class="" src="/image/{{ profile['user_name'] }}/banner.jpg" width="100%" height="200px" onerror="this.src = '/image/default-banner.jpg'">
+                    % if profile['banner']:
+                        <img src="/image/banner/{{ profile['user_name'] }}/{{ profile['banner'] }}">
+                    % else:
+                        <img src="/image/default-banner.jpg">
+                    % end 
                 </div>
                 <div class="profile-picture">
-                    <img id="current-pfp" src="/image/{{ profile['user_name'] }}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
+                    % if profile['picture']:
+                        <img src="/image/profile_picture/{{ profile['user_name'] }}/{{ profile['picture'] }}">
+                    % else:
+                        <img src="/image/default-pfp.jpg">
+                    % end 
                     % if get('profile').get('user_name') == get('user_name'):
                         <button id="edit-profile">Edit profile</button>
                     % else:
@@ -101,7 +117,11 @@
                         <div class="tweet" id="tweetid-{{tweet['tweet_id']}}" data-tweet_id="{{ tweet['tweet_id'] }}" data-timestamp="{{ tweet['tweet_timestamp'] }}">
                             <div class="tweet-container">
                                 <div class="pfp-container">
-                                    <img src="/image/{{ tweet['user_name'] }}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
+                                    % if tweet['pfp_image_name']:
+                                        <img src="/image/profile_picture/{{ tweet['user_name'] }}/{{ tweet['pfp_image_name'] }}">
+                                    % else:
+                                        <img src="/image/default-pfp.jpg">
+                                    % end
                                 </div>
                                 <div class="content-container">
                                     <div class="tweet-header">

@@ -13,8 +13,8 @@ def user_get_by_email(user_email):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        user = json.dumps(db.execute('SELECT * FROM users WHERE user_email=:user_email', dict(user_email=user_email)).fetchone())
-        return json.loads(user)
+        user = db.execute('SELECT * FROM users WHERE user_email=:user_email', dict(user_email=user_email)).fetchone()
+        return user
     finally:
         db.close()
 
@@ -22,8 +22,12 @@ def user_get_by_username(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        user = json.dumps(db.execute('SELECT * FROM users WHERE user_name=:user_name', dict(user_name=user_name)).fetchone())
-        return json.loads(user)
+        user = db.execute('''
+            SELECT * 
+            FROM users 
+            WHERE user_name=:user_name
+        ''', dict(user_name=user_name)).fetchone()
+        return user
     finally:
         db.close()
 
@@ -34,20 +38,30 @@ def user_post(user, validation, details):
         cursor.execute('INSERT INTO users(user_name, user_email, user_pwd) VALUES(:user_name, :user_email, :user_pwd)', user)
         cursor.execute('INSERT INTO email_validations(user_email, validation_url, validation_code) VALUES(:user_email, :validation_url, :validation_code)', dict(user_email=user['user_email'], validation_url=validation['url_snippet'], validation_code=validation['code']))
         cursor.execute('INSERT INTO user_details(user_name, display_name, joined_date) VALUES(:user_name, :display_name, :joined_date)', dict(user_name=user['user_name'], display_name=user['user_name'], **details))
+        cursor.execute('INSERT INTO user_profile_pics(user_name, last_modified) VALUES(:user_name, :last_modified);', dict(user_name=user['user_name'], last_modified=details['joined_date']))
         db.commit()
     finally:
         db.close()
 
 #TODO get users with the most followers once implemented
-def user_get_many(user_name):
+def details_get_many(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        user = db.execute(
-        '''
-        SELECT user_name, display_name FROM user_details WHERE NOT user_name=:user_name AND NOT user_name="admin" ORDER BY rowid DESC LIMIT 5;
-        ''', dict(user_name = user_name)).fetchall()
-        return user
+        user = json.dumps(db.execute('''
+            SELECT 
+                user_details.user_name, 
+                user_details.display_name,
+                profile_pictures.image_name AS pfp_image_name, 
+                banners.image_name AS banner_image_name
+            FROM user_details 
+            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
+            JOIN banners ON banners.user_name = user_details.user_name
+            WHERE NOT user_details.user_name=:user_name 
+            AND NOT user_details.user_name="admin" 
+            ORDER BY joined_date DESC LIMIT 5;
+        ''', dict(user_name = user_name)).fetchall())
+        return json.loads(user)
     finally:
         db.close()
 
@@ -57,24 +71,17 @@ def details_get(user_name):
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         details = db.execute('''
-            SELECT user_name, display_name, bio, joined_date
+            SELECT  user_details.user_name, 
+                    user_details.display_name, 
+                    user_details.bio, 
+                    user_details.joined_date, 
+                    profile_pictures.image_name AS pfp_image_name, 
+                    banners.image_name AS banner_image_name
             FROM user_details
-            WHERE user_name=:user_name
+            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
+            JOIN banners ON banners.user_name = user_details.user_name
+            WHERE user_details.user_name=:user_name
             LIMIT 1;
-            ''', dict(user_name=user_name)).fetchone()
-        print(details)
-        return details
-    finally:
-        db.close()
-
-def details_get_images(user_name):
-    try:
-        db = sqlite3.connect(DB_PATH)
-        db.row_factory = dict_factory
-        details = db.execute('''
-            SELECT pfp, banner
-            FROM user_details
-            WHERE user_name=:user_name
             ''', dict(user_name=user_name)).fetchone()
         return details
     finally:
@@ -87,11 +94,66 @@ def details_update(user_name, details):
             UPDATE user_details
             SET 
             display_name=:display_name, 
-            bio=:bio, 
-            pfp=:pfp,
-            banner=:banner
+            bio=:bio
             WHERE user_name=:user_name;
             ''', dict(user_name=user_name, **details))
+        db.commit()
+    finally:
+        db.close()
+
+def profile_picture_get(user_name):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        profile_picture = db.execute('''
+            SELECT image_name, image_blob, last_modified
+            FROM profile_pictures
+            WHERE user_name=:user_name
+            LIMIT 1
+            ''', dict(user_name=user_name)).fetchone()
+        return profile_picture
+    finally:
+        db.close()
+
+def profile_picture_update(user_name, profile_picture):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.execute('''
+            UPDATE profile_pictures
+            SET 
+            image_name=:image_name, 
+            image_blob=:image_blob, 
+            last_modified=:last_modified
+            WHERE user_name=:user_name;
+            ''', dict(user_name=user_name, **profile_picture))
+        db.commit()
+    finally:
+        db.close()
+
+def banner_get(user_name):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        profile_picture = db.execute('''
+            SELECT image_name, image_blob, last_modified
+            FROM banners
+            WHERE user_name=:user_name
+            ''', dict(user_name=user_name)).fetchone()
+        return profile_picture
+    finally:
+        db.close()
+
+def banner_update(user_name, banner):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.execute('''
+            UPDATE banners
+            SET 
+            image_name=:image_name, 
+            image_blob=:image_blob, 
+            last_modified=:last_modified
+            WHERE user_name=:user_name;
+            ''', dict(user_name=user_name, **banner))
         db.commit()
     finally:
         db.close()
@@ -154,9 +216,16 @@ def tweets_get_by_user(user_name):
         db.row_factory = dict_factory
         tweets = db.execute(
             '''
-            SELECT tweets.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            SELECT 
+                tweets.user_name, 
+                user_details.display_name, 
+                profile_pictures.image_name AS pfp_image_name,
+                tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_timestamp
             FROM tweets
             JOIN user_details ON tweets.user_name = user_details.user_name
+            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
             WHERE tweets.user_name=:user_name
             ORDER BY tweets.tweet_timestamp DESC;
             ''', dict(user_name=user_name)).fetchall()
@@ -170,9 +239,16 @@ def tweets_get_following(user_name):
         db.row_factory = dict_factory
         tweets = db.execute(
             '''
-            SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            SELECT 
+                user_details.user_name, 
+                user_details.display_name, 
+                profile_pictures.image_name AS pfp_image_name, 
+                tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_timestamp
             FROM tweets
             JOIN user_details ON tweets.user_name = user_details.user_name
+            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
             WHERE user_details.user_name IN (
                 SELECT f.follows_user
                 FROM follows f

@@ -47,6 +47,7 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
     const banner_img = document.getElementById('banner-input').files[0]
     if (banner_img){data.append('banner', banner_img)}
     const pfp_img = document.getElementById('pfp-input').files[0]
+    console.log(pfp_img)
     if (pfp_img){data.append('pfp', pfp_img)}
     const user_name = document.getElementById('user_name_input').value
     data.append('display_name', document.getElementById('display_name_input').value)

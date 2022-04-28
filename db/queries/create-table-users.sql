@@ -23,11 +23,29 @@ CREATE TABLE user_details (
     user_name               TEXT UNIQUE NOT NULL,
     display_name            TEXT NOT NULL,
     bio                     TEXT,
-    pfp                     BLOB,
-    banner                  BLOB,
     joined_date             REAL NOT NULL,
     CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES users(user_name),
     PRIMARY KEY (detail_id AUTOINCREMENT)
+);
+
+DROP TABLE IF EXISTS profile_pictures;
+CREATE TABLE profile_pictures (
+    image_id                INTEGER NOT NULL,
+    user_name               TEXT NOT NULL,
+    image_name              TEXT,
+    image_blob              BLOB,
+    last_modified           REAL NOT NULL,
+    PRIMARY KEY (image_id AUTOINCREMENT)
+);
+
+DROP TABLE IF EXISTS banners;
+CREATE TABLE banners (
+    image_id                INTEGER NOT NULL,
+    user_name               TEXT NOT NULL,
+    image_name              TEXT,
+    image_blob              BLOB,
+    last_modified           REAL NOT NULL,
+    PRIMARY KEY (image_id AUTOINCREMENT)
 );
 
 DROP TABLE IF EXISTS tweets;
@@ -53,26 +71,46 @@ INSERT INTO users(user_name, user_email, user_pwd)
 VALUES('Tom', 'test@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('Tom', 'Tom From Myspace', "hi it's me Tom!", 1650719171.8843205);
+INSERT INTO profile_pictures(user_name, last_modified) 
+VALUES('Tom', 1650719171.8843205);
+INSERT INTO banners(user_name, last_modified) 
+VALUES('Tom', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
 VALUES('jack', 'jack@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, joined_date) 
 VALUES('jack', 'jack', 1650719171.8843205);
+INSERT INTO profile_pictures(user_name, last_modified) 
+VALUES('jack', 1650719171.8843205);
+INSERT INTO banners(user_name, last_modified) 
+VALUES('jack', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
 VALUES('barackobama', 'barackobama@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('barackobama', 'Barack Obama', "Former President of The United States", 1650719171.8843205);
+INSERT INTO profile_pictures(user_name, last_modified) 
+VALUES('barackobama', 1650719171.8843205);
+INSERT INTO banners(user_name, last_modified) 
+VALUES('barackobama', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
 VALUES('elonmusk', 'elonmusk@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('elonmusk', 'Elon Musk', "Owner of Tesla, SpaceX and Twitter", 1650719171.8843205);
+INSERT INTO profile_pictures(user_name, last_modified) 
+VALUES('elonmusk', 1650719171.8843205);
+INSERT INTO banners(user_name, last_modified) 
+VALUES('elonmusk', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
 VALUES('kendricklamar', 'kendricklamar@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('kendricklamar', 'Kung Fu Kenny', "Grammy award winning musician", 1650719171.8843205);
+INSERT INTO profile_pictures(user_name, last_modified) 
+VALUES('kendricklamar', 1650719171.8843205);
+INSERT INTO banners(user_name, last_modified) 
+VALUES('kendricklamar', 1650719171.8843205);
 
 INSERT INTO follows(user_name, follows_user)
 VALUES('Tom','jack');
