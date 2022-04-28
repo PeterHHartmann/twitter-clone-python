@@ -1,4 +1,3 @@
-<script src="../js/right-side.js"></script>
 <div class="right-side">
     <nav class="right-nav">
         <div class="search-mount">
@@ -44,6 +43,20 @@
         </nav>
         <nav class="follows-nav" id="follows-nav">
             <h3>Who to follow</h3>
+            % if get('who_to_follow'):
+                % for user in get('who_to_follow'):
+                    <div>
+                        <div class="user-info">
+                            <img src="/image/{{ user['user_name'] }}/pfp.jpg" class="person-pfp">
+                            <div class="user-text">
+                                <a class="person-handle" href="/user/{{ user['user_name'] }}">{{ user['display_name'] }}</a>
+                                <p class="person-username">@{{ user['user_name'] }}</p>
+                            </div>
+                        </div>
+                        <button class="follow-btn" data-user="{{ user['user_name'] }}">Follow</button>
+                    </div>
+                % end
+            % end
         </nav>
     </nav>
 </div>

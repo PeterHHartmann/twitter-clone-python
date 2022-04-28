@@ -3,7 +3,9 @@ try {
         document.getElementById('logout-dropup').classList.toggle('hidden');
         document.getElementById('auth-nav').classList.toggle('activated');
     });
-} catch {}
+} catch (error){
+    console.log(error);
+}
 try {
     window.addEventListener('load', (e) => {
         for (let tweet of document.querySelectorAll("[id^='tweetid']")){
@@ -25,5 +27,25 @@ try {
             tweet.querySelector(".tweeted-date").innerHTML = time_str
         }
     });
-} catch {}
+} catch (error) {
+    console.log(error);
+}
+try {
+    window.addEventListener('load', (e) => {
+        for (let follow_btn of document.querySelectorAll(".follow-btn")){
+            console.log('adding eventlistener');
+            follow_btn.addEventListener('click', async (e) => {
+                console.log('following', e.target.dataset.user);
+
+                const response = await fetch(`/follow/${e.target.dataset.user}`, {
+                    method: 'POST'
+                });
+            
+                console.log(response);
+            });
+        }
+    });
+} catch (error) {
+    console.log(error);
+}
 

@@ -23,6 +23,7 @@ def _(user_name, identifier):
             stream = BytesIO(user_images[str(identifier)])
             bytes = stream.read()
             response.set_header('Content-Type', 'image/*')
+            response.set_header("Cache-Control", "public, max-age=604800")
             return bytes
         else:
             response.status = 404
@@ -39,8 +40,8 @@ def _(tweet_id):
             stream = BytesIO(content['tweet_img'])
             bytes = stream.read()
             response.set_header('Content-Type', 'image/*')
+            response.set_header("Cache-Control", "public, max-age=604800")
             return bytes
-            return
         else:
             response.status = 404
             return

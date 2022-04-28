@@ -6,29 +6,30 @@ import traceback
 
 @get('/user/<user_name>')
 @view('user')
-def view_user(user_name):
+def _(user_name):
     payload = get_jwt()
     if not payload:
         return redirect('/login')
     try:
+        print(user_name)
         user = db.user_get_by_username(user_name)
         details = db.details_get(user_name)
+        print(details)
         joined_month = datetime.fromtimestamp(details['joined_date']).strftime('%B')
         joined_year = datetime.fromtimestamp(details['joined_date']).strftime('%Y')
-
         user_tweets = db.tweets_get_by_user(user_name)
 
-        body = dict(
-            profile_user_name       =   user['user_name'], 
-            profile_display_name    =   details['display_name'], 
-            profile_bio             =   details['bio'],
-            profile_joined_month    =   joined_month, 
-            profile_joined_year     =   joined_year,
-            **payload,
-            user_tweets = user_tweets
-
+        profile = dict(
+            user_name       =   user['user_name'], 
+            display_name    =   details['display_name'], 
+            bio             =   details['bio'],
+            joined_month    =   joined_month, 
+            joined_year     =   joined_year
         )
-        return body
+
+        who_to_follow = db.user_get_many(payload['user_name'])
+
+        return dict(**payload, profile=profile, who_to_follow=who_to_follow, user_tweets=user_tweets)
     except:
         traceback.print_exc()
         abort(404)

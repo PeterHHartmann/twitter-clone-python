@@ -45,9 +45,9 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
     
     const data = new FormData()
     const banner_img = document.getElementById('banner-input').files[0]
-    if (banner_img){data.append('banner', banner_img, 'banner.jpg')}
+    if (banner_img){data.append('banner', banner_img)}
     const pfp_img = document.getElementById('pfp-input').files[0]
-    if (pfp_img){data.append('pfp', pfp_img, 'pfp.jpg')}
+    if (pfp_img){data.append('pfp', pfp_img)}
     const user_name = document.getElementById('user_name_input').value
     data.append('display_name', document.getElementById('display_name_input').value)
     data.append('bio', document.getElementById('bio_input').value)
@@ -60,22 +60,9 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
     console.log(response);
     
     if (response.ok) {
-        location.reload()
+        location.reload(true)
     } else {
         console.log('not ok');
     }
     
 });
-    
-try {
-    document.getElementById('follow-user').addEventListener('click', async (e) => {
-        console.log(e.target);
-        const user_name = e.target.dataset.user
-        const response = await fetch(`/follow/${user_name}`, {
-            method: 'POST',
-            body: JSON.stringify({'user_name': user_name})
-        })
-        
-        console.log(response);
-    })
-} catch {}

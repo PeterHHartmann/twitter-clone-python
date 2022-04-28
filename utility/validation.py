@@ -12,7 +12,14 @@ import traceback
 
 def set_jwt(payload):
     encoded_jwt = jwt.encode(payload=payload, key="secret_jwt", algorithm="HS256")
-    cookie_opts = {'max_age': 3600 * 24 * 3}
+    cookie_opts = {
+        # keep session for 3 days
+        'max_age': 3600 * 24 * 3,
+
+        # for security
+        'httponly': True,
+        'secure': request.headers.get('X-Forwarded-Proto') == 'https',
+    }
     try:
         import production
         cookie_value = encoded_jwt.decode('utf-8')
@@ -28,6 +35,7 @@ def get_jwt():
         data = jwt.decode(parsed, key="secret_jwt", algorithms=["HS256"])
         return data
     except:
+        traceback.print_exc()
         return None
 
 def send_validation_email(url, code, user_name, user_email):

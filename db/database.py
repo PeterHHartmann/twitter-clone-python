@@ -56,12 +56,14 @@ def details_get(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        details = json.dumps(db.execute('''
+        details = db.execute('''
             SELECT user_name, display_name, bio, joined_date
             FROM user_details
             WHERE user_name=:user_name
-            ''', dict(user_name=user_name)).fetchone())
-        return json.loads(details)
+            LIMIT 1;
+            ''', dict(user_name=user_name)).fetchone()
+        print(details)
+        return details
     finally:
         db.close()
 
