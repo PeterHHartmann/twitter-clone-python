@@ -101,15 +101,10 @@ def tweet_post(user_name, tweet):
         db = sqlite3.connect(DB_PATH)
         cursor = db.cursor()
         cursor.execute('''
-            INSERT INTO tweets(tweet_text, tweet_img, tweet_timestamp)
-            VALUES(:tweet_text, :tweet_img, :tweet_timestamp)
-            ''', tweet)
+            INSERT INTO tweets(user_name, tweet_text, tweet_img, tweet_timestamp)
+            VALUES(:user_name, :tweet_text, :tweet_img, :tweet_timestamp)
+            ''', dict(user_name=user_name, **tweet))
         tweet_id = cursor.lastrowid
-        cursor.execute('''
-            INSERT INTO users_tweets(tweet_id, user_name)
-            VALUES(:tweet_id, :user_name)
-            ''', dict(tweet_id=tweet_id, user_name=user_name))
-        db.commit()
         return tweet_id
     finally:
         db.close()
@@ -159,12 +154,10 @@ def tweets_get_by_user(user_name):
         db.row_factory = dict_factory
         tweets = db.execute(
             '''
-            SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
-            FROM users_tweets
-            JOIN user_details ON users_tweets.user_name = user_details.user_name
-            JOIN tweets ON tweets.tweet_id = users_tweets.tweet_id
-            JOIN users ON users.user_name = user_details.user_name
-            WHERE users_tweets.user_name=:user_name
+            SELECT tweets.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            FROM tweets
+            JOIN user_details ON tweets.user_name = user_details.user_name
+            WHERE tweets.user_name=:user_name
             ORDER BY tweets.tweet_timestamp DESC;
             ''', dict(user_name=user_name)).fetchall()
         return tweets
@@ -178,17 +171,15 @@ def tweets_get_following(user_name):
         tweets = db.execute(
             '''
             SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
-            FROM users_tweets
-            JOIN user_details ON users_tweets.user_name = user_details.user_name
-            JOIN tweets ON tweets.tweet_id = users_tweets.tweet_id
-            JOIN users ON users.user_name = user_details.user_name
+            FROM tweets
+            JOIN user_details ON tweets.user_name = user_details.user_name
             WHERE user_details.user_name IN (
                 SELECT f.follows_user
                 FROM follows f
                 JOIN users u
                 ON (f.user_name = u.user_name)
                 WHERE u.user_name = :user_name
-            ) OR users_tweets.user_name=:user_name
+            ) OR tweets.user_name=:user_name
             ORDER BY tweets.tweet_timestamp DESC;
             ''', dict(user_name=user_name)).fetchall()
         return tweets
@@ -202,10 +193,8 @@ def tweets_get_all():
         tweets = db.execute(
             '''
             SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
-            FROM users_tweets
-            JOIN user_details ON users_tweets.user_name = user_details.user_name
-            JOIN tweets ON tweets.tweet_id = users_tweets.tweet_id
-            JOIN users ON users.user_name = user_details.user_name
+            FROM tweets
+            JOIN user_details ON tweets.user_name = user_details.user_name
             ORDER BY tweets.tweet_timestamp DESC;
             ''').fetchall()
         return tweets
