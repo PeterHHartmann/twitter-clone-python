@@ -23,6 +23,7 @@ document.getElementById('close-btn').addEventListener('click', (e) => {
     e.preventDefault()
     document.getElementById('edit-profile-form').reset();
     toggle_modal('modal-mount')
+    toggle_modal('edit-profile-modal')
 });
 
 document.getElementById('banner-input').addEventListener('change', (e) => {
@@ -31,7 +32,6 @@ document.getElementById('banner-input').addEventListener('change', (e) => {
 });
 
 document.getElementById('pfp-input').addEventListener('change', (e) => {
-    console.log('pfp-input changed');
     const image = document.getElementById('current-pfp');
     image.src = URL.createObjectURL(e.target.files[0])
 
@@ -54,12 +54,8 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
         body: data
     })
     
-    console.log(response);
-    
     if (response.ok) {
         location.reload(true)
-    } else {
-        console.log('not ok');
     }
     
 });

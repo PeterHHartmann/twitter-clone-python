@@ -65,14 +65,15 @@ def details_get_who_to_follow(user_name):
             AND NOT user_details.user_name="admin"
             AND email_validations.user_email IS NULL
             AND users.user_name IN (
-                SELECT u.user_name
+                SELECT DISTINCT u.user_name
                 FROM users u
-                LEFT JOIN follows f
+                LEFT OUTER JOIN follows f
                 ON f.user_name = u.user_name
-                WHERE NOT u.user_name IN (
+                WHERE NOT u.user_name = :user_name
+                AND NOT u.user_name IN (
                     SELECT ff.follows_user
-                    FROM users uu
-                    LEFT JOIN follows ff
+                    FROM follows ff
+                    LEFT OUTER JOIN users uu
                     ON ff.user_name = uu.user_name
                     WHERE uu.user_name = :user_name
                 )
@@ -190,7 +191,6 @@ def tweet_post(user_name, tweet):
             ''', dict(user_name=user_name, **tweet))
         tweet_id = cursor.lastrowid
         if tweet.get('image_blob'):
-            print('there was an image')
             cursor.execute('''
                 INSERT INTO tweet_images(tweet_id, image_name, image_blob)
                 VALUES(:tweet_id, :image_name, :image_blob)
@@ -214,7 +214,6 @@ def tweet_get_image(tweet_id):
         db.close()
 
 def tweet_update(tweet_id, tweet_text):
-    print('we got here')
     try:
         db = sqlite3.connect(DB_PATH)
         db.execute(

@@ -38,33 +38,28 @@ def _():
     if not input['pwd'] or len(input['pwd'].strip()) < 1:
         response.status = 400
         return dict(msg='Please enter a password')
-
     try:
         user = db.user_get_by_email(input['email'])
         print(user)
 
         # check if input pwd doesn't match db password
         if bcrypt.checkpw(bytes(input['pwd'], 'utf-8'), bytes(user['user_pwd'], 'utf-8')):
-            details = db.details_get(user_name=user['user_name'])
-            print(details)
+            # details = db.details_get(user_name=user['user_name'])
             payload = {
                 'user_name': user['user_name'],
                 'user_email': user['user_email'],
-                'display_name': details['display_name']
+                'display_name': user['user_name']
             }
-            try:
-                # check if user has validated their email 
-                # if they haven't return redirect url with error code 403: Forbidden
-                validation = db.validation_get_by_email(user['user_email'])
-                if validation:
-                    payload['status'] = {'verified': False, 'url_snippet': validation['validation_url']}
-                    set_jwt(payload)
-                    response.status = 403
-                    return dict(url_snippet=validation['validation_url'])
-            finally:
+
+            validation = db.validation_get_by_email(user['user_email'])
+            if validation:
+                payload['status'] = {'verified': False, 'url_snippet': validation['validation_url']}
+                set_jwt(payload)
+                response.status = 403
+                return dict(url_snippet=validation['validation_url'])
+            else:
                 set_jwt(payload)
                 return
-        # otherwise proceed with login process
         else:
             response.status = 401
             return dict(msg='Invalid email or password')
@@ -102,6 +97,7 @@ def _():
         response.status = 400
         return dict(msg='Please enter a valid email')
     user_pwd = data.get('user_pwd')
+    print(user_pwd)
     if len(user_pwd) < 6 or len(user_pwd) > 20:
         response.status = 400
         return dict(msg='Password must be longer than 6 or shorter than 20 characters')

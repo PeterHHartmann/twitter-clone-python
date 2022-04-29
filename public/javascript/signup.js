@@ -1,5 +1,3 @@
-console.log('signup script loaded');
-
 const remove_errors = (id) => {
     const error_prompt = document.getElementById(id)
     if (error_prompt) {
@@ -16,7 +14,6 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     toggle_spinner();
     remove_errors('signup_error_prompt');
-    console.log('signup confirm clicked');
     const data = {
         user_name: document.getElementById('signup-username').value,
         user_email: document.getElementById('signup-email').value,
@@ -29,14 +26,12 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
         },
         body: JSON.stringify(data)
     });
-    console.log(response);
  
     if ( response.ok ){
         const body = await response.json()
         location = `/auth/${body.url_snippet}`
     } else {
         const body = await response.json()
-        console.log(body);
         const error_prompt = document.createElement('span');
         error_prompt.id = 'signup_error_prompt';
         error_prompt.classList.add('error_prompt');

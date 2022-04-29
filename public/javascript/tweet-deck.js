@@ -1,6 +1,5 @@
 const prepare_tweet_edit = (edit_btn) => {
     edit_btn.addEventListener('click', () => {
-        console.log('editing tweet');
         const tweet = document.querySelector(`#tweetid-${edit_btn.dataset.tweet_id}`).cloneNode(true); 
         const textarea = document.createElement('textarea')
         textarea.maxLength = 280;
@@ -8,8 +7,8 @@ const prepare_tweet_edit = (edit_btn) => {
         try {
             textarea.value = tweet.querySelector('.tweet-text').innerHTML.trim()
             textarea.addEventListener('input', (e) => auto_grow(e.target))
-            tweet.querySelector('.tweet-text').appendChild(textarea)
             tweet.querySelector('.tweet-text').innerHTML = '';
+            tweet.querySelector('.tweet-text').appendChild(textarea)
         } catch (error) {
             console.log(error);
         }
@@ -31,7 +30,6 @@ const prepare_tweet_edit = (edit_btn) => {
                 method: 'POST',
                 body: JSON.stringify(data)
             })
-            console.log(response);
 
             if (response.ok){
                 tweet.id = '';
@@ -55,7 +53,6 @@ const prepare_tweet_edit = (edit_btn) => {
             if (response.ok){
                 tweet.id = '';
                 const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
-                console.log(tweet_id);
                 actual_tweet.remove()
             }
             modal_content.innerHTML = '';

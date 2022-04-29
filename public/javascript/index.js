@@ -46,8 +46,6 @@ const create_tweet = (tweet_id, user_name, display_name, tweet_image_name, tweet
         time_since_tweeted += 'h'
     }
 
-    console.log(tweet_text);
-
     const pfp_image_name = document.querySelector('#session-user-pfp').src
 
     tweet.innerHTML =
@@ -87,19 +85,17 @@ try {
         tweet_textarea.value = ''
         try {
             data.append('tweet_img', document.getElementById('image-input').files[0], 'tweet-img.jpg')
-        } catch {
-            console.log('no image attached image to tweet');
+        } catch (error){
+            console.log(error);
         };
         const user_name = document.getElementById('tweet_user_name').value
         const response = await fetch(`/tweet/${user_name}`, {
             method: "POST",
             body: data
         });
-        console.log(response);
 
         if (response.ok){
             body = await response.json();
-            console.log(body);
             tweet_textarea.value = ''
             document.getElementById('image-input').value = '';
             document.getElementById('media-container').innerHTML = '';

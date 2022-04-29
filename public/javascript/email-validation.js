@@ -124,11 +124,9 @@ document.getElementById('validation-form').addEventListener('submit', async func
     });
 
     if ( response.ok ){
-        console.log('successfully validated email');
         location = ('/login')
     } else {
         const body = await response.json()
-        console.log(body);
         const error_prompt = document.createElement('span');
         error_prompt.id = 'login_error_prompt';
         error_prompt.classList.add('error_prompt');

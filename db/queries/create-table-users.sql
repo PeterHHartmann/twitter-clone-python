@@ -79,60 +79,36 @@ CREATE TABLE follows (
 );
 
 INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('Tom', 'test@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+VALUES('Tom', 'tom@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('Tom', 'Tom From Myspace', "hi it's me Tom!", 1650719171.8843205);
--- INSERT INTO profile_pictures(user_name, last_modified) 
--- VALUES('Tom', 1650719171.8843205);
--- INSERT INTO banners(user_name, last_modified) 
--- VALUES('Tom', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('jack', 'jack@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+VALUES('jack', 'jack@email.com', '$2b$12$7wZ9wlQ/Fo3D6DwnLvMf0e/8yhTXhRw0owVpv9yJGi73/.u06qjmm');
 INSERT INTO user_details(user_name, display_name, joined_date) 
 VALUES('jack', 'jack', 1650719171.8843205);
--- INSERT INTO profile_pictures(user_name, last_modified) 
--- VALUES('jack', 1650719171.8843205);
--- INSERT INTO banners(user_name, last_modified) 
--- VALUES('jack', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('barackobama', 'barackobama@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+VALUES('barackobama', 'barackobama@email.com', '$2b$12$7wZ9wlQ/Fo3D6DwnLvMf0eVm/xMYLtMGcG0lC0x0ybeYPxOQw4Yzu');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('barackobama', 'Barack Obama', "Former President of The United States", 1650719171.8843205);
--- INSERT INTO profile_pictures(user_name, last_modified) 
--- VALUES('barackobama', 1650719171.8843205);
--- INSERT INTO banners(user_name, last_modified) 
--- VALUES('barackobama', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('elonmusk', 'elonmusk@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+VALUES('elonmusk', 'elonmusk@email.com', '$2b$12$7wZ9wlQ/Fo3D6DwnLvMf0eWsYxPPISID9K9eQ8AJ86fIaSPhvfn8.');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
 VALUES('elonmusk', 'Elon Musk', "Owner of Tesla, SpaceX and Twitter", 1650719171.8843205);
--- INSERT INTO profile_pictures(user_name, last_modified) 
--- VALUES('elonmusk', 1650719171.8843205);
--- INSERT INTO banners(user_name, last_modified) 
--- VALUES('elonmusk', 1650719171.8843205);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('kendricklamar', 'kendricklamar@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+VALUES('kendricklamar', 'kendricklamar@email.com', '$2b$12$7wZ9wlQ/Fo3D6DwnLvMf0eIl/LzRCIWfQgKLwOtTeLp0.6kSv8azS');
 INSERT INTO user_details(user_name, display_name, bio, joined_date) 
-VALUES('kendricklamar', 'Kung Fu Kenny', "Grammy award winning musician", 1650719171.8843205);
--- INSERT INTO profile_pictures(user_name, last_modified) 
--- VALUES('kendricklamar', 1650719171.8843205);
--- INSERT INTO banners(user_name, last_modified) 
--- VALUES('kendricklamar', 1650719171.8843205);
+VALUES('kendricklamar', 'Kung Fu Kenny', "Grammy award winning musician", 1649900000.11111);
 
 INSERT INTO users(user_name, user_email, user_pwd) 
-VALUES('Tom2', 'test2@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+VALUES('testaccount', 'test@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
 INSERT INTO user_details(user_name, display_name, joined_date) 
-VALUES('Tom2', 'Tom2', 1650719171.8843205);
+VALUES('testaccount', 'testaccount', 1650719171.8843205);
 INSERT INTO email_validations (user_email, validation_url, validation_code) 
-VALUES ('test2@email.com', '781169e4-e36a-43f8-af7a-5109fc3d33ed', '417526');
--- INSERT INTO profile_pictures(user_name, last_modified) 
--- VALUES('Tom2', 1650719171.8843205);
--- INSERT INTO banners(user_name, last_modified) 
--- VALUES('Tom2', 1650719171.8843205);
+VALUES ('test@email.com', '781169e4-e36a-43f8-af7a-5109fc3d33ed', '417526');
 
 INSERT INTO follows(user_name, follows_user)
 VALUES('Tom','jack');
@@ -146,7 +122,7 @@ INSERT INTO tweets(user_name, tweet_text, tweet_timestamp)
 VALUES('barackobama', 'Personally a big fan of Kendrick Lamar', 1651160236.8599896);
 
 INSERT INTO tweets(user_name, tweet_text, tweet_timestamp)
-VALUES('elonmusk', 'I own this place now!', 1651060236.8599896);
+VALUES('elonmusk', 'SpaceX to the moon!', 1651060236.8599896);
 
 INSERT INTO tweets(user_name, tweet_text, tweet_timestamp)
 VALUES('kendricklamar', 'New album dropping soon', 1651170936.8599896);
