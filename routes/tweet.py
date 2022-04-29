@@ -3,6 +3,8 @@ from bottle import post, request, response, redirect, delete
 import db.database as db
 from utility.validation import get_jwt
 import json
+import uuid
+import imghdr
 
 import time
 import traceback
@@ -17,21 +19,23 @@ def _(user_name):
                 'tweet_text': request.forms.get('tweet_text'),
                 'tweet_timestamp': now
             }
-            if len(tweet['tweet_text'].strip()) <= 1:
-                response.status = 403
-                return 
 
             tweet_img = request.files.get('tweet_img')
-            # print(tweet_img)
+            image_name = None
             if tweet_img:
-                tweet['tweet_img'] = tweet_img.file.read()
-            else: 
-                tweet['tweet_img'] = None
+                image = tweet_img.file
+                image_extension = f'.{imghdr.what(image)}'
+                if image_extension not in ('.png', '.jpeg', '.jpg', '.gif'):
+                    response.status = 403
+                    return
+                image_name = str(uuid.uuid4())
+                full_image_name = f"{image_name}{image_extension}"
+                tweet['image_name'] = full_image_name
+                tweet['image_blob'] = tweet_img.file.read()
 
             tweet_id = db.tweet_post(user_name, tweet)
-            print(tweet_id)
             time_ms = round(now * 1000, 0)
-            return dict(tweet_id=tweet_id, tweet_timestamp = time_ms)
+            return dict(tweet_id=tweet_id, tweet_timestamp = time_ms, image_name=image_name)
 
         except:
             traceback.print_exc()

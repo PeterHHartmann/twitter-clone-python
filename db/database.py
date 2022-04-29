@@ -163,10 +163,17 @@ def tweet_post(user_name, tweet):
         db = sqlite3.connect(DB_PATH)
         cursor = db.cursor()
         cursor.execute('''
-            INSERT INTO tweets(user_name, tweet_text, tweet_img, tweet_timestamp)
-            VALUES(:user_name, :tweet_text, :tweet_img, :tweet_timestamp)
+            INSERT INTO tweets(user_name, tweet_text, tweet_timestamp)
+            VALUES(:user_name, :tweet_text, :tweet_timestamp)
             ''', dict(user_name=user_name, **tweet))
         tweet_id = cursor.lastrowid
+        if tweet.get('image_blob'):
+            print('there was an image')
+            cursor.execute('''
+                INSERT INTO tweet_images(tweet_id, image_name, image_blob)
+                VALUES(:tweet_id, :image_name, :image_blob)
+            ''', dict(tweet_id=tweet_id, image_name=tweet['image_name'], image_blob=tweet['image_blob']))
+        db.commit()
         return tweet_id
     finally:
         db.close()
@@ -176,8 +183,8 @@ def tweet_get_image(tweet_id):
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         content = db.execute('''
-            SELECT tweet_img
-            FROM tweets
+            SELECT tweet_id, image_name, image_blob
+            FROM tweet_images
             WHERE tweet_id=:tweet_id
             ''', dict(tweet_id=tweet_id)).fetchone()
         return content
@@ -222,8 +229,10 @@ def tweets_get_by_user(user_name):
                 profile_pictures.image_name AS pfp_image_name,
                 tweets.tweet_id, 
                 tweets.tweet_text, 
-                tweets.tweet_timestamp
+                tweets.tweet_timestamp,
+                tweet_images.image_name
             FROM tweets
+            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
             JOIN user_details ON tweets.user_name = user_details.user_name
             JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
             WHERE tweets.user_name=:user_name
@@ -245,8 +254,10 @@ def tweets_get_following(user_name):
                 profile_pictures.image_name AS pfp_image_name, 
                 tweets.tweet_id, 
                 tweets.tweet_text, 
-                tweets.tweet_timestamp
+                tweets.tweet_timestamp,
+                tweet_images.image_name
             FROM tweets
+            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
             JOIN user_details ON tweets.user_name = user_details.user_name
             JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
             WHERE user_details.user_name IN (
@@ -268,8 +279,15 @@ def tweets_get_all():
         db.row_factory = dict_factory
         tweets = db.execute(
             '''
-            SELECT user_details.user_name, user_details.display_name, tweets.tweet_id, tweets.tweet_text, tweets.tweet_timestamp
+            SELECT 
+                user_details.user_name, 
+                user_details.display_name, 
+                tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_timestamp,
+                tweet_images.image_name
             FROM tweets
+            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
             JOIN user_details ON tweets.user_name = user_details.user_name
             ORDER BY tweets.tweet_timestamp DESC;
             ''').fetchall()

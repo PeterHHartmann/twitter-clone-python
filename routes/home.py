@@ -10,6 +10,7 @@ def _():
         return redirect('/login')
 
     tweets_from_follows = db.tweets_get_following(session['user_name'])
+
     who_to_follow = db.details_get_many(session['user_name'])
     profile_picture = db.profile_picture_get(session['user_name'])
 

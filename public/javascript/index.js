@@ -34,7 +34,7 @@ try {
     });
 } catch {}
 
-const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp, display_name) => {
+const create_tweet = (tweet_id, user_name, display_name, tweet_image_name, tweet_text, tweet_timestamp) => {
     const tweet = document.createElement('div');
     tweet.className = 'tweet';
     tweet.id = `tweetid-${tweet_id}`
@@ -45,10 +45,15 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp, display_
     } else {
         time_since_tweeted += 'h'
     }
+
+    console.log(tweet_text);
+
+    const pfp_image_name = document.querySelector('#session-user-pfp').src
+
     tweet.innerHTML =
     `<div class="tweet-container">
         <div class="pfp-container">
-            <img src="/image/${user_name}/pfp.jpg" onerror="this.src='/image/default-pfp.jpg'">
+            <img src="${pfp_image_name}" onerror="this.src='/image/default-pfp.jpg'">
         </div>
         <div class="content-container">
             <div class="tweet-header">
@@ -64,12 +69,8 @@ const create_tweet = (tweet_id, user_name, tweet_text, tweet_timestamp, display_
                 </div>
             </div>
             <div class="tweet-content">
-                <div class="tweet-text">
-                    ${tweet_text}
-                </div>
-                <div class="tweet-img">
-                    <img src="/tweet/${tweet_id}/twimg.jpg" onerror="this.parentNode.remove(this)">
-                </div>
+                ${tweet_text ? `<div class="tweet-text">${tweet_text}</div>` : ``}
+                ${tweet_image_name ? `<div class="tweet-img"><img src="/tweet/${tweet_id}/${tweet_image_name}"></div>` : ``}
             </div>
         </div>
     </div>`
@@ -98,11 +99,12 @@ try {
 
         if (response.ok){
             body = await response.json();
+            console.log(body);
             tweet_textarea.value = ''
             document.getElementById('image-input').value = '';
             document.getElementById('media-container').innerHTML = '';
 
-            const tweet = create_tweet(body.tweet_id, user_name, tweet_text, body.tweet_timestamp, document.querySelector('#tweet_display_name').value)
+            const tweet = create_tweet(body.tweet_id, user_name, document.querySelector('#tweet_display_name').value, body.image_name, tweet_text.trim(), body.tweet_timestamp )
             document.getElementById('tweet-deck').prepend(tweet)
             prepare_tweet_edit(tweet.querySelector('#tweet-settings'));
         }

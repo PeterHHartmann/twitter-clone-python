@@ -35,6 +35,7 @@ CREATE TABLE profile_pictures (
     image_name              TEXT,
     image_blob              BLOB,
     last_modified           REAL NOT NULL,
+    CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES user_details(user_name),
     PRIMARY KEY (image_id AUTOINCREMENT)
 );
 
@@ -45,6 +46,7 @@ CREATE TABLE banners (
     image_name              TEXT,
     image_blob              BLOB,
     last_modified           REAL NOT NULL,
+    CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES user_details(user_name),
     PRIMARY KEY (image_id AUTOINCREMENT)
 );
 
@@ -53,10 +55,19 @@ CREATE TABLE tweets (
     tweet_id                INTEGER NOT NULL,
     user_name               TEXT NOT NULL,
     tweet_text              TEXT NOT NULL,
-    tweet_img               BLOB,
     tweet_timestamp         REAL NOT NULL,
     CONSTRAINT fk_user_name FOREIGN KEY (user_name) REFERENCES user_details(user_name),
     PRIMARY KEY (tweet_id AUTOINCREMENT)
+);
+
+DROP TABLE IF EXISTS tweet_images;
+CREATE TABLE tweet_images (
+    image_id                INTEGER NOT NULL,
+    tweet_id                INTEGER NOT NULL,
+    image_name              TEXT NOT NULL,
+    image_blob              BLOB,
+    CONSTRAINT fk_tweet_id FOREIGN KEY (tweet_id) REFERENCES tweets(tweet_id),
+    PRIMARY KEY (image_id AUTOINCREMENT)
 );
 
 DROP TABLE IF EXISTS follows;

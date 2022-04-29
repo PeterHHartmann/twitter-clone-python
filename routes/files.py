@@ -58,12 +58,12 @@ def _(user_name, image_name):
         response.status = 404
         return
 
-@get('/tweet/<tweet_id>/twimg.jpg')
-def _(tweet_id):
+@get('/tweet/<tweet_id>/<image_name>')
+def _(tweet_id, image_name):
     try:
-        content = db.tweet_get_image(tweet_id)
-        if content:
-            stream = BytesIO(content['tweet_img'])
+        tweet_image = db.tweet_get_image(tweet_id)
+        if tweet_image:
+            stream = BytesIO(tweet_image['image_blob'])
             bytes = stream.read()
             response.set_header('Content-Type', 'image/*')
             response.set_header("Cache-Control", "public, max-age=604800")

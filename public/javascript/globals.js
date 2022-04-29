@@ -33,7 +33,6 @@ try {
 try {
     window.addEventListener('load', (e) => {
         for (let follow_btn of document.querySelectorAll(".follow-btn")){
-            console.log('adding eventlistener');
             follow_btn.addEventListener('click', async (e) => {
                 console.log('following', e.target.dataset.user);
 

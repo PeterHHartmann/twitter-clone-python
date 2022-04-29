@@ -141,12 +141,16 @@
                                         % end
                                     </div>
                                     <div class="tweet-content">
-                                        <div class="tweet-text">
-                                            {{ tweet['tweet_text'] }}
-                                        </div>
-                                        <div class="tweet-img">
-                                            <img src="/tweet/{{ tweet['tweet_id'] }}/twimg.jpg" onerror="this.parentNode.remove(this)">
-                                        </div>
+                                        % if tweet['tweet_text']:
+                                            <div class="tweet-text">
+                                                {{ tweet['tweet_text'] }}
+                                            </div>
+                                        % end
+                                        % if tweet['image_name']:
+                                            <div class="tweet-img">
+                                                <img src="/tweet/{{ tweet['tweet_id'] }}/{{tweet['image_name']}}">
+                                            </div>
+                                        % end
                                     </div>
                                 </div>
                             </div>

@@ -20,8 +20,6 @@ def _(user_name):
         joined_year = datetime.fromtimestamp(details['joined_date']).strftime('%Y')
         user_tweets = db.tweets_get_by_user(user_name)
 
-        print(details)
-
         profile = dict(
             user_name       =   user['user_name'], 
             display_name    =   details['display_name'], 
@@ -33,7 +31,6 @@ def _(user_name):
         )
 
         who_to_follow = db.details_get_many(payload['user_name'])
-        print(who_to_follow)
 
         session_profile_picture = db.profile_picture_get(payload['user_name'])
 
@@ -62,7 +59,6 @@ def _(user_name):
                 return
             image_name = uuid.uuid4()
             full_image_name = f"{image_name}{image_extension}"
-            print(full_image_name)
             db.profile_picture_update(payload['user_name'], dict(image_name=full_image_name, image_blob=image.read(), last_modified=time.time()))
 
         if banner:
@@ -73,13 +69,7 @@ def _(user_name):
                 return
             image_name = uuid.uuid4()
             full_image_name = f"{image_name}{image_extension}"
-            print(full_image_name)
             db.banner_update(payload['user_name'], dict(image_name=full_image_name, image_blob=image.read(), last_modified=time.time()))
-
-        # if banner:
-        #     details['banner'] = banner.file.read()
-        # else:
-        #     details['banner'] = current_imgs['banner']
         try:
             db.details_update(user_name, details)
             return
