@@ -41,10 +41,12 @@ def _():
 
     try:
         user = db.user_get_by_email(input['email'])
+        print(user)
 
         # check if input pwd doesn't match db password
         if bcrypt.checkpw(bytes(input['pwd'], 'utf-8'), bytes(user['user_pwd'], 'utf-8')):
             details = db.details_get(user_name=user['user_name'])
+            print(details)
             payload = {
                 'user_name': user['user_name'],
                 'user_email': user['user_email'],
@@ -83,8 +85,7 @@ def _():
 @post('/signup')
 def _():
     data = json.load(request.body)
-
-    #TODO no white spaces in username
+    
     user_name = data.get('user_name').strip()
     if len(user_name) < 3:
         response.status = 400

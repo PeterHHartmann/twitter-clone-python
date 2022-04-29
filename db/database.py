@@ -38,13 +38,14 @@ def user_post(user, validation, details):
         cursor.execute('INSERT INTO users(user_name, user_email, user_pwd) VALUES(:user_name, :user_email, :user_pwd)', user)
         cursor.execute('INSERT INTO email_validations(user_email, validation_url, validation_code) VALUES(:user_email, :validation_url, :validation_code)', dict(user_email=user['user_email'], validation_url=validation['url_snippet'], validation_code=validation['code']))
         cursor.execute('INSERT INTO user_details(user_name, display_name, joined_date) VALUES(:user_name, :display_name, :joined_date)', dict(user_name=user['user_name'], display_name=user['user_name'], **details))
-        cursor.execute('INSERT INTO user_profile_pics(user_name, last_modified) VALUES(:user_name, :last_modified);', dict(user_name=user['user_name'], last_modified=details['joined_date']))
+        cursor.execute('INSERT INTO profile_pictures(user_name, last_modified) VALUES(:user_name, :last_modified);', dict(user_name=user['user_name'], last_modified=details['joined_date']))
+        cursor.execute('INSERT INTO banners(user_name, last_modified) VALUES(:user_name, :last_modified);', dict(user_name=user['user_name'], last_modified=details['joined_date']))
         db.commit()
     finally:
         db.close()
 
 #TODO get users with the most followers once implemented
-def details_get_many(user_name):
+def details_get_who_to_follow(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
@@ -53,37 +54,58 @@ def details_get_many(user_name):
                 user_details.user_name, 
                 user_details.display_name,
                 profile_pictures.image_name AS pfp_image_name, 
-                banners.image_name AS banner_image_name
+                banners.image_name AS banner_image_name,
+                users.user_email
             FROM user_details 
             JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
             JOIN banners ON banners.user_name = user_details.user_name
-            WHERE NOT user_details.user_name=:user_name 
-            AND NOT user_details.user_name="admin" 
-            ORDER BY joined_date DESC LIMIT 5;
+            JOIN users ON users.user_name = user_details.user_name
+            LEFT JOIN email_validations ON email_validations.user_email = users.user_email
+            WHERE NOT user_details.user_name=:user_name
+            AND NOT user_details.user_name="admin"
+            AND email_validations.user_email IS NULL
+            AND users.user_name IN (
+                SELECT u.user_name
+                FROM users u
+                LEFT JOIN follows f
+                ON f.user_name = u.user_name
+                WHERE NOT u.user_name IN (
+                    SELECT ff.follows_user
+                    FROM users uu
+                    LEFT JOIN follows ff
+                    ON ff.user_name = uu.user_name
+                    WHERE uu.user_name = :user_name
+                )
+            )
+            ORDER BY joined_date DESC 
+            LIMIT 10;
         ''', dict(user_name = user_name)).fetchall())
         return json.loads(user)
     finally:
         db.close()
 
-
 def details_get(user_name):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        details = db.execute('''
-            SELECT  user_details.user_name, 
-                    user_details.display_name, 
-                    user_details.bio, 
-                    user_details.joined_date, 
-                    profile_pictures.image_name AS pfp_image_name, 
-                    banners.image_name AS banner_image_name
+        details = json.dumps(db.execute('''
+            SELECT
+                user_details.user_name, 
+                user_details.display_name, 
+                user_details.bio, 
+                user_details.joined_date, 
+                profile_pictures.image_name AS pfp_image_name, 
+                banners.image_name AS banner_image_name
             FROM user_details
             JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
             JOIN banners ON banners.user_name = user_details.user_name
+            JOIN users ON users.user_name = user_details.user_name
+            LEFT JOIN email_validations ON email_validations.user_email = users.user_email
             WHERE user_details.user_name=:user_name
+            AND email_validations.user_email IS NULL
             LIMIT 1;
-            ''', dict(user_name=user_name)).fetchone()
-        return details
+            ''', dict(user_name=user_name)).fetchone())
+        return json.loads(details)
     finally:
         db.close()
 
@@ -309,6 +331,28 @@ def follow_post(user_name, follows_user):
             VALUES(:user_name, :follows_user)
         ''', dict(user_name=user_name, follows_user=follows_user))
         db.commit()
+    finally:
+        db.close()
+
+def followers_get(user_name):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        tweets = db.execute(
+            '''
+            SELECT 
+                user_details.user_name, 
+                user_details.display_name, 
+                tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_timestamp,
+                tweet_images.image_name
+            FROM tweets
+            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
+            JOIN user_details ON tweets.user_name = user_details.user_name
+            ORDER BY tweets.tweet_timestamp DESC;
+            ''').fetchall()
+        return tweets
     finally:
         db.close()
 

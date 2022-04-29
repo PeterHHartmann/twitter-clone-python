@@ -73,7 +73,13 @@
                 <div>
                     <a href="{{ profile['display_name'] }}">{{ profile['display_name'] }}</a>
                 </div>
-                <span>738 Tweets</span>
+                <span>
+                    % if get('tweets_count') > 1:
+                        {{ tweets_count }} Tweets
+                    % else:
+                        {{ tweets_count }} Tweet
+                    % end
+                </span>
             </div>
             <div class="profile-info">
                 <div class="profile-banner">

@@ -14,14 +14,13 @@ def _(user_name):
     if not payload:
         return redirect('/login')
     try:
-        user = db.user_get_by_username(user_name)
         details = db.details_get(user_name)
         joined_month = datetime.fromtimestamp(details['joined_date']).strftime('%B')
         joined_year = datetime.fromtimestamp(details['joined_date']).strftime('%Y')
         user_tweets = db.tweets_get_by_user(user_name)
 
         profile = dict(
-            user_name       =   user['user_name'], 
+            user_name       =   details['user_name'], 
             display_name    =   details['display_name'], 
             bio             =   details['bio'],
             joined_month    =   joined_month, 
@@ -30,11 +29,11 @@ def _(user_name):
             banner          =   details['banner_image_name']
         )
 
-        who_to_follow = db.details_get_many(payload['user_name'])
+        who_to_follow = db.details_get_who_to_follow(payload['user_name'])
 
         session_profile_picture = db.profile_picture_get(payload['user_name'])
 
-        return dict(**payload, profile=profile, who_to_follow=who_to_follow, user_tweets=user_tweets, profile_picture=session_profile_picture['image_name'])
+        return dict(**payload, profile=profile, who_to_follow=who_to_follow, user_tweets=user_tweets, profile_picture=session_profile_picture['image_name'], tweets_count=len(user_tweets))
     except:
         traceback.print_exc()
         abort(404)
