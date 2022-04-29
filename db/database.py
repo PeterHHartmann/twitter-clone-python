@@ -208,7 +208,13 @@ def tweet_update(tweet_id, tweet_text):
 def tweet_delete(tweet_id):
     try:
         db = sqlite3.connect(DB_PATH)
-        db.execute(
+        cursor = db.cursor()
+        cursor.execute(
+            '''
+            DELETE FROM tweet_images
+            WHERE tweet_id=:tweet_id;
+            ''', dict(tweet_id=tweet_id))
+        cursor.execute(
             '''
             DELETE FROM tweets
             WHERE tweet_id=:tweet_id;

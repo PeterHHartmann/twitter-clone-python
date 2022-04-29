@@ -14,7 +14,6 @@ document.getElementById('modal-bg').addEventListener('click', (e) => {
 try {
     document.getElementById('edit-profile').addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('edit-profile clicked');
         toggle_modal('modal-mount')
         toggle_modal('edit-profile-modal')
     });
@@ -22,13 +21,11 @@ try {
     
 document.getElementById('close-btn').addEventListener('click', (e) => {
     e.preventDefault()
-    console.log('close btn clicked');
     document.getElementById('edit-profile-form').reset();
     toggle_modal('modal-mount')
 });
 
 document.getElementById('banner-input').addEventListener('change', (e) => {
-    console.log('banner-input changed');
     const image = document.getElementById('current-banner');
     image.src = URL.createObjectURL(e.target.files[0]);
 });
@@ -47,7 +44,6 @@ document.getElementById('edit-profile-form').addEventListener('submit', async (e
     const banner_img = document.getElementById('banner-input').files[0]
     if (banner_img){data.append('banner', banner_img)}
     const pfp_img = document.getElementById('pfp-input').files[0]
-    console.log(pfp_img)
     if (pfp_img){data.append('pfp', pfp_img)}
     const user_name = document.getElementById('user_name_input').value
     data.append('display_name', document.getElementById('display_name_input').value)

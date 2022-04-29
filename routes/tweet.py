@@ -50,8 +50,6 @@ def _(tweet_id):
     session = get_jwt()
     if session:
         data = json.load(request.body)
-        print(tweet_id)
-        print(data['tweet_text'])
         try:
             db.tweet_update(tweet_id, data['tweet_text'])
             return

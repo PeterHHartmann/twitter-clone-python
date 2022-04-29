@@ -5,10 +5,14 @@ const prepare_tweet_edit = (edit_btn) => {
         const textarea = document.createElement('textarea')
         textarea.maxLength = 280;
         textarea.rows = 1;
-        textarea.value = tweet.querySelector('.tweet-text').innerHTML.trim()
-        textarea.addEventListener('input', (e) => auto_grow(e.target))
-        tweet.querySelector('.tweet-text').innerHTML = '';
-        tweet.querySelector('.tweet-text').appendChild(textarea)
+        try {
+            textarea.value = tweet.querySelector('.tweet-text').innerHTML.trim()
+            textarea.addEventListener('input', (e) => auto_grow(e.target))
+            tweet.querySelector('.tweet-text').appendChild(textarea)
+            tweet.querySelector('.tweet-text').innerHTML = '';
+        } catch (error) {
+            console.log(error);
+        }
         tweet.querySelector('#tweet-settings').remove();
         const save_btn = document.createElement('button');
         save_btn.innerText = 'Save';
@@ -32,7 +36,11 @@ const prepare_tweet_edit = (edit_btn) => {
             if (response.ok){
                 tweet.id = '';
                 const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
-                actual_tweet.querySelector('.tweet-text').innerHTML = data.tweet_text
+                try {                    
+                    actual_tweet.querySelector('.tweet-text').innerHTML = data.tweet_text
+                } catch (error) {
+                    console.log(error);
+                }
             }
             modal_content.innerHTML = '';
             modal.classList.add('hidden')

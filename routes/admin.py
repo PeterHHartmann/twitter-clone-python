@@ -8,7 +8,6 @@ def _():
     session = get_jwt()
     if not session:
         return redirect('/login')
-    print(session['user_name'])
 
     if session['user_name'] == 'admin':
         all_tweets = db.tweets_get_all()
