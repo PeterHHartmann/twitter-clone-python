@@ -3,7 +3,7 @@ import traceback
 import json
 from random import randint
 
-from utility.validation import set_jwt, get_jwt, send_validation_email
+from utility.validation import set_session, get_session, send_validation_email
 import db.database as db
 
 @get('/auth/<url_code>')
@@ -14,7 +14,7 @@ def _(url_code):
         return dict(user_name=validation['user_name'], user_email=validation['user_email'], confirmation_url=url_code)
     except:
         traceback.print_exc()
-        return redirect('/signup')
+        return redirect('/login')
 
 @post('/auth/<url_code>/resend')
 def _(url_code):
@@ -40,16 +40,16 @@ def _(url_code):
 
                 # try to remove the email validation field on JWT on cookie
                 try:
-                    payload = get_jwt()
+                    payload = get_session()
                     del payload['status']
-                    set_jwt(payload)
+                    set_session(payload)
                 finally:
                     return
             else:
-                response.status = 401
+                response.status = 403
                 return dict(msg='Wrong code please try again')
         else:
-            response.status = 401
+            response.status = 403
             return dict(msg='Wrong code please try again')
     except:
         traceback.print_exc()

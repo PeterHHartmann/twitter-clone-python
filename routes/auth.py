@@ -8,13 +8,13 @@ import time
 from uuid import uuid4
 
 import db.database as db
-from utility.validation import set_jwt, get_jwt, send_validation_email
+from utility.validation import set_session, get_session, send_validation_email
 from utility.regex_str import REGEX_EMAIL, REGEX_USER_NAME, REGEX_PASSWORD
 
 @get('/login')
 @view('login')
 def _():
-    session = get_jwt()
+    session = get_session()
     if session:
         if session.get('status'):
             return redirect(f'/auth/{session["status"]["url_snippet"]}')
@@ -55,27 +55,25 @@ def _():
 
             validation = db.validation_get_by_email(user['user_email'])
             if validation:
-                payload['status'] = {'verified': False, 'url_snippet': validation['validation_url']}
-                set_jwt(payload)
                 response.status = 403
                 return dict(url_snippet=validation['validation_url'])
-            else:
-                set_jwt(payload)
-                return
+            set_session(payload)
+            return
         else:
-            response.status = 401
+            response.status = 403
             return dict(msg='Invalid email or password')
     except:
         traceback.print_exc()
-        response.status = 401
+        response.status = 403
         return dict(msg='Invalid email or password')
 
 @get('/signup')
 @view('signup')
 def _():
-    cookie = request.get_cookie("JWT", secret="secret_info")
-    if cookie:
-        return redirect('/')
+    session = get_session()
+    if session:
+        response.delete_cookie("JWT", secret="secret_info")
+        return
     else:
         return
 

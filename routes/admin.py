@@ -1,16 +1,13 @@
-from bottle import get, view, redirect, request, abort
-from utility.validation import get_jwt
+from bottle import get, view, abort
+from utility.validation import get_session, login_required
 import db.database as db
 
 @get('/admin')
 @view('admin')
+@login_required
 def _():
-    session = get_jwt()
-    if not session:
-        return redirect('/login')
-
+    session = get_session()
     if session['user_name'] == 'admin':
         all_tweets = db.tweets_get_all()
         return dict(**session, all_tweets=all_tweets)
-    else:
-        abort(404)
+    abort(404)

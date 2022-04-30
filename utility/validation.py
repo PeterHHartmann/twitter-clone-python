@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
+from functools import wraps
 from bottle import request, response
 import jwt
 from email.mime.text import MIMEText
@@ -10,7 +11,7 @@ import ssl
 import json
 import traceback
 
-def set_jwt(payload):
+def set_session(payload):
     encoded_jwt = jwt.encode(payload=payload, key="secret_jwt", algorithm="HS256")
     cookie_opts = {
         # keep session for 3 days
@@ -28,14 +29,13 @@ def set_jwt(payload):
         cookie_value = encoded_jwt
     response.set_cookie(name="JWT", value=json.dumps(cookie_value), secret="secret_info", **cookie_opts)
 
-def get_jwt():
+def get_session():
     try:
         cookie = request.get_cookie("JWT", secret="secret_info")
         parsed = json.loads(cookie)
         data = jwt.decode(parsed, key="secret_jwt", algorithms=["HS256"])
         return data
     except:
-        traceback.print_exc()
         return None
 
 def send_validation_email(url, code, user_name, user_email):
@@ -57,7 +57,7 @@ def send_validation_email(url, code, user_name, user_email):
         import production
         full_url = f'https://peterhartmann.eu.pythonanywhere.com/auth/{url}'
     except:
-        full_url = f'http://localhost:3334/auth/{url}'
+        full_url = f'http://localhost:3000/auth/{url}'
 
     # Create the plain-text and HTML version of your message
     text = f"""\
@@ -98,3 +98,28 @@ def send_validation_email(url, code, user_name, user_email):
             server.sendmail(sender_email, receiver_email, message.as_string())
         except:
             traceback.print_exc()
+    return
+
+def api_login_required(func):
+    """Make sure user is logged in before proceeding. 
+    Otherwise return status 403: Forbidden"""
+    @wraps(func)
+    def wrapper_login_required(*args, **kwargs):
+        session = get_session()
+        if session is None:
+            response.status = 403
+            return
+        return func(*args, **kwargs)
+    return wrapper_login_required
+
+def login_required(func):
+    """Make sure user is logged in before proceeding.
+    Otherwise redirect to login"""
+    @wraps(func)
+    def wrapper_login_required(*args, **kwargs):
+        session = get_session()
+        if session is None:
+            response.status = 403
+            return
+        return func(*args, **kwargs)
+    return wrapper_login_required
