@@ -44,12 +44,14 @@ def _():
 
         # check if input pwd doesn't match db password
         if bcrypt.checkpw(bytes(input['pwd'], 'utf-8'), bytes(user['user_pwd'], 'utf-8')):
-            # details = db.details_get(user_name=user['user_name'])
             payload = {
                 'user_name': user['user_name'],
                 'user_email': user['user_email'],
                 'display_name': user['user_name']
             }
+            details = db.details_get(user_name=user['user_name'])
+            if details:
+                payload['display_name'] = details['display_name']
 
             validation = db.validation_get_by_email(user['user_email'])
             if validation:

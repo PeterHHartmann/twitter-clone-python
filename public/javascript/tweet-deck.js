@@ -27,8 +27,8 @@ const prepare_tweet_edit = (edit_btn) => {
             data = {
                 tweet_text: textarea.value
             }
-            const response = await fetch(`/tweet/edit/${tweet_id}`, {
-                method: 'POST',
+            const response = await fetch(`/tweet/${tweet_id}`, {
+                method: 'PUT',
                 body: JSON.stringify(data)
             })
 
@@ -49,7 +49,7 @@ const prepare_tweet_edit = (edit_btn) => {
         delete_btn.className = 'btn-light';
         delete_btn.innerText = 'Delete tweet';
         delete_btn.addEventListener('click', async () => {
-            const response = await fetch(`/tweet/delete/${tweet_id}`, {
+            const response = await fetch(`/tweet/${tweet_id}`, {
                 method: 'DELETE',
             })
             if (response.ok){

@@ -51,7 +51,7 @@ const create_tweet = (tweet_id, user_name, display_name, tweet_image_name, tweet
     tweet.innerHTML =
     `<div class="tweet-container">
         <div class="pfp-container">
-            <img src="${pfp_image_name}" onerror="this.src='/image/default-pfp.jpg'">
+            <img src="${pfp_image_name}">
         </div>
         <div class="content-container">
             <div class="tweet-header">
@@ -89,7 +89,7 @@ try {
             console.log(error);
         };
         const user_name = document.getElementById('tweet_user_name').value
-        const response = await fetch(`/tweet/${user_name}`, {
+        const response = await fetch(`/tweet`, {
             method: "POST",
             body: data
         });

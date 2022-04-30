@@ -110,6 +110,13 @@ VALUES('testaccount', 'testaccount', 1650719171.8843205);
 INSERT INTO email_validations (user_email, validation_url, validation_code) 
 VALUES ('test@email.com', '781169e4-e36a-43f8-af7a-5109fc3d33ed', '417526');
 
+INSERT INTO users(user_name, user_email, user_pwd) 
+VALUES('admin', 'admin@email.com', '$2b$12$r1XwsYlYdoqf7GC3i256aOajRcJ3AbWlUOPUJuERhJVUExKzH9Hq6');
+INSERT INTO user_details(user_name, display_name, joined_date) 
+VALUES('admin', 'admin', 1650719171.8843205);
+INSERT INTO profile_pictures(image_id, user_name, last_modified)
+VALUES(7, 'admin', 1650719171.8843205);
+
 INSERT INTO follows(user_name, follows_user)
 VALUES('Tom','jack');
 INSERT INTO follows(user_name, follows_user)

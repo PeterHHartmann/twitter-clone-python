@@ -1,5 +1,5 @@
 import traceback
-from bottle import post, request, response, redirect, delete
+from bottle import post, request, response, put, delete
 import db.database as db
 from utility.validation import get_jwt
 import json
@@ -9,8 +9,8 @@ import imghdr
 import time
 import traceback
 
-@post('/tweet/<user_name>')
-def _(user_name):
+@post('/tweet')
+def _():
     session = get_jwt()
     if session:
         try:
@@ -33,7 +33,7 @@ def _(user_name):
                 tweet['image_name'] = full_image_name
                 tweet['image_blob'] = tweet_img.file.read()
 
-            tweet_id = db.tweet_post(user_name, tweet)
+            tweet_id = db.tweet_post(session['user_name'], tweet)
             time_ms = round(now * 1000, 0)
             return dict(tweet_id=tweet_id, tweet_timestamp = time_ms, image_name=image_name)
 
@@ -42,36 +42,42 @@ def _(user_name):
             response.status = 500
             return
     else:
-        response.status = 403
+        response.status = 401
         return
 
-@post('/tweet/edit/<tweet_id>')
+@put('/tweet/<tweet_id>')
 def _(tweet_id):
     session = get_jwt()
     if session:
-        data = json.load(request.body)
+        tweet = db.tweet_get(tweet_id)
+        if tweet.get('user_name') == session['user_name']:
+            try:
+                data = json.load(request.body)
+                db.tweet_update(tweet_id, data['tweet_text'])
+                return
+            except:
+                traceback.print_exc()
+                response.status = 500
+                return
+    response.status = 401
+    return
+
+@delete('/tweet/<tweet_id>')
+def _(tweet_id):
+    session = get_jwt()
+    if session:
         try:
-            db.tweet_update(tweet_id, data['tweet_text'])
-            return
+            tweet = db.tweet_get(tweet_id)
+            if tweet.get('user_name') == session['user_name']:
+                db.tweet_delete(tweet_id)
+                return
+            else:
+                response.status = 401
+                return
         except:
             traceback.print_exc()
             response.status = 500
             return
     else:
-        response.status = 403
-        return
-
-@delete('/tweet/delete/<tweet_id>')
-def _(tweet_id):
-    session = get_jwt()
-    if session:
-        try:
-            db.tweet_delete(tweet_id)
-            return
-        except:
-            traceback.print_exc()
-            response.status = 500
-            return
-    else:
-        response.status = 403
+        response.status = 401
         return

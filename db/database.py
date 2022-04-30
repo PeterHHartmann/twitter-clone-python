@@ -204,6 +204,19 @@ def banner_update(user_name, banner):
     finally:
         db.close()
 
+def tweet_get(tweet_id):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.row_factory = dict_factory
+        content = db.execute('''
+            SELECT *
+            FROM tweets
+            WHERE tweet_id=:tweet_id
+            ''', dict(tweet_id=tweet_id)).fetchone()
+        return content
+    finally:
+        db.close()
+
 def tweet_post(user_name, tweet):
     try:
         db = sqlite3.connect(DB_PATH)
