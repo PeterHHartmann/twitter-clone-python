@@ -40,3 +40,42 @@ a {
     width: 1.325rem;
     fill: rgba(0, 0, 0, 0.7);
 }
+
+button, a {
+
+    &.btn {
+
+
+        &-light {
+            height: fit-content;
+            padding: .5rem 1rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            cursor: pointer;
+
+            background: white;
+            color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.3);
+    
+            &:hover {
+                background: rgba(0, 0, 0, 0.1);
+            }
+        }
+        &-dark {
+            height: fit-content;
+            padding: .5rem 1rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            cursor: pointer;
+
+            background: black;
+            color: white;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            
+            &:hover {
+                background: rgba(0, 0, 0, .8);
+            }
+        }
+    }
+
+}

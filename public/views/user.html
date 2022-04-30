@@ -95,10 +95,15 @@
                     % else:
                         <img src="/image/default-pfp.jpg">
                     % end 
+
                     % if get('profile').get('user_name') == get('user_name'):
-                        <button id="edit-profile">Edit profile</button>
+                        <button class="btn-light" id="edit-profile">Edit profile</button>
                     % else:
-                        <button class="follow-btn" id="follow-user" data-user="{{ profile['user_name'] }}">Follow</button>
+                        % if get('user_follows'):
+                            <button class="btn-light" data-user="{{ profile['user_name'] }}" data-following="1" onclick="toggle_follow_user(this)">Unfollow</button>
+                        % else:
+                            <button class="btn-dark" data-user="{{ profile['user_name'] }}" data-following="0" onclick="toggle_follow_user(this)">Follow</button>
+                        % end
                     % end
                 </div>
                 <div class="profile-names">
@@ -161,9 +166,9 @@
                                         
                                         </div>
                                         % if get('user_name') == tweet['user_name']:
-                                            <div class="tweet-settings" id="tweet-settings" data-tweet_id="{{ tweet['tweet_id'] }}">
+                                            <button class="btn-light tweet-settings" id="tweet-settings" data-tweet_id="{{ tweet['tweet_id'] }}">
                                                 edit
-                                            </div>
+                                            </button>
                                         % end
                                     </div>
                                     <div class="tweet-content">

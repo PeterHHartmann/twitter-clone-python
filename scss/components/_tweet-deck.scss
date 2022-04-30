@@ -174,8 +174,8 @@
 
                 .tweet-header {
                     display: flex;
-                    flex-direction: row;
                     gap: .5rem;
+                    height: 25px;
     
                     .user-text {
                         a {
@@ -205,22 +205,8 @@
                     }
 
                     .tweet-settings {
-                        padding: .2rem .5rem;
+                        padding: .225rem .675rem;
                         margin-left: auto;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: rgba(0, 0, 0, 0.7);
-                        font-weight: 400;
-                        font-size: 1rem;
-                        cursor: pointer;
-                        user-select: none;
-
-                        &:hover {
-                            border-radius: 2rem;
-                            background: rgba(0, 0, 0, 0.2);
-                        }
-
                     }
                 }
     
@@ -257,14 +243,15 @@
             flex-direction: column;
 
             > button {
-                border: none;
-                background: rgb(194, 0, 0);
-                color: white;
-                border-radius: 2rem;
-                padding: .7rem 1rem ;
                 margin-top: 1rem;
                 margin-left: auto;
                 margin-right: auto;
+
+                &:hover {
+                    background: rgb(194, 0, 0);
+                    border: 1px solid rgb(194, 0, 0);
+                    color: white;
+                }
             } 
 
             .tweet-container {
@@ -309,17 +296,7 @@
                         }
 
                         button {
-                            border: none;
-                            color: white;
-                            background: black;
-                            font-size: .825rem;
-                            border-radius: 2rem;
-                            padding: .5rem 1rem;
                             margin-left: auto;
-
-                            &:hover {
-                                background: rgba(0, 0, 0, 0.8);
-                            }
                         }
                     }
         

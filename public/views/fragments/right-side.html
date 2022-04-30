@@ -41,26 +41,26 @@
                 <svg class="more-svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
             </div>
         </nav>
+        % if get('who_to_follow'):
         <nav class="follows-nav" id="follows-nav">
             <h3>Who to follow</h3>
-            % if get('who_to_follow'):
-                % for user in get('who_to_follow'):
-                    <div>
-                        <div class="user-info">
-                            % if user['pfp_image_name']:
-                                <img src="/image/profile_picture/{{ user['user_name'] }}/{{ user['pfp_image_name'] }}" class="person-pfp">
-                            % else:
-                                <img src="/image/default-pfp.jpg" class="person-pfp">
-                            % end
-                            <div class="user-text">
-                                <a class="person-handle" href="/user/{{ user['user_name'] }}">{{ user['display_name'] }}</a>
-                                <p class="person-username">@{{ user['user_name'] }}</p>
-                            </div>
+            % for user in get('who_to_follow'):
+                <div>
+                    <div class="user-info">
+                        % if user['pfp_image_name']:
+                            <img src="/image/profile_picture/{{ user['user_name'] }}/{{ user['pfp_image_name'] }}" class="person-pfp">
+                        % else:
+                            <img src="/image/default-pfp.jpg" class="person-pfp">
+                        % end
+                        <div class="user-text">
+                            <a class="person-handle" href="/user/{{ user['user_name'] }}">{{ user['display_name'] }}</a>
+                            <p class="person-username">@{{ user['user_name'] }}</p>
                         </div>
-                        <button class="follow-btn" data-user="{{ user['user_name'] }}">Follow</button>
                     </div>
-                % end
+                    <button class="btn-dark" data-user="{{ user['user_name'] }}" data-following="0" onclick="toggle_follow_user(this)">Follow</button>
+                </div>
             % end
         </nav>
+        % end
     </nav>
 </div>

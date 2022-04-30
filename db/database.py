@@ -361,25 +361,33 @@ def follow_post(user_name, follows_user):
     finally:
         db.close()
 
-def followers_get(user_name):
+def follow_delete(user_name, follows_user):
+    try:
+        db = sqlite3.connect(DB_PATH)
+        db.execute(
+            '''
+            DELETE FROM follows
+            WHERE user_name = :user_name
+            AND follows_user = :follows_user;
+            ''', dict(user_name=user_name, follows_user=follows_user))
+        db.commit()
+    finally:
+        db.close()
+
+def is_following_get(user_name, follows_user):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        tweets = db.execute(
+        follows = db.execute(
             '''
             SELECT 
-                user_details.user_name, 
-                user_details.display_name, 
-                tweets.tweet_id, 
-                tweets.tweet_text, 
-                tweets.tweet_timestamp,
-                tweet_images.image_name
-            FROM tweets
-            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
-            JOIN user_details ON tweets.user_name = user_details.user_name
-            ORDER BY tweets.tweet_timestamp DESC;
-            ''').fetchall()
-        return tweets
+                follows_user
+            FROM follows
+            WHERE user_name = :user_name
+            AND follows_user = :follows_user
+            LIMIT 1;
+            ''', dict(user_name=user_name, follows_user=follows_user)).fetchone()
+        return follows
     finally:
         db.close()
 

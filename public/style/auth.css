@@ -37,6 +37,33 @@ a {
   fill: rgba(0, 0, 0, 0.7);
 }
 
+button.btn-light, a.btn-light {
+  height: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: white;
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+button.btn-light:hover, a.btn-light:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+button.btn-dark, a.btn-dark {
+  height: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: black;
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+button.btn-dark:hover, a.btn-dark:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
 .validation-main .validation-container > button {
   border: 1px solid #646464;
   outline: none;
@@ -245,3 +272,5 @@ a {
     stroke-dashoffset: -124;
   }
 }
+
+/*# sourceMappingURL=auth.css.map */

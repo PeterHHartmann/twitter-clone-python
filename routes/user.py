@@ -1,3 +1,4 @@
+from cmath import log
 from datetime import datetime
 from bottle import get, view, abort, redirect, post, response, request
 from utility.validation import get_jwt
@@ -28,14 +29,17 @@ def _(user_name):
             picture         =   details['pfp_image_name'],
             banner          =   details['banner_image_name']
         )
+        
+        user_follows = db.is_following_get(payload['user_name'], user_name)
 
         who_to_follow = db.details_get_who_to_follow(payload['user_name'])
 
         session_profile_picture = db.profile_picture_get(payload['user_name'])
 
-        return dict(**payload, profile=profile, who_to_follow=who_to_follow, user_tweets=user_tweets, profile_picture=session_profile_picture['image_name'], tweets_count=len(user_tweets))
+        return dict(**payload, profile=profile, user_follows=user_follows, who_to_follow=who_to_follow, user_tweets=user_tweets, profile_picture=session_profile_picture['image_name'], tweets_count=len(user_tweets))
     except:
         traceback.print_exc()
+        # return
         abort(404)
 
 @post('/user/edit/<user_name>')

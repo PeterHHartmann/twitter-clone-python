@@ -14,6 +14,7 @@ const prepare_tweet_edit = (edit_btn) => {
         }
         tweet.querySelector('#tweet-settings').remove();
         const save_btn = document.createElement('button');
+        save_btn.className = 'btn-dark';
         save_btn.innerText = 'Save';
         const modal = document.getElementById('modal-mount')
         modal.classList.remove('hidden')
@@ -45,6 +46,7 @@ const prepare_tweet_edit = (edit_btn) => {
         });
         tweet.querySelector('.tweet-header').appendChild(save_btn)
         const delete_btn = document.createElement('button');
+        delete_btn.className = 'btn-light';
         delete_btn.innerText = 'Delete tweet';
         delete_btn.addEventListener('click', async () => {
             const response = await fetch(`/tweet/delete/${tweet_id}`, {

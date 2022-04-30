@@ -37,6 +37,33 @@ a {
   fill: rgba(0, 0, 0, 0.7);
 }
 
+button.btn-light, a.btn-light {
+  height: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: white;
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+button.btn-light:hover, a.btn-light:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+button.btn-dark, a.btn-dark {
+  height: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: black;
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+button.btn-dark:hover, a.btn-dark:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
 .modal {
   z-index: 10;
   position: fixed;
@@ -174,6 +201,7 @@ a {
   flex-direction: column;
   width: 100%;
   border-radius: 2rem;
+  cursor: pointer;
 }
 .left-side .left-nav .auth-nav #logout-dropup {
   display: flex;
@@ -181,13 +209,8 @@ a {
   padding: 1rem 1rem 0.5rem 1rem;
 }
 .left-side .left-nav .auth-nav #logout-dropup a {
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
   font-size: 1rem;
-  color: white;
-  background: rgba(0, 0, 0, 0.8);
   font-weight: 400;
-  cursor: pointer;
 }
 .left-side .left-nav .auth-nav .user-nav {
   display: flex;
@@ -195,10 +218,19 @@ a {
   padding: 0.5rem;
   border-radius: 4rem;
 }
+.left-side .left-nav .auth-nav .user-nav svg {
+  margin-left: auto;
+  margin-right: 1rem;
+}
 @media (max-width: 1280px) {
   .left-side .left-nav .auth-nav .user-nav svg {
     display: none;
   }
+}
+.left-side .left-nav .auth-nav .user-nav img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 100%;
 }
 .left-side .left-nav .auth-nav .user-nav .user-info {
   font-size: 1rem;
@@ -213,11 +245,6 @@ a {
 .left-side .left-nav .auth-nav .user-nav .user-info div:first-child {
   font-weight: 500;
   color: black;
-}
-.left-side .left-nav .auth-nav .user-nav img {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 100%;
 }
 
 .tweet-deck-container {
@@ -374,8 +401,8 @@ a {
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-header {
   display: flex;
-  flex-direction: row;
   gap: 0.5rem;
+  height: 25px;
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-header .user-text a {
   display: flex;
@@ -399,20 +426,8 @@ a {
   color: rgba(0, 0, 0, 0.6);
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings {
-  padding: 0.2rem 0.5rem;
+  padding: 0.225rem 0.675rem;
   margin-left: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgba(0, 0, 0, 0.7);
-  font-weight: 400;
-  font-size: 1rem;
-  cursor: pointer;
-  user-select: none;
-}
-.tweet-deck .tweet .tweet-container .content-container .tweet-header .tweet-settings:hover {
-  border-radius: 2rem;
-  background: rgba(0, 0, 0, 0.2);
 }
 .tweet-deck .tweet .tweet-container .content-container .tweet-content {
   padding: 0.5rem 0;
@@ -438,14 +453,14 @@ a {
   flex-direction: column;
 }
 .modal .modal-content .tweet > button {
-  border: none;
-  background: #c20000;
-  color: white;
-  border-radius: 2rem;
-  padding: 0.7rem 1rem;
   margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;
+}
+.modal .modal-content .tweet > button:hover {
+  background: #c20000;
+  border: 1px solid #c20000;
+  color: white;
 }
 .modal .modal-content .tweet .tweet-container {
   display: flex;
@@ -482,16 +497,7 @@ a {
   color: rgba(0, 0, 0, 0.6);
 }
 .modal .modal-content .tweet .tweet-container .content-container .tweet-header button {
-  border: none;
-  color: white;
-  background: black;
-  font-size: 0.825rem;
-  border-radius: 2rem;
-  padding: 0.5rem 1rem;
   margin-left: auto;
-}
-.modal .modal-content .tweet .tweet-container .content-container .tweet-header button:hover {
-  background: rgba(0, 0, 0, 0.8);
 }
 .modal .modal-content .tweet .tweet-container .content-container .tweet-content {
   margin: 0.5rem 0;
@@ -593,26 +599,6 @@ a {
 }
 .profile-deck .profile-info .profile-picture button {
   margin-top: 1rem;
-  height: fit-content;
-  padding: 0.5rem 1rem;
-  border-radius: 3rem;
-  font-weight: 700;
-}
-.profile-deck .profile-info .profile-picture button#edit-profile {
-  background: none;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-}
-.profile-deck .profile-info .profile-picture button#edit-profile:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-.profile-deck .profile-info .profile-picture button#follow-user {
-  background: black;
-  border: none;
-  color: white;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-}
-.profile-deck .profile-info .profile-picture button#follow-user:hover {
-  background: rgba(0, 0, 0, 0.8);
 }
 .profile-deck .profile-info .profile-names div {
   font-weight: 600;
@@ -878,14 +864,6 @@ a {
 .right-side .right-nav .follows-nav > div .user-info .user-text a:hover {
   text-decoration: underline;
 }
-.right-side .right-nav .follows-nav > div button {
-  border: none;
-  background: black;
-  color: white;
-  border-radius: 3rem;
-  padding: 0.5rem 1rem;
-  height: min-content;
-}
 
 .home-main {
   display: grid;
@@ -900,3 +878,5 @@ a {
     grid-template-columns: 1fr 19fr;
   }
 }
+
+/*# sourceMappingURL=index.css.map */
