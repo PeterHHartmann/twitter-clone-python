@@ -1,23 +1,16 @@
 SELECT 
-    u.user_name, 
-    ud.display_name,
-    pp.image_name AS pfp_image_name, 
-    b.image_name AS banner_image_name
-FROM users u, user_details ud, profile_pictures pp, banners b
-WHERE NOT ud.user_name = "Tom"
-AND NOT ud.user_name = "admin"
-AND ud.user_name = u.user_name
-AND pp.user_name = u.user_name
-AND b.user_name = u.user_name
-AND NOT u.user_name IN (
-    SELECT f.follows_user 
-    FROM follows f
-    WHERE f.user_name = "Tom"
-)
-AND NOT u.user_email IN (
-    SELECT e.user_email
-    FROM email_validations e
-    WHERE e.user_email = u.user_email
-)
-ORDER BY joined_date DESC 
+    t.tweet_id, 
+    t.tweet_text, 
+    t.tweet_timestamp,
+    ti.image_name,
+    ud.user_name,
+    ud.display_name, 
+    pp.image_name AS pfp_image_name
+FROM 
+    tweets t
+JOIN user_details ud ON ud.user_name = t.user_name
+LEFT JOIN profile_pictures pp ON pp.user_name = t.user_name
+LEFT JOIN tweet_images ti ON ti.tweet_id = t.tweet_id
+WHERE t.user_name = "Tom"
+ORDER BY t.tweet_timestamp DESC
 LIMIT 10;

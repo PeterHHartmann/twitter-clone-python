@@ -13,7 +13,11 @@ def user_get_by_email(user_email):
     try:
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
-        user = db.execute('SELECT * FROM users WHERE user_email=:user_email', dict(user_email=user_email)).fetchone()
+        user = db.execute('''
+            SELECT * 
+            FROM users 
+            WHERE user_email=:user_email;
+            ''', dict(user_email=user_email)).fetchone()
         return user
     finally:
         db.close()
@@ -25,7 +29,7 @@ def user_get_by_username(user_name):
         user = db.execute('''
             SELECT * 
             FROM users 
-            WHERE user_name=:user_name
+            WHERE user_name=:user_name;
         ''', dict(user_name=user_name)).fetchone()
         return user
     finally:
@@ -35,11 +39,26 @@ def user_post(user, validation, details):
     try:
         db = sqlite3.connect(DB_PATH)
         cursor = db.cursor()
-        cursor.execute('INSERT INTO users(user_name, user_email, user_pwd) VALUES(:user_name, :user_email, :user_pwd)', user)
-        cursor.execute('INSERT INTO email_validations(user_email, validation_url, validation_code) VALUES(:user_email, :validation_url, :validation_code)', dict(user_email=user['user_email'], validation_url=validation['url_snippet'], validation_code=validation['code']))
-        cursor.execute('INSERT INTO user_details(user_name, display_name, joined_date) VALUES(:user_name, :display_name, :joined_date)', dict(user_name=user['user_name'], display_name=user['user_name'], **details))
-        cursor.execute('INSERT INTO profile_pictures(user_name, last_modified) VALUES(:user_name, :last_modified);', dict(user_name=user['user_name'], last_modified=details['joined_date']))
-        cursor.execute('INSERT INTO banners(user_name, last_modified) VALUES(:user_name, :last_modified);', dict(user_name=user['user_name'], last_modified=details['joined_date']))
+        cursor.execute('''
+            INSERT INTO users(user_name, user_email, user_pwd) 
+            VALUES(:user_name, :user_email, :user_pwd);
+            ''', user)
+        cursor.execute('''
+            INSERT INTO email_validations(user_email, validation_url, validation_code) 
+            VALUES(:user_email, :validation_url, :validation_code);
+            ''', dict(user_email=user['user_email'], validation_url=validation['url_snippet'], validation_code=validation['code']))
+        cursor.execute('''
+            INSERT INTO user_details(user_name, display_name, joined_date) 
+            VALUES(:user_name, :display_name, :joined_date);
+            ''', dict(user_name=user['user_name'], display_name=user['user_name'], **details))
+        cursor.execute('''
+            INSERT INTO profile_pictures(user_name, last_modified) 
+            VALUES(:user_name, :last_modified);
+            ''', dict(user_name=user['user_name'], last_modified=details['joined_date']))
+        cursor.execute('''
+            INSERT INTO banners(user_name, last_modified) 
+            VALUES(:user_name, :last_modified);
+            ''', dict(user_name=user['user_name'], last_modified=details['joined_date']))
         db.commit()
     finally:
         db.close()
@@ -55,7 +74,11 @@ def details_get_who_to_follow(user_name):
                 ud.display_name,
                 pp.image_name AS pfp_image_name, 
                 b.image_name AS banner_image_name
-            FROM users u, user_details ud, profile_pictures pp, banners b
+            FROM 
+                users u, 
+                user_details ud, 
+                profile_pictures pp, 
+                banners b
             WHERE NOT ud.user_name = :user_name
             AND NOT ud.user_name = "admin"
             AND ud.user_name = u.user_name
@@ -84,19 +107,26 @@ def details_get(user_name):
         db.row_factory = dict_factory
         details = json.dumps(db.execute('''
             SELECT
-                user_details.user_name, 
-                user_details.display_name, 
-                user_details.bio, 
-                user_details.joined_date, 
-                profile_pictures.image_name AS pfp_image_name, 
-                banners.image_name AS banner_image_name
-            FROM user_details
-            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
-            JOIN banners ON banners.user_name = user_details.user_name
-            JOIN users ON users.user_name = user_details.user_name
-            LEFT JOIN email_validations ON email_validations.user_email = users.user_email
-            WHERE user_details.user_name=:user_name
-            AND email_validations.user_email IS NULL
+                u.user_name, 
+                ud.display_name, 
+                ud.bio, 
+                ud.joined_date, 
+                pp.image_name AS pfp_image_name, 
+                b.image_name AS banner_image_name
+            FROM 
+                users u, 
+                user_details ud, 
+                profile_pictures pp, 
+                banners b
+            WHERE u.user_name = :user_name
+            AND ud.user_name = u.user_name
+            AND pp.user_name = u.user_name
+            AND b.user_name = u.user_name
+            AND NOT u.user_email IN (
+                SELECT e.user_email
+                FROM email_validations e
+                WHERE e.user_email = u.user_email
+            )
             LIMIT 1;
             ''', dict(user_name=user_name)).fetchone())
         return json.loads(details)
@@ -198,7 +228,10 @@ def tweet_get_image(tweet_id):
         db = sqlite3.connect(DB_PATH)
         db.row_factory = dict_factory
         content = db.execute('''
-            SELECT tweet_id, image_name, image_blob
+            SELECT 
+                tweet_id, 
+                image_name, 
+                image_blob
             FROM tweet_images
             WHERE tweet_id=:tweet_id
             ''', dict(tweet_id=tweet_id)).fetchone()
@@ -244,19 +277,21 @@ def tweets_get_by_user(user_name):
         tweets = db.execute(
             '''
             SELECT 
-                tweets.user_name, 
-                user_details.display_name, 
-                profile_pictures.image_name AS pfp_image_name,
-                tweets.tweet_id, 
-                tweets.tweet_text, 
-                tweets.tweet_timestamp,
-                tweet_images.image_name
-            FROM tweets
-            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
-            JOIN user_details ON tweets.user_name = user_details.user_name
-            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
-            WHERE tweets.user_name=:user_name
-            ORDER BY tweets.tweet_timestamp DESC;
+                t.tweet_id, 
+                t.tweet_text, 
+                t.tweet_timestamp,
+                ti.image_name,
+                ud.user_name,
+                ud.display_name, 
+                pp.image_name AS pfp_image_name
+            FROM 
+                tweets t
+            JOIN user_details ud ON ud.user_name = t.user_name
+            LEFT JOIN profile_pictures pp ON pp.user_name = t.user_name
+            LEFT JOIN tweet_images ti ON ti.tweet_id = t.tweet_id
+            WHERE t.user_name = "Tom"
+            ORDER BY t.tweet_timestamp DESC
+            LIMIT 10;
             ''', dict(user_name=user_name)).fetchall()
         return tweets
     finally:
@@ -268,26 +303,26 @@ def tweets_get_following(user_name):
         db.row_factory = dict_factory
         tweets = db.execute(
             '''
-            SELECT 
-                user_details.user_name, 
-                user_details.display_name, 
-                profile_pictures.image_name AS pfp_image_name, 
-                tweets.tweet_id, 
-                tweets.tweet_text, 
-                tweets.tweet_timestamp,
-                tweet_images.image_name
-            FROM tweets
-            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
-            JOIN user_details ON tweets.user_name = user_details.user_name
-            JOIN profile_pictures ON profile_pictures.user_name = user_details.user_name
-            WHERE user_details.user_name IN (
+            SELECT
+                t.tweet_id, 
+                t.tweet_text, 
+                t.tweet_timestamp,
+                ti.image_name,
+                ud.user_name, 
+                ud.display_name,
+                pp.image_name AS pfp_image_name
+            FROM 
+                tweets t
+            JOIN user_details ud ON ud.user_name = t.user_name
+            LEFT JOIN profile_pictures pp ON pp.user_name = t.user_name
+            LEFT JOIN tweet_images ti ON ti.tweet_id = t.tweet_id
+            WHERE t.user_name IN (
                 SELECT f.follows_user
                 FROM follows f
-                JOIN users u
-                ON (f.user_name = u.user_name)
-                WHERE u.user_name = :user_name
-            ) OR tweets.user_name=:user_name
-            ORDER BY tweets.tweet_timestamp DESC;
+                WHERE f.user_name = :user_name
+            ) OR t.user_name = :user_name
+            ORDER BY t.tweet_timestamp DESC
+            LIMIT 10;
             ''', dict(user_name=user_name)).fetchall()
         return tweets
     finally:
