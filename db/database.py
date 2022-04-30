@@ -289,7 +289,7 @@ def tweets_get_by_user(user_name):
             JOIN user_details ud ON ud.user_name = t.user_name
             LEFT JOIN profile_pictures pp ON pp.user_name = t.user_name
             LEFT JOIN tweet_images ti ON ti.tweet_id = t.tweet_id
-            WHERE t.user_name = "Tom"
+            WHERE t.user_name = :user_name
             ORDER BY t.tweet_timestamp DESC
             LIMIT 10;
             ''', dict(user_name=user_name)).fetchall()
