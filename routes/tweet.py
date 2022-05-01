@@ -1,6 +1,6 @@
 from bottle import post, request, response, put, delete
 import db.database as db
-from utility.validation import get_session, login_required, api_login_required
+from utility.validation import get_session, api_login_required
 import json
 import uuid
 import imghdr

@@ -1,4 +1,4 @@
-from bottle import run, TEMPLATE_PATH, default_app, request
+from bottle import run, TEMPLATE_PATH, default_app
 
 TEMPLATE_PATH.insert(0, 'public/views')
 
@@ -18,3 +18,4 @@ try:
     application = default_app()
 except:
     run(host='127.0.0.1', port=3000, debug=True, reloader=True)
+    pass

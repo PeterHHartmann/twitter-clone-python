@@ -27,6 +27,7 @@ def set_session(payload):
     except:
         traceback.print_exc()
         cookie_value = encoded_jwt
+        pass
     response.set_cookie(name="JWT", value=json.dumps(cookie_value), secret="secret_info", **cookie_opts)
 
 def get_session():
@@ -46,6 +47,7 @@ def send_validation_email(url, code, user_name, user_email):
         receiver_email = user_email
     except:
         receiver_email = os.getenv('EMAIL')
+        pass
     password = os.getenv('EMAIL_PW')
 
     message = MIMEMultipart("alternative")
@@ -58,6 +60,7 @@ def send_validation_email(url, code, user_name, user_email):
         full_url = f'https://peterhartmann.eu.pythonanywhere.com/auth/{url}'
     except:
         full_url = f'http://localhost:3000/auth/{url}'
+        pass
 
     # Create the plain-text and HTML version of your message
     text = f"""\
