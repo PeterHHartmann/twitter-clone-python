@@ -10,7 +10,6 @@ import traceback
 @post('/tweet')
 @api_login_required
 def _():
-    print('it got through')
     session = get_session()
     try:
         now = time.time()

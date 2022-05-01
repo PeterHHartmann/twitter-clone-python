@@ -30,17 +30,16 @@ def _():
         'pwd': data.get('pwd'),
     }
     if not input['email'] or len(input['email'].strip()) < 1:
-        response.status = 400
+        response.status = 401
         return dict(msg='Please enter an email')
     if not re.match(REGEX_EMAIL, input['email']):
-        response.status = 400
+        response.status = 401
         return dict(msg='Please enter a valid email')
     if not input['pwd'] or len(input['pwd'].strip()) < 1:
-        response.status = 400
+        response.status = 401
         return dict(msg='Please enter a password')
     try:
         user = db.user_get_by_email(input['email'])
-        print(user)
 
         # check if input pwd doesn't match db password
         if bcrypt.checkpw(bytes(input['pwd'], 'utf-8'), bytes(user['user_pwd'], 'utf-8')):
@@ -60,11 +59,11 @@ def _():
             set_session(payload)
             return
         else:
-            response.status = 403
+            response.status = 401
             return dict(msg='Invalid email or password')
     except:
         traceback.print_exc()
-        response.status = 403
+        response.status = 401
         return dict(msg='Invalid email or password')
 
 @get('/signup')
@@ -96,8 +95,8 @@ def _():
     if not re.match(REGEX_EMAIL, user_email):
         response.status = 400
         return dict(msg='Please enter a valid email')
+
     user_pwd = data.get('user_pwd')
-    print(user_pwd)
     if len(user_pwd) < 6 or len(user_pwd) > 20:
         response.status = 400
         return dict(msg='Password must be longer than 6 or shorter than 20 characters')

@@ -85,9 +85,7 @@ try {
         tweet_textarea.value = ''
         try {
             data.append('tweet_img', document.getElementById('image-input').files[0], 'tweet-img.jpg')
-        } catch (error){
-            console.log(error);
-        };
+        } catch{ };
         const user_name = document.getElementById('tweet_user_name').value
         const response = await fetch(`/tweet`, {
             method: "POST",

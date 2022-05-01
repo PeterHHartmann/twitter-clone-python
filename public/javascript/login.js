@@ -18,7 +18,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
         email: document.getElementById('login-email').value,
         pwd: document.getElementById('login-password').value
     }
-    console.log(data);
     const response = await fetch('/login', {
         method: 'POST',
         credentials: 'same-origin',
@@ -31,13 +30,11 @@ document.getElementById('login-form').addEventListener('submit', async function(
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data)
     });
-    console.log(response);
     if ( response.ok ){
         location = '/'
     } else if (response.status === 403){
         const body = await response.json()
         location = `auth/${body.url_snippet}`
-        console.log(response);
     } else {
         const body = await response.json()
         const error_prompt = document.createElement('span');

@@ -9,9 +9,7 @@ const prepare_tweet_edit = (edit_btn) => {
             textarea.addEventListener('input', (e) => auto_grow(e.target))
             tweet.querySelector('.tweet-text').innerHTML = '';
             tweet.querySelector('.tweet-text').appendChild(textarea)
-        } catch (error) {
-            console.log(error);
-        }
+        } catch { }
         tweet.querySelector('#tweet-settings').remove();
         const save_btn = document.createElement('button');
         save_btn.className = 'btn-dark';
@@ -37,9 +35,7 @@ const prepare_tweet_edit = (edit_btn) => {
                 const actual_tweet = document.querySelector(`#tweetid-${tweet_id}`);
                 try {                    
                     actual_tweet.querySelector('.tweet-text').innerHTML = data.tweet_text
-                } catch (error) {
-                    console.log(error);
-                }
+                } catch { }
             }
             modal_content.innerHTML = '';
             modal.classList.add('hidden')
