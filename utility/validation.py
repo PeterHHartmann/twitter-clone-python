@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 from functools import wraps
-from bottle import request, response
+from bottle import request, response, redirect
 import jwt
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -119,7 +119,6 @@ def login_required(func):
     def wrapper_login_required(*args, **kwargs):
         session = get_session()
         if session is None:
-            response.status = 403
-            return
+            return redirect('/login')
         return func(*args, **kwargs)
     return wrapper_login_required

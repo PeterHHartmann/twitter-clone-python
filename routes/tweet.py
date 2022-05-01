@@ -40,7 +40,7 @@ def _():
         return
 
 @put('/tweet/<tweet_id>')
-@login_required
+@api_login_required
 def _(tweet_id):
     session = get_session()
     tweet = db.tweet_get(tweet_id)

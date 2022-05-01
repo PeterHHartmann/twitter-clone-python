@@ -145,3 +145,5 @@ bin
 include
 
 **/*.css.map
+
+pyenv.cfg
