@@ -145,3 +145,5 @@ bin
 include
 
 **/*.css.map
+
+.DS_Store
