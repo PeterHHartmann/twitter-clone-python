@@ -347,17 +347,20 @@ def tweets_get_all():
         db.row_factory = dict_factory
         tweets = db.execute(
             '''
-            SELECT 
-                user_details.user_name, 
-                user_details.display_name, 
-                tweets.tweet_id, 
-                tweets.tweet_text, 
-                tweets.tweet_timestamp,
-                tweet_images.image_name
-            FROM tweets
-            LEFT JOIN tweet_images ON tweets.tweet_id = tweet_images.tweet_id
-            JOIN user_details ON tweets.user_name = user_details.user_name
-            ORDER BY tweets.tweet_timestamp DESC;
+            SELECT
+                t.tweet_id, 
+                t.tweet_text, 
+                t.tweet_timestamp,
+                ti.image_name,
+                ud.user_name, 
+                ud.display_name,
+                pp.image_name AS pfp_image_name
+            FROM 
+                tweets t
+            JOIN user_details ud ON ud.user_name = t.user_name
+            LEFT JOIN profile_pictures pp ON pp.user_name = t.user_name
+            LEFT JOIN tweet_images ti ON ti.tweet_id = t.tweet_id
+            ORDER BY t.tweet_timestamp DESC;
             ''').fetchall()
         return tweets
     finally:

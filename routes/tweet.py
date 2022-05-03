@@ -61,7 +61,7 @@ def _(tweet_id):
     session = get_session()
     try:
         tweet = db.tweet_get(tweet_id)
-        if tweet.get('user_name') == session['user_name']:
+        if tweet.get('user_name') == session['user_name'] or session['user_name'] == 'admin':
             db.tweet_delete(tweet_id)
             return
         else:
