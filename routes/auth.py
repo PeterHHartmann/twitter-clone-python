@@ -16,8 +16,6 @@ from utility.regex_str import REGEX_EMAIL, REGEX_USER_NAME, REGEX_PASSWORD
 def _():
     session = get_session()
     if session:
-        if session.get('status'):
-            return redirect(f'/auth/{session["status"]["url_snippet"]}')
         return redirect('/')
     else: 
         return
@@ -39,23 +37,24 @@ def _():
         response.status = 401
         return dict(msg='Please enter a password')
     try:
-        user = db.user_get_by_email(input['email'])
+        user = db.user_select_by_email(input['email'])
 
         # check if input pwd doesn't match db password
-        if bcrypt.checkpw(bytes(input['pwd'], 'utf-8'), bytes(user['user_pwd'], 'utf-8')):
+        if bcrypt.checkpw(bytes(input['pwd'], 'utf-8'), bytes(user['password'], 'utf-8')):
             payload = {
+                'user_id': user['user_id'],
                 'user_name': user['user_name'],
-                'user_email': user['user_email'],
+                'user_email': user['email'],
                 'display_name': user['user_name']
             }
-            details = db.details_get(user_name=user['user_name'])
+            details = db.profile_select(user['user_id'])
             if details:
                 payload['display_name'] = details['display_name']
 
-            validation = db.validation_get_by_email(user['user_email'])
+            validation = db.verification_select_by_user_id(user['user_id'])
             if validation:
                 response.status = 403
-                return dict(url_snippet=validation['validation_url'])
+                return dict(url_snippet=validation['url_snippet'])
             set_session(payload)
             return
         else:
@@ -108,22 +107,13 @@ def _():
     hashed = bcrypt.hashpw(bytes(user_pwd, 'utf_8'), salt).decode('utf-8')
 
     try:
-        validation = {
-            'code': randint(100000, 999999),
-            'url_snippet': str(uuid4())
-        }
+        inserted_user = db.user_insert(user_name, user_email, hashed)
+        verification = db.verification_select_by_user_id(inserted_user['user_id'])
 
-        print(validation['code'])
-        user = dict(
-            user_name=user_name,
-            user_email=user_email,
-            user_pwd=hashed)
+        print(verification['verification_code'])
 
-        details = dict(joined_date=time.time())
-
-        db.user_post(user, validation, details)
-        send_validation_email(validation['url_snippet'], validation['code'], user_name, user_email)
-        return dict(url_snippet=validation['url_snippet'])
+        send_validation_email(verification['url_snippet'], verification['verification_code'], user_name, user_email)
+        return dict(url_snippet=verification['url_snippet'])
         
     except Exception as e:
         traceback.print_exc()

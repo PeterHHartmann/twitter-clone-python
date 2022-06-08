@@ -47,8 +47,8 @@
             % for user in get('who_to_follow'):
                 <div>
                     <div class="user-info">
-                        % if user['pfp_image_name']:
-                            <img src="/image/profile_picture/{{ user['user_name'] }}/{{ user['pfp_image_name'] }}" class="person-pfp">
+                        % if user['avatar_image_name']:
+                            <img src="/image/profile_picture/{{ user['user_name'] }}/{{ user['avatar_image_name'] }}" class="person-pfp">
                         % else:
                             <img src="/image/default-pfp.jpg" class="person-pfp">
                         % end

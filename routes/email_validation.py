@@ -10,8 +10,8 @@ import db.database as db
 @view('email-validation')
 def _(url_code):
     try:
-        validation = db.validation_get_by_url(url_code)
-        return dict(user_name=validation['user_name'], user_email=validation['user_email'], confirmation_url=url_code)
+        validation = db.verification_select_by_url_snippet(url_code)
+        return dict(user_name=validation['user_name'], user_email=validation['email'], confirmation_url=url_code)
     except:
         traceback.print_exc()
         return redirect('/login')
@@ -21,7 +21,8 @@ def _(url_code):
     data = json.load(request.body)
     try:
         new_code = randint(100000, 999999)
-        db.validation_update_code(data['user_email'], new_code)
+        user = db.user_select_by_email(data['user_email'])
+        db.verification_update_code(user['user_id'], new_code)
         send_validation_email(url_code, new_code, data['user_name'], data['user_email'])
         return
     except:
@@ -33,18 +34,12 @@ def _(url_code):
 def _(url_code):
     data = json.load(request.body)
     try:
-        confirmation = db.validation_get_by_url(url_code)
+        confirmation = db.verification_select_by_url_snippet(url_code)
         if confirmation:
-            if confirmation['validation_code'] == int(data['code']):
-                db.validation_delete(dict(user_email=data['user_email']))
-
-                # try to remove the email validation field on JWT on cookie
-                try:
-                    payload = get_session()
-                    del payload['status']
-                    set_session(payload)
-                finally:
-                    return
+            if confirmation['verification_code'] == int(data['code']):
+                user = db.user_select_by_email(data['user_email'])
+                db.verification_delete(user['user_id'])
+                return
             else:
                 response.status = 403
                 return dict(msg='Wrong code please try again')

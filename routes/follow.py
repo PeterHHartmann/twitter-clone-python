@@ -8,7 +8,7 @@ import db.database as db
 def _(user_to_follow):
     session = get_session()
     try:
-        db.follow_post(session['user_name'], user_to_follow)
+        db.follow_insert(session['user_id'], user_to_follow)
         return
     except:
         traceback.print_exc()
@@ -19,9 +19,9 @@ def _(user_to_follow):
 @api_login_required
 def _(user_to_follow):
     session = get_session()
-    if session.get('user_name'):
+    if session.get('user_id'):
         try:
-            db.follow_delete(session['user_name'], user_to_follow)
+            db.follow_delete(session['user_id'], user_to_follow)
             return
         except:
             traceback.print_exc()

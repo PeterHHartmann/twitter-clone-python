@@ -1,10 +1,8 @@
-from datetime import datetime
 from bottle import get, view, abort, post, response, request
 from utility.validation import get_session, login_required, api_login_required
 import db.database as db
 import traceback
 import imghdr
-import time
 import uuid
 
 @get('/user/<user_name>')
@@ -13,10 +11,10 @@ import uuid
 def _(user_name):
     payload = get_session()
     try:
-        details = db.details_get(user_name)
-        joined_month = datetime.fromtimestamp(details['joined_date']).strftime('%B')
-        joined_year = datetime.fromtimestamp(details['joined_date']).strftime('%Y')
-        user_tweets = db.tweets_get_by_user(user_name)
+        details = db.profile_select(user_name)
+        joined_month = details['joined_at'].strftime('%B')
+        joined_year = details['joined_at'].strftime('%Y')
+        user_tweets = db.tweets_select_by_user(user_name)
 
         profile = dict(
             user_name       =   details['user_name'], 
@@ -24,15 +22,15 @@ def _(user_name):
             bio             =   details['bio'],
             joined_month    =   joined_month, 
             joined_year     =   joined_year,
-            picture         =   details['pfp_image_name'],
+            picture         =   details['avatar_image_name'],
             banner          =   details['banner_image_name']
         )
 
-        user_follows = db.is_following_get(payload['user_name'], user_name)
-        who_to_follow = db.details_get_who_to_follow(payload['user_name'])
-        session_profile_picture = db.profile_picture_get(payload['user_name'])
+        user_follows = db.follow_select(payload['user_id'], user_name)
+        who_to_follow = db.profiles_select_who_to_follow(payload['user_id'])
+        session_profile_picture = db.avatar_select(payload['user_id'])
 
-        return dict(**payload, profile=profile, user_follows=user_follows, who_to_follow=who_to_follow, user_tweets=user_tweets, profile_picture=session_profile_picture['image_name'], tweets_count=len(user_tweets))
+        return dict(**payload, profile=profile, user_follows=user_follows, who_to_follow=who_to_follow, user_tweets=user_tweets, profile_picture=session_profile_picture, tweets_count=len(user_tweets))
     except:
         traceback.print_exc()
         abort(404)
@@ -56,7 +54,11 @@ def _(user_name):
                 return
             image_name = uuid.uuid4()
             full_image_name = f"{image_name}{image_extension}"
-            db.profile_picture_update(payload['user_name'], dict(image_name=full_image_name, image_blob=image.read(), last_modified=time.time()))
+            current_avatar = db.avatar_select(payload['user_id'])
+            if current_avatar:
+                db.avatar_update(payload['user_id'], full_image_name, image.read())
+            else:
+                db.avatar_insert(payload['user_id'], full_image_name, image.read())
 
         if banner:
             image = banner.file
@@ -66,9 +68,14 @@ def _(user_name):
                 return
             image_name = uuid.uuid4()
             full_image_name = f"{image_name}{image_extension}"
-            db.banner_update(payload['user_name'], dict(image_name=full_image_name, image_blob=image.read(), last_modified=time.time()))
+
+            current_banner = db.banner_select(payload['user_id'])
+            if current_banner:
+                db.banner_update(payload['user_id'], full_image_name, image.read())
+            else:
+                db.banner_insert(payload['user_id'], full_image_name, image.read())
         try:
-            db.details_update(user_name, details)
+            db.profile_update(payload['user_id'], **details)
             return
         except:
             traceback.print_exc()

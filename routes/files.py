@@ -19,12 +19,13 @@ def _(image_name):
 @get('/image/profile_picture/<user_name>/<image_name>')
 def _(user_name, image_name):
     try:
-        profile_picture = db.profile_picture_get(user_name)
+        user = db.user_select_by_username(user_name)
+        profile_picture = db.avatar_select(user['user_id'])
         if profile_picture['image_blob']:
             stream = BytesIO(profile_picture['image_blob'])
             bytes = stream.read()
 
-            last_modified_str = datetime.fromtimestamp(profile_picture['last_modified']).strftime('%a, %d %b %Y %H:%M:%S GMT')
+            last_modified_str = profile_picture['last_modified'].strftime('%a, %d %b %Y %H:%M:%S GMT')
             response.set_header('Content-Type', 'image/*')
             response.set_header('Last-Modified', last_modified_str)
             response.set_header("Cache-Control", "public, max-age=604800")
@@ -40,12 +41,13 @@ def _(user_name, image_name):
 @get('/image/banner/<user_name>/<image_name>')
 def _(user_name, image_name):
     try:
-        banner = db.banner_get(user_name)
+        user = db.user_select_by_username(user_name)
+        banner = db.banner_select(user['user_id'])
         if banner['image_blob']:
             stream = BytesIO(banner['image_blob'])
             bytes = stream.read()
 
-            last_modified_str = datetime.fromtimestamp(banner['last_modified']).strftime('%a, %d %b %Y %H:%M:%S GMT')
+            last_modified_str = banner['last_modified'].strftime('%a, %d %b %Y %H:%M:%S GMT')
             response.set_header('Content-Type', 'image/*')
             response.set_header('Last-Modified', last_modified_str)
             response.set_header("Cache-Control", "public, max-age=604800")
@@ -61,7 +63,7 @@ def _(user_name, image_name):
 @get('/tweet/<tweet_id>/<image_name>')
 def _(tweet_id, image_name):
     try:
-        tweet_image = db.tweet_get_image(tweet_id)
+        tweet_image = db.tweet_image_select(image_name)
         if tweet_image:
             stream = BytesIO(tweet_image['image_blob'])
             bytes = stream.read()

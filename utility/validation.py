@@ -41,13 +41,11 @@ def get_session():
 
 def send_validation_email(url, code, user_name, user_email):
     sender_email = os.getenv('EMAIL')
-
     try:
         import production
         receiver_email = user_email
     except:
         receiver_email = os.getenv('EMAIL')
-        pass
     password = os.getenv('EMAIL_PW')
 
     message = MIMEMultipart("alternative")
@@ -60,7 +58,6 @@ def send_validation_email(url, code, user_name, user_email):
         full_url = f'https://peterhartmann.eu.pythonanywhere.com/auth/{url}'
     except:
         full_url = f'http://localhost:3000/auth/{url}'
-        pass
 
     # Create the plain-text and HTML version of your message
     text = f"""\
@@ -95,6 +92,7 @@ def send_validation_email(url, code, user_name, user_email):
 
     # Create secure connection with server and send email
     context = ssl.create_default_context()
+    print(sender_email)
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         try:
             server.login(sender_email, password)

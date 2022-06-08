@@ -54,7 +54,7 @@
                 </div>
                 <div class="user-nav">
                     % if profile_picture:
-                        <img id="session-user-pfp" src="/image/profile_picture/{{ user_name }}/{{ profile_picture }}">
+                        <img id="session-user-pfp" src="/image/profile_picture/{{ user_name }}/{{ profile_picture['image_name'] }}">
                     % else:
                         <img id="session-user-pfp" src="/image/default-pfp.jpg">
                     % end

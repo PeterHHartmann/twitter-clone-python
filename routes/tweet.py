@@ -14,8 +14,7 @@ def _():
     try:
         now = time.time()
         tweet = {
-            'tweet_text': request.forms.get('tweet_text'),
-            'tweet_timestamp': now
+            'text': request.forms.get('tweet_text')
         }
         tweet_img = request.files.get('tweet_img')
         image_name = None
@@ -27,10 +26,9 @@ def _():
                 return
             image_name = str(uuid.uuid4())
             full_image_name = f"{image_name}{image_extension}"
-            tweet['image_name'] = full_image_name
-            tweet['image_blob'] = tweet_img.file.read()
+            tweet['images'] = [{'image_name': full_image_name, 'image_blob': tweet_img.file.read()}]
 
-        tweet_id = db.tweet_post(session['user_name'], tweet)
+        tweet_id = db.tweet_insert(session['user_id'], tweet)
         time_ms = round(now * 1000, 0)
         return dict(tweet_id=tweet_id, tweet_timestamp = time_ms, image_name=image_name)
     except:
