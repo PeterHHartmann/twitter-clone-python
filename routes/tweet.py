@@ -17,7 +17,7 @@ def _():
             'text': request.forms.get('tweet_text')
         }
         tweet_img = request.files.get('tweet_img')
-        image_name = None
+        full_image_name = None
         if tweet_img:
             image = tweet_img.file
             image_extension = f'.{imghdr.what(image)}'

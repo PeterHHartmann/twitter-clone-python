@@ -40,6 +40,7 @@ def get_session():
         return None
 
 def send_validation_email(url, code, user_name, user_email):
+    print(code)
     sender_email = os.getenv('EMAIL')
     try:
         import production
@@ -92,7 +93,6 @@ def send_validation_email(url, code, user_name, user_email):
 
     # Create secure connection with server and send email
     context = ssl.create_default_context()
-    print(sender_email)
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         try:
             server.login(sender_email, password)

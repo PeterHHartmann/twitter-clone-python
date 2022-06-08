@@ -4,26 +4,28 @@ db_config = {
   "host":"localhost",
   "port": 3306,
   "user":"root",
-  "password":"",
+  "password":"passwd",
   "database":"twitter_clone"
 }
 
 db_conn = mysql.connector.connect(**db_config)
+
+# db_conn = mysql.connector.connect(**db_config)
 # db_conn.autocommit = False
 
 def user_select_by_email(email):
-  try:
-    db = db_conn.cursor(dictionary=True)
-    query = '''
-      SELECT * 
-      FROM users 
-      WHERE email=%(email)s
-    '''
-    params = {'email': email}
-    db.execute(query, params)
-    user = db.fetchone()
-    return user
-  finally:
+    try:
+        db = db_conn.cursor(dictionary=True)
+        query = '''
+        SELECT * 
+        FROM users 
+        WHERE email=%(email)s
+        '''
+        params = {'email': email}
+        db.execute(query, params)
+        user = db.fetchone()
+        return user
+    finally:
       db.close()
 
 def user_select_by_username(user_name):
@@ -606,13 +608,8 @@ def verification_update_code(user_id, new_code):
     db = db_conn.cursor(dictionary=True)
     query = '''
       UPDATE user_verifications
-      SET verification_code = %{new_code}s
-      WHERE user_id IN (
-          SELECT uv.user_id FROM user_verifications uv
-          INNER JOIN users u 
-          ON uv.user_id = u.user_id
-          WHERE u.user_id=%(user_id)s
-      );
+      SET verification_code = %(new_code)s
+      WHERE user_id = %(user_id)s
     '''
     params = {'user_id': user_id, 'new_code': new_code}
     db.execute(query, params)
@@ -628,12 +625,7 @@ def verification_delete(user_id):
     db = db_conn.cursor(dictionary=True)
     query = '''
       DELETE FROM user_verifications
-      WHERE user_id IN (
-          SELECT uv.user_id FROM user_verifications uv
-          INNER JOIN users u 
-          ON uv.user_id = u.user_id
-          WHERE u.user_id=%(user_id)s
-      );
+      WHERE user_id = %(user_id)s;
     '''
     params = {'user_id': user_id}
     db.execute(query, params) 
