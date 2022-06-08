@@ -30,7 +30,7 @@ def _():
 
         tweet_id = db.tweet_insert(session['user_id'], tweet)
         time_ms = round(now * 1000, 0)
-        return dict(tweet_id=tweet_id, tweet_timestamp = time_ms, image_name=image_name)
+        return dict(tweet_id=tweet_id, tweet_timestamp = time_ms, image_name=full_image_name)
     except:
         traceback.print_exc()
         response.status = 500
@@ -40,8 +40,8 @@ def _():
 @api_login_required
 def _(tweet_id):
     session = get_session()
-    tweet = db.tweet_get(tweet_id)
-    if tweet.get('user_name') == session['user_name']:
+    tweet = db.tweet_select(tweet_id)
+    if tweet.get('user_id') == session['user_id']:
         try:
             data = json.load(request.body)
             db.tweet_update(tweet_id, data['tweet_text'])
@@ -58,8 +58,8 @@ def _(tweet_id):
 def _(tweet_id):
     session = get_session()
     try:
-        tweet = db.tweet_get(tweet_id)
-        if tweet.get('user_name') == session['user_name'] or session['user_name'] == 'admin':
+        tweet = db.tweet_select(tweet_id)
+        if tweet.get('user_id') == session['user_id'] or session['user_name'] == 'admin':
             db.tweet_delete(tweet_id)
             return
         else:

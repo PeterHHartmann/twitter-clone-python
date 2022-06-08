@@ -62,7 +62,7 @@ const create_tweet = (tweet_id, user_name, display_name, tweet_image_name, tweet
                     </a>
                 </div>
                 <div class="tweeted-date">· ${time_since_tweeted}</div>
-                <div class="tweet-settings" id="tweet-settings" data-tweet_id="${tweet_id}">
+                <div class="btn-light tweet-settings" id="tweet-settings" data-tweet_id="${tweet_id}">
                     edit
                 </div>
             </div>

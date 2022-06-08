@@ -284,6 +284,7 @@ def tweet_insert(user_id, tweet):
     '''
     params = {'user_id': user_id, 'tweet_text': tweet['text']}
     db.execute(query, params)
+    tweet_id = db.lastrowid
     if tweet.get('images'):
       tweet_id = db.lastrowid
       for tweet_image in tweet['images']:
@@ -294,6 +295,7 @@ def tweet_insert(user_id, tweet):
         image_params = {'tweet_id': tweet_id, 'image_name': tweet_image['image_name'], 'image_blob': tweet_image['image_blob']}
         db.execute(image_query, image_params)
     db_conn.commit()
+    return tweet_id
   except mysql.connector.Error as error:
     print("Failed to update record to database rollback: {}".format(error))
     db_conn.rollback()
