@@ -16,8 +16,8 @@ from utility.regex_str import REGEX_EMAIL, REGEX_USER_NAME, REGEX_PASSWORD
 def _():
     session = get_session()
     if session:
-        if session.get('status'):
-            return redirect(f'/auth/{session["status"]["url_snippet"]}')
+#        if session.get('status'):
+#            return redirect(f'/auth/{session["status"]["url_snippet"]}')
         return redirect('/')
     else: 
         return
@@ -52,10 +52,10 @@ def _():
             if details:
                 payload['display_name'] = details['display_name']
 
-            validation = db.validation_get_by_email(user['user_email'])
-            if validation:
-                response.status = 403
-                return dict(url_snippet=validation['validation_url'])
+            #validation = db.validation_get_by_email(user['user_email'])
+            #if validation:
+            #    response.status = 403
+            #    return dict(url_snippet=validation['validation_url'])
             set_session(payload)
             return
         else:
@@ -108,12 +108,12 @@ def _():
     hashed = bcrypt.hashpw(bytes(user_pwd, 'utf_8'), salt).decode('utf-8')
 
     try:
-        validation = {
-            'code': randint(100000, 999999),
-            'url_snippet': str(uuid4())
-        }
+    #     validation = {
+    #         'code': randint(100000, 999999),
+    #         'url_snippet': str(uuid4())
+    #     }
 
-        print(validation['code'])
+    #     print(validation['code'])
         user = dict(
             user_name=user_name,
             user_email=user_email,
@@ -122,8 +122,8 @@ def _():
         details = dict(joined_date=time.time())
 
         db.user_post(user, validation, details)
-        send_validation_email(validation['url_snippet'], validation['code'], user_name, user_email)
-        return dict(url_snippet=validation['url_snippet'])
+    #     send_validation_email(validation['url_snippet'], validation['code'], user_name, user_email)
+    #     return dict(url_snippet=validation['url_snippet'])
         
     except Exception as e:
         traceback.print_exc()
