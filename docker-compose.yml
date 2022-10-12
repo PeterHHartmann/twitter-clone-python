@@ -13,10 +13,10 @@ services:
     image: twitter-clone:latest
     volumes:
       - .:/app/
-    networks:
-      - database1_network
     env_file:
       - env
+    networks:
+      - app1_network
     depends_on:
       - db
   
@@ -27,12 +27,14 @@ services:
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
     networks:
-      - outward
+      - app1_network
     depends_on:
       - app
 
 networks:
   database1_network:
+    driver: bridge
+  app1_network:
     driver: bridge
 
 volumes:
