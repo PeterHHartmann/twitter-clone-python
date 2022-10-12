@@ -1,0 +1,28 @@
+version: '3'
+
+services: 
+
+  db:
+    image: postgres:14.5-alpine
+    volumes:
+      - ./db/twitter-clone.sql:docker-entrypoint-initdb.d/twitter-clone.sql
+    env_file:
+      - env
+
+  app:
+    image: twitter-clone:latest
+    volumes:
+      - .:/app/
+    env_file:
+      - env
+    depends_on:
+      - db
+  
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
