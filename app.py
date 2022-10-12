@@ -17,5 +17,5 @@ try:
     import production
     application = default_app()
 except:
-    run(host='127.0.0.1', port=3000, debug=True, reloader=True)
+    run(host='127.0.0.1', port=8000, debug=True, reloader=True)
     pass

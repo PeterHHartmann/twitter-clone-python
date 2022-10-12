@@ -147,3 +147,5 @@ include
 **/*.css.map
 
 .DS_Store
+
+production.py
