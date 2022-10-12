@@ -108,12 +108,6 @@ def _():
     hashed = bcrypt.hashpw(bytes(user_pwd, 'utf_8'), salt).decode('utf-8')
 
     try:
-    #     validation = {
-    #         'code': randint(100000, 999999),
-    #         'url_snippet': str(uuid4())
-    #     }
-
-    #     print(validation['code'])
         user = dict(
             user_name=user_name,
             user_email=user_email,
@@ -121,16 +115,16 @@ def _():
 
         details = dict(joined_date=time.time())
 
-        db.user_post(user, validation, details)
-    #     send_validation_email(validation['url_snippet'], validation['code'], user_name, user_email)
-    #     return dict(url_snippet=validation['url_snippet'])
+        db.user_post(user, details)
+        return
         
     except Exception as e:
         traceback.print_exc()
         response.status = 400
-        if str(e) == 'UNIQUE constraint failed: users.user_name':
+        print(e.pgerror)
+        if 'DETAIL:  Key (user_name)' in str(e):
             return dict(msg='That username is taken')
-        elif str(e) == 'UNIQUE constraint failed: users.user_email':
+        elif 'DETAIL:  Key (user_email)' in str(e):
             return dict(msg='That email is already in use')
 
 @get('/logout')

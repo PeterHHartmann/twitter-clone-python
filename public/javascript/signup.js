@@ -28,8 +28,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     });
  
     if ( response.ok ){
-        const body = await response.json()
-        location = `/auth/${body.url_snippet}`
+        location = `/login`
     } else {
         const body = await response.json()
         const error_prompt = document.createElement('span');
