@@ -1,5 +1,7 @@
 FROM python:3.9-alpine
 
+RUN apk add libffi-dev
+
 ENV PYTHONUNBUFFERED=1
 ADD requirements.txt /
 RUN pip install --upgrade pip
