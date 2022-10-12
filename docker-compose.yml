@@ -5,16 +5,12 @@ services:
   db:
     image: postgres:14.5-alpine
     volumes:
-      - db_data:/db/twitter-clone.sql
+      - db_data:./db/twitter-clone.sql
     env_file:
       - env
 
-  app:
+  twitter-clone:
     image: twitter-clone:latest
-    volumes:
-      - .:/app/
-    env_file:
-      - env
     networks:
       - database1_network
       - nginx_network
@@ -26,11 +22,11 @@ services:
     ports:
       - 3000:80
     volumes:
-      - ./config/nginx/nginx.conf:/etc/nginx/conf.d
+      - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - nginx_network
     depends_on:
-      - app
+      - twitter-clone
 
 networks:
   database1_network:
