@@ -5,7 +5,7 @@ services:
   db:
     image: postgres:14.5-alpine
     volumes:
-      - ./db/twitter-clone.sql:docker-entrypoint-initdb.d/twitter-clone.sql
+      - db_data:/db/twitter-clone.sql
     env_file:
       - env
 
@@ -34,3 +34,6 @@ services:
 networks:
   database1_network:
     driver: bridge
+
+volumes:
+  db_data:
