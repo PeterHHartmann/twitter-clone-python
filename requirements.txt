@@ -1,6 +1,8 @@
 bcrypt==3.2.0
 bottle==0.12.19
+cffi==1.15.0
 mysql-connector-python==8.0.31
+Paste==3.5.2
 protobuf==3.20.1
 psycopg2-binary==2.9.4
 pycparser==2.21

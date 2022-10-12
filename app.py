@@ -16,6 +16,8 @@ import routes.errors
 try:
     import production
     application = default_app()
+    from paste import httpserver
+    httpserver.serve(application, host='0.0.0.0', port=80)
 except:
     run(host='127.0.0.1', port=8000, debug=True, reloader=True)
     pass
