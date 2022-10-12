@@ -5,12 +5,14 @@ services:
   db:
     image: postgres:14.5-alpine
     volumes:
-      - db_data:./db/twitter-clone.sql
+      - ./db/twitter-clone.sql:/docker-entrypoint-initdb.d/twitter-clone.sql
     env_file:
       - env
 
-  twitter-clone:
-    image: twitter-clone:latest
+  app:
+    image: twitter:latest
+    volumnes:
+      - .:/app/
     networks:
       - database1_network
       - nginx_network
