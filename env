@@ -1,3 +1,0 @@
-POSTGRES_USER=peterhartmann
-POSTGRES_DB=twitter_clone
-POSTGRES_HOST_AUTH_METHOD=trust

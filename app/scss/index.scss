@@ -1,0 +1,21 @@
+@use 'global';
+@use 'components/modals';
+@use 'components/sidebar-left';
+@use 'components/tweet-deck';
+@use 'components/profile-deck';
+@use 'components/sidebar-right';
+@use 'abstracts/media-query';
+
+.home-main {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto 4fr auto;
+    margin: auto;
+    width: fit-content;
+    height: 100vh;
+
+    @include media-query.respond-to(1021px){
+        grid-template-columns: 1fr 19fr;
+        
+    }
+}
