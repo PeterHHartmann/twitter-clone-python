@@ -4,20 +4,16 @@ import dotenv
 dotenv.load_dotenv()
 import os
 
-db_config = {}
+db_config = {
+    'user': os.getenv('POSTGRES_USER'),
+    'password': os.getenv('POSTGRES_PASSWORD'),
+    'database': os.getenv('POSTGRES_DB')}
+
 try:
     import production
-    db_config = {
-        'host':'0.0.0.0',
-        'user': os.getenv('POSTGRES_USER'),
-        'database':os.getenv('POSTGRES_DB')}
-    print(db_config['password'])
+    db_config['host'] = 'db'
 except:
-    db_config = {
-        'host':'localhost',
-        'user': os.getenv('POSTGRES_USER'),
-        'password': os.getenv('POSTGRES_PASSWORD'),
-        'database':os.getenv('POSTGRES_DB')}
+    db_config['host'] = 'localhost'
 
 def user_get_by_email(user_email):
     try:
